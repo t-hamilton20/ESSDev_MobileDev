@@ -16,11 +16,14 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text("Recipe Maker"),
-          backgroundColor: Colors.purple,
-        ),
-      ),
+          appBar: AppBar(
+            title: Text("Recipe Maker"),
+            backgroundColor: Colors.purple,
+          ),
+          body: Align(
+            alignment: Alignment.topCenter,
+            child: Text("Insert Recipe"),
+          )),
     );
   }
 }
