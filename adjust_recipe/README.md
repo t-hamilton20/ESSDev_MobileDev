@@ -1,4 +1,4 @@
-# adjust_recipe_application
+# adjust_recipe
 
 A new Flutter project.
 

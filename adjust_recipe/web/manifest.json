@@ -1,6 +1,6 @@
 {
-    "name": "adjust_recipe_application",
-    "short_name": "adjust_recipe_application",
+    "name": "adjust_recipe",
+    "short_name": "adjust_recipe",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
