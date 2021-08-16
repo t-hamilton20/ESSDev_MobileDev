@@ -91,7 +91,7 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
                 Text(_itemList[4] + ':' + _amountList[4].toString(),
                     style: Theme.of(context).textTheme.button),
 
-                // Attempting to add slider
+                // Slider for recipe multiplication factor
                 Slider(
                     value: _factor,
                     min: 1,
