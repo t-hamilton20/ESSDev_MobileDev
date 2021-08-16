@@ -6,13 +6,13 @@ void main() {
 }
 
 class RecipeApp extends StatelessWidget {
-  // This widget is the root of your application.
+  // This widget is the root of the application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Recipe Adjuster',
       theme: ThemeData(
-        // This is the theme of your application.
+        // This is the theme of the application.
         primarySwatch: Colors.green,
       ),
       home: RecipeAdjustPage(title: 'Adjust Page'),
@@ -23,15 +23,6 @@ class RecipeApp extends StatelessWidget {
 class RecipeAdjustPage extends StatefulWidget {
   RecipeAdjustPage({Key? key, required this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -40,7 +31,7 @@ class RecipeAdjustPage extends StatefulWidget {
 
 class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
   String _ingredient = '';
-  int _factor = 0;
+  double _factor = 1;
   int _numEntered = 0;
   int _alternate = 0;
   var _itemList = List<String>.filled(5, '...');
@@ -69,6 +60,7 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
               children: <Widget>[
                 Text('Enter Recipe Information',
                     style: Theme.of(context).textTheme.button),
+                // For user entry of igredient name
                 TextField(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -77,6 +69,7 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
                     onSubmitted: (text) {
                       _doSomething(text);
                     }),
+                // For user entry of ingredient amount
                 TextField(
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: InputDecoration(
@@ -86,6 +79,7 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
                     onSubmitted: (amount) {
                       _doSomething(amount);
                     }),
+                // List ingredients and amounts
                 Text(_itemList[0] + ':' + _amountList[0].toString(),
                     style: Theme.of(context).textTheme.button),
                 Text(_itemList[1] + ':' + _amountList[1].toString(),
@@ -96,6 +90,19 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
                     style: Theme.of(context).textTheme.button),
                 Text(_itemList[4] + ':' + _amountList[4].toString(),
                     style: Theme.of(context).textTheme.button),
+
+                // Attempting to add slider
+                Slider(
+                    value: _factor,
+                    min: 1,
+                    max: 5,
+                    divisions: 4,
+                    label: _factor.toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        _factor = value;
+                      });
+                    })
               ],
             ),
             Icon(Icons.dinner_dining, size: 350),
@@ -107,6 +114,8 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
 
   void _doSomething(String text) {
     setState(() {
+      // When zero, edit ingredient name, other wise edit amount
+      // Altername between updating name & amount until all 5 entered
       if (_alternate == 0) {
         _ingredient = text;
         if (_numEntered < 5) {
