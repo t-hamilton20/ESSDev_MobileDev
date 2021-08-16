@@ -15,8 +15,18 @@ class RecipeApp extends StatefulWidget {
 
 class _RecipeAppState extends State<RecipeApp> {
   String ingredient = "";
+  String unit = "";
   double amount = 0;
   double multiplier = 1;
+  int count = 0;
+  //var ingredients = new Map();
+  var ingredients = List<Ingredient>.generate(10, (index) {
+    return Ingredient(
+      name: "",
+      quantity: 0,
+      unit: "",
+    );
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +50,19 @@ class _RecipeAppState extends State<RecipeApp> {
           ],
         ),
       ),
-      body: new Container(
+      body: new Padding(
+        padding: EdgeInsets.fromLTRB(30, 30, 30, 30),
         child: new Center(
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              new Text(ingredient + ": " + (amount).toString()),
+              new ListView.builder(
+                itemCount: ingredients.length,
+                itemBuilder: (context, index) {
+                  return ListTile(title: Text(ingredients[index].output()));
+                },
+              ),
+              new SizedBox(height: 20),
               new TextField(
                 decoration: new InputDecoration(hintText: "Input Ingredient"),
                 onSubmitted: (String ingredientsInput) {
@@ -54,29 +71,49 @@ class _RecipeAppState extends State<RecipeApp> {
                   });
                 },
               ),
+              new SizedBox(height: 10),
               new TextField(
-                decoration:
-                    new InputDecoration(hintText: "Input Amount (Cups)"),
+                decoration: new InputDecoration(hintText: "Input Amount"),
                 onSubmitted: (String amountsInput) {
                   setState(() {
                     amount = double.parse(amountsInput);
                   });
                 },
               ),
+              new SizedBox(height: 10),
               new TextField(
-                decoration: new InputDecoration(hintText: "Multiplier"),
-                onSubmitted: (String multiplierInput) {
+                decoration: new InputDecoration(
+                    hintText: "Input Unit (ex: cups, tbsp, etc.)"),
+                onSubmitted: (String unitsInput) {
                   setState(() {
-                    multiplier = double.parse(multiplierInput);
+                    unit = unitsInput;
+                  });
+                },
+              ),
+              new SizedBox(height: 10),
+              new Slider(
+                value: multiplier,
+                min: 1,
+                max: 10,
+                divisions: 10,
+                inactiveColor: Colors.red,
+                activeColor: Colors.redAccent,
+                label: multiplier.round().toString(),
+                onChanged: (double value) {
+                  setState(() {
+                    multiplier = value;
                   });
                 },
               ),
               ElevatedButton(
-                child: Text("Multiply!"),
-                style: ButtonStyle(backgroundColor: Colors.red),
+                child: Text("Add Ingredient"),
                 onPressed: () {
                   setState(() {
-                    amount = amount * multiplier;
+                    ingredients[count].name = ingredient;
+                    ingredients[count].quantity = amount;
+                    ingredients[count].unit = unit;
+                    count++;
+                    print(count);
                   });
                 },
               )
@@ -85,5 +122,26 @@ class _RecipeAppState extends State<RecipeApp> {
         ),
       ),
     );
+  }
+}
+
+class Ingredient {
+  String name;
+  double quantity;
+  String unit;
+
+  Ingredient({this.name = "", this.quantity = 0, this.unit = ""});
+
+  String output() {
+    return this.name +
+        ": " +
+        this.quantity.toString() +
+        " " +
+        this.unit +
+        "(s)";
+  }
+
+  void multiply(double multiplier) {
+    this.quantity = quantity * multiplier;
   }
 }
