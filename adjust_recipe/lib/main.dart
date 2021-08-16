@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(RecipeApp());
@@ -9,12 +10,12 @@ class RecipeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Recipe Adjuster',
       theme: ThemeData(
         // This is the theme of your application.
         primarySwatch: Colors.green,
       ),
-      home: RecipeAdjustPage(title: 'Recipe Adjuster'),
+      home: RecipeAdjustPage(title: 'Adjust Page'),
     );
   }
 }
@@ -37,22 +38,13 @@ class RecipeAdjustPage extends StatefulWidget {
   _RecipeAdjustPageState createState() => _RecipeAdjustPageState();
 }
 
-class _RecipeAdjustPageState extends State<RecipeAdjustPage>
-    with AutomaticKeepAliveClientMixin<RecipeAdjustPage> {
-  @override
-  bool get wantKeepAlive => true;
-  int _ingredient = 0;
+class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
+  String _ingredient = '';
   int _factor = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-    });
-  }
+  int _numEntered = 0;
+  int _alternate = 0;
+  var _itemList = List<String>.filled(5, '...');
+  var _amountList = List.filled(5, 0);
 
   @override
   Widget build(BuildContext context) {
@@ -69,18 +61,59 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage>
               Tab(icon: Icon(Icons.dinner_dining))
             ],
           ),
-          title: Text(widget.title),
+          title: Text('AppBar Title'),
         ),
         body: TabBarView(
           children: [
-            Center(
-              child: Text('Adjust ingredient amount',
-                  style: Theme.of(context).textTheme.button),
+            Column(
+              children: <Widget>[
+                Text('Enter Recipe Information',
+                    style: Theme.of(context).textTheme.button),
+                TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Ingredient Name',
+                    ),
+                    onSubmitted: (text) {
+                      _doSomething(text);
+                    }),
+                TextField(
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Ingredient Amount',
+                    ),
+                    onSubmitted: (amount) {
+                      if (_numEntered < 5) {
+                        _amountList[_numEntered] = int.parse(amount);
+                      }
+                      _numEntered++;
+                    }),
+                Text(_itemList[0] + ':' + _amountList[0].toString(),
+                    style: Theme.of(context).textTheme.button),
+                Text(_itemList[1] + ':' + _amountList[1].toString(),
+                    style: Theme.of(context).textTheme.button),
+                Text(_itemList[2] + ':' + _amountList[2].toString(),
+                    style: Theme.of(context).textTheme.button),
+                Text(_itemList[3] + ':' + _amountList[3].toString(),
+                    style: Theme.of(context).textTheme.button),
+                Text(_itemList[4] + ':' + _amountList[4].toString(),
+                    style: Theme.of(context).textTheme.button),
+              ],
             ),
             Icon(Icons.dinner_dining, size: 350),
           ],
         ),
       ),
     );
+  }
+
+  void _doSomething(String text) {
+    setState(() {
+      _ingredient = text;
+      if (_numEntered < 5) {
+        _itemList[_numEntered] = _ingredient;
+      }
+    });
   }
 }
