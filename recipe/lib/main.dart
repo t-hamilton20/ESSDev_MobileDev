@@ -19,7 +19,7 @@ class _RecipeAppState extends State<RecipeApp> {
   double amount = 0;
   double multiplier = 1;
   int count = 0;
-  //var ingredients = new Map();
+
   var ingredients = List<Ingredient>.generate(10, (index) {
     return Ingredient(
       name: "",
@@ -56,14 +56,18 @@ class _RecipeAppState extends State<RecipeApp> {
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              new ListView.builder(
-                itemCount: ingredients.length,
-                itemBuilder: (context, index) {
-                  return ListTile(title: Text(ingredients[index].output()));
-                },
+              SizedBox(
+                height: 300,
+                child: new ListView.builder(
+                  itemCount: ingredients.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(title: Text(ingredients[index].output()));
+                  },
+                ),
               ),
               new SizedBox(height: 20),
               new TextField(
+                cursorColor: Colors.redAccent,
                 decoration: new InputDecoration(hintText: "Input Ingredient"),
                 onSubmitted: (String ingredientsInput) {
                   setState(() {
@@ -73,6 +77,7 @@ class _RecipeAppState extends State<RecipeApp> {
               ),
               new SizedBox(height: 10),
               new TextField(
+                cursorColor: Colors.redAccent,
                 decoration: new InputDecoration(hintText: "Input Amount"),
                 onSubmitted: (String amountsInput) {
                   setState(() {
@@ -82,6 +87,7 @@ class _RecipeAppState extends State<RecipeApp> {
               ),
               new SizedBox(height: 10),
               new TextField(
+                cursorColor: Colors.redAccent,
                 decoration: new InputDecoration(
                     hintText: "Input Unit (ex: cups, tbsp, etc.)"),
                 onSubmitted: (String unitsInput) {
@@ -106,15 +112,15 @@ class _RecipeAppState extends State<RecipeApp> {
                 },
               ),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: Colors.red),
                 child: Text("Add Ingredient"),
                 onPressed: () {
-                  setState(() {
-                    ingredients[count].name = ingredient;
-                    ingredients[count].quantity = amount;
-                    ingredients[count].unit = unit;
-                    count++;
-                    print(count);
-                  });
+                  ingredients[count].name = ingredient;
+                  ingredients[count].quantity = amount;
+                  ingredients[count].unit = unit;
+                  count++;
+                  print(count);
+                  setState(() {});
                 },
               )
             ],
@@ -133,12 +139,16 @@ class Ingredient {
   Ingredient({this.name = "", this.quantity = 0, this.unit = ""});
 
   String output() {
-    return this.name +
-        ": " +
-        this.quantity.toString() +
-        " " +
-        this.unit +
-        "(s)";
+    if (name == "" && quantity == 0 && unit == "") {
+      return "";
+    } else {
+      return this.name +
+          ": " +
+          this.quantity.toString() +
+          " " +
+          this.unit +
+          "(s)";
+    }
   }
 
   void multiply(double multiplier) {
