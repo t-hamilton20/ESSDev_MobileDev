@@ -84,10 +84,7 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
                       labelText: 'Ingredient Amount',
                     ),
                     onSubmitted: (amount) {
-                      if (_numEntered < 5) {
-                        _amountList[_numEntered] = int.parse(amount);
-                      }
-                      _numEntered++;
+                      _doSomething(amount);
                     }),
                 Text(_itemList[0] + ':' + _amountList[0].toString(),
                     style: Theme.of(context).textTheme.button),
@@ -110,9 +107,18 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
 
   void _doSomething(String text) {
     setState(() {
-      _ingredient = text;
-      if (_numEntered < 5) {
-        _itemList[_numEntered] = _ingredient;
+      if (_alternate == 0) {
+        _ingredient = text;
+        if (_numEntered < 5) {
+          _itemList[_numEntered] = _ingredient;
+        }
+        _alternate = 1;
+      } else {
+        if (_numEntered < 5) {
+          _amountList[_numEntered] = int.parse(text);
+        }
+        _numEntered++;
+        _alternate = 0;
       }
     });
   }
