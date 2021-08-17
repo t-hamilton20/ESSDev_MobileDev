@@ -14,6 +14,8 @@ class RecipeApp extends StatelessWidget {
       theme: ThemeData(
         // This is the theme of the application.
         primarySwatch: Colors.green,
+        accentColor: Colors.lime,
+        hoverColor: Colors.lime,
       ),
       home: RecipeAdjustPage(title: 'Adjust Page'),
     );
@@ -52,44 +54,78 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
               Tab(icon: Icon(Icons.dinner_dining))
             ],
           ),
-          title: Text('AppBar Title'),
+          title: Text('Recipe Adjuster'),
         ),
         body: TabBarView(
           children: [
             Column(
               children: <Widget>[
-                Text('Enter Recipe Information',
-                    style: Theme.of(context).textTheme.button),
+                Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('Enter recipe details:',
+                      style: Theme.of(context).textTheme.headline4),
+                ),
                 // For user entry of igredient name
-                TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Ingredient Name',
-                    ),
-                    onSubmitted: (text) {
-                      _doSomething(text);
-                    }),
+                Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Ingredient Name',
+                      ),
+                      onSubmitted: (text) {
+                        _updateList(text);
+                      }),
+                ),
                 // For user entry of ingredient amount
-                TextField(
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Ingredient Amount',
-                    ),
-                    onSubmitted: (amount) {
-                      _doSomething(amount);
-                    }),
+                Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: TextField(
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Ingredient Amount',
+                      ),
+                      onSubmitted: (amount) {
+                        _updateList(amount);
+                      }),
+                ),
                 // List ingredients and amounts
-                Text(_itemList[0] + ':' + _amountList[0].toString(),
-                    style: Theme.of(context).textTheme.button),
-                Text(_itemList[1] + ':' + _amountList[1].toString(),
-                    style: Theme.of(context).textTheme.button),
-                Text(_itemList[2] + ':' + _amountList[2].toString(),
-                    style: Theme.of(context).textTheme.button),
-                Text(_itemList[3] + ':' + _amountList[3].toString(),
-                    style: Theme.of(context).textTheme.button),
-                Text(_itemList[4] + ':' + _amountList[4].toString(),
-                    style: Theme.of(context).textTheme.button),
+                Text(
+                    _itemList[0] +
+                        ': ' +
+                        _amountList[0].toString() +
+                        ' > ' +
+                        (_amountList[0] * _factor).toString(),
+                    style: Theme.of(context).textTheme.headline5),
+                Text(
+                    _itemList[1] +
+                        ': ' +
+                        _amountList[1].toString() +
+                        ' > ' +
+                        (_amountList[1] * _factor).toString(),
+                    style: Theme.of(context).textTheme.headline5),
+                Text(
+                    _itemList[2] +
+                        ': ' +
+                        _amountList[2].toString() +
+                        ' > ' +
+                        (_amountList[2] * _factor).toString(),
+                    style: Theme.of(context).textTheme.headline5),
+                Text(
+                    _itemList[3] +
+                        ': ' +
+                        _amountList[3].toString() +
+                        ' > ' +
+                        (_amountList[3] * _factor).toString(),
+                    style: Theme.of(context).textTheme.headline5),
+                Text(
+                    _itemList[4] +
+                        ': ' +
+                        _amountList[4].toString() +
+                        ' > ' +
+                        (_amountList[4] * _factor).toString(),
+                    style: Theme.of(context).textTheme.headline5),
 
                 // Slider for recipe multiplication factor
                 Slider(
@@ -112,7 +148,7 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
     );
   }
 
-  void _doSomething(String text) {
+  void _updateList(String text) {
     setState(() {
       // When zero, edit ingredient name, other wise edit amount
       // Altername between updating name & amount until all 5 entered
