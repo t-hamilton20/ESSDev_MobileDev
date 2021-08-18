@@ -122,7 +122,8 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
                   padding: EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: (_updateList),
-                    child: const Text('Add Ingredient'),
+                    child: Text('Add Ingredient',
+                        style: Theme.of(context).textTheme.subtitle1),
                   ),
                 ),
                 // List ingredients and amounts
