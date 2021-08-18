@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'pasta.dart';
 
 void main() {
   runApp(new MaterialApp(
+      routes: {
+        '/pasta': (context) => Pasta(),
+        '/recipe': (context) => RecipeApp()
+      },
       theme: ThemeData(
           primaryColor: Colors.blue[900], accentColor: Colors.blueAccent),
       home: new RecipeApp()));
@@ -39,16 +44,22 @@ class _RecipeAppState extends State<RecipeApp> {
       drawer: Drawer(
         child: ListView(
           children: [
-            ListTile(
-                title: const Text("Recipes"),
-                onTap: () {
-                  Navigator.pop(context);
-                }),
-            ListTile(
-                title: const Text("Pasta Sizing"),
-                onTap: () {
-                  Navigator.pop(context);
-                })
+            Card(
+                child: ListTile(
+                    leading: Icon(Icons.fastfood, color: Colors.blueAccent),
+                    title: const Text("Recipes"),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, '/recipe');
+                    })),
+            Card(
+                child: ListTile(
+                    leading: Icon(Icons.restaurant, color: Colors.blueAccent),
+                    title: const Text("Pasta Sizing"),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, '/pasta');
+                    }))
           ],
         ),
       ),
@@ -72,7 +83,8 @@ class _RecipeAppState extends State<RecipeApp> {
               new SizedBox(height: 20), //added for spacing
               new TextField(
                 //textfield for ingredient input
-                decoration: new InputDecoration(hintText: "Input Ingredient"),
+                decoration: new InputDecoration(
+                    labelText: "Ingredient", hintText: "Input Ingredient"),
                 onSubmitted: (String ingredientsInput) {
                   setState(() {
                     ingredient = ingredientsInput;
@@ -82,7 +94,8 @@ class _RecipeAppState extends State<RecipeApp> {
               new SizedBox(height: 10), //added for spacing
               new TextField(
                 //textfield for amount input
-                decoration: new InputDecoration(hintText: "Input Amount"),
+                decoration: new InputDecoration(
+                    labelText: "Amount", hintText: "Input Amount"),
                 onSubmitted: (String amountsInput) {
                   setState(() {
                     amount = double.parse(amountsInput);
@@ -93,6 +106,7 @@ class _RecipeAppState extends State<RecipeApp> {
               new TextField(
                 //textfield for unit input
                 decoration: new InputDecoration(
+                    labelText: "Unit",
                     hintText: "Input Unit (ex: cups, tbsp, etc.)"),
                 onSubmitted: (String unitsInput) {
                   setState(() {
