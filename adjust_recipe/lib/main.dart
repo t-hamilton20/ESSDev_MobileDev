@@ -42,9 +42,9 @@ class RecipeAdjustPage extends StatefulWidget {
 
 class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
   String _ingredient = '';
+  int _amount = 0;
   double _factor = 1;
   int _numEntered = 0;
-  int _alternate = 0;
   var _itemList = List<String>.filled(5, 'N/A');
   var _amountList = List.filled(5, 0);
 
@@ -69,6 +69,24 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
           children: [
             Column(
               children: <Widget>[
+                // Slider for recipe multiplication factor
+                Container(
+                  padding: EdgeInsets.all(20.0),
+                  child: Text('Select multiplyer:',
+                      style: Theme.of(context).textTheme.headline4),
+                ),
+                // Slider for recipe multiplication factor
+                Slider(
+                    value: _factor,
+                    min: 1,
+                    max: 5,
+                    divisions: 4,
+                    label: _factor.toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        _factor = value;
+                      });
+                    }),
                 Container(
                   padding: EdgeInsets.all(8.0),
                   child: Text('Enter recipe details:',
@@ -82,8 +100,8 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
                         border: OutlineInputBorder(),
                         labelText: 'Ingredient Name',
                       ),
-                      onSubmitted: (text) {
-                        _updateList(text);
+                      onChanged: (text) {
+                        _ingredient = text;
                       }),
                 ),
                 // For user entry of ingredient amount
@@ -95,14 +113,22 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
                         border: OutlineInputBorder(),
                         labelText: 'Ingredient Amount',
                       ),
-                      onSubmitted: (amount) {
-                        _updateList(amount);
+                      onChanged: (amount) {
+                        _amount = int.parse(amount);
                       }),
+                ),
+                // For user to confirm adding ingredient
+                Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: (_updateList),
+                    child: const Text('Add Ingredient'),
+                  ),
                 ),
                 // List ingredients and amounts
                 //sized box ensures listview has box to go in
                 SizedBox(
-                  width: 200,
+                  width: 250,
                   height: 250,
                   child: ListView.builder(
                       padding: const EdgeInsets.all(8.0),
@@ -120,18 +146,6 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
                         );
                       }),
                 ),
-                // Slider for recipe multiplication factor
-                Slider(
-                    value: _factor,
-                    min: 1,
-                    max: 5,
-                    divisions: 4,
-                    label: _factor.toString(),
-                    onChanged: (double value) {
-                      setState(() {
-                        _factor = value;
-                      });
-                    })
               ],
             ),
             Icon(Icons.dinner_dining, size: 350),
@@ -141,23 +155,19 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
     );
   }
 
-  void _updateList(String text) {
+  void _updateList() {
     setState(() {
       // When zero, edit ingredient name, other wise edit amount
       // Altername between updating name & amount until all 5 entered
-      if (_alternate == 0) {
-        _ingredient = text;
-        if (_numEntered < 5) {
-          _itemList[_numEntered] = _ingredient;
-        }
-        _alternate = 1;
-      } else {
-        if (_numEntered < 5) {
-          _amountList[_numEntered] = int.parse(text);
-        }
-        _numEntered++;
-        _alternate = 0;
+
+      if (_numEntered < 5) {
+        _itemList[_numEntered] = _ingredient;
       }
+
+      if (_numEntered < 5) {
+        _amountList[_numEntered] = _amount;
+      }
+      _numEntered++;
     });
   }
 }
