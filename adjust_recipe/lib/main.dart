@@ -16,6 +16,15 @@ class RecipeApp extends StatelessWidget {
         primarySwatch: Colors.green,
         accentColor: Colors.lime,
         hoverColor: Colors.lime,
+        sliderTheme: SliderThemeData(
+          activeTickMarkColor: Colors.green,
+          inactiveTickMarkColor: Colors.lime,
+          inactiveTrackColor: Colors.lime,
+          tickMarkShape: RoundSliderTickMarkShape(
+            tickMarkRadius: 7,
+          ),
+          valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+        ),
       ),
       home: RecipeAdjustPage(title: 'Adjust Page'),
     );
@@ -91,47 +100,26 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
                       }),
                 ),
                 // List ingredients and amounts
-                ListView(
-                  padding: const EdgeInsets.all(8.0),
-                  children: <Widget>[
-                    Text(
-                        _itemList[0] +
-                            ': ' +
-                            _amountList[0].toString() +
-                            ' > ' +
-                            (_amountList[0] * _factor).toString(),
-                        style: Theme.of(context).textTheme.headline5),
-                    Text(
-                        _itemList[1] +
-                            ': ' +
-                            _amountList[1].toString() +
-                            ' > ' +
-                            (_amountList[1] * _factor).toString(),
-                        style: Theme.of(context).textTheme.headline5),
-                    Text(
-                        _itemList[2] +
-                            ': ' +
-                            _amountList[2].toString() +
-                            ' > ' +
-                            (_amountList[2] * _factor).toString(),
-                        style: Theme.of(context).textTheme.headline5),
-                    Text(
-                        _itemList[3] +
-                            ': ' +
-                            _amountList[3].toString() +
-                            ' > ' +
-                            (_amountList[3] * _factor).toString(),
-                        style: Theme.of(context).textTheme.headline5),
-                    Text(
-                        _itemList[4] +
-                            ': ' +
-                            _amountList[4].toString() +
-                            ' > ' +
-                            (_amountList[4] * _factor).toString(),
-                        style: Theme.of(context).textTheme.headline5),
-                  ],
+                //sized box ensures listview has box to go in
+                SizedBox(
+                  width: 200,
+                  height: 250,
+                  child: ListView.builder(
+                      padding: const EdgeInsets.all(8.0),
+                      itemCount: 5,
+                      itemBuilder: (BuildContext contect, int index) {
+                        return Container(
+                          height: 50,
+                          child: Text(
+                              _itemList[index] +
+                                  ': ' +
+                                  _amountList[index].toString() +
+                                  ' > ' +
+                                  (_amountList[index] * _factor).toString(),
+                              style: Theme.of(context).textTheme.headline5),
+                        );
+                      }),
                 ),
-
                 // Slider for recipe multiplication factor
                 Slider(
                     value: _factor,
