@@ -36,7 +36,7 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
   double _factor = 1;
   int _numEntered = 0;
   int _alternate = 0;
-  var _itemList = List<String>.filled(5, '...');
+  var _itemList = List<String>.filled(5, 'N/A');
   var _amountList = List.filled(5, 0);
 
   @override
@@ -91,41 +91,46 @@ class _RecipeAdjustPageState extends State<RecipeAdjustPage> {
                       }),
                 ),
                 // List ingredients and amounts
-                Text(
-                    _itemList[0] +
-                        ': ' +
-                        _amountList[0].toString() +
-                        ' > ' +
-                        (_amountList[0] * _factor).toString(),
-                    style: Theme.of(context).textTheme.headline5),
-                Text(
-                    _itemList[1] +
-                        ': ' +
-                        _amountList[1].toString() +
-                        ' > ' +
-                        (_amountList[1] * _factor).toString(),
-                    style: Theme.of(context).textTheme.headline5),
-                Text(
-                    _itemList[2] +
-                        ': ' +
-                        _amountList[2].toString() +
-                        ' > ' +
-                        (_amountList[2] * _factor).toString(),
-                    style: Theme.of(context).textTheme.headline5),
-                Text(
-                    _itemList[3] +
-                        ': ' +
-                        _amountList[3].toString() +
-                        ' > ' +
-                        (_amountList[3] * _factor).toString(),
-                    style: Theme.of(context).textTheme.headline5),
-                Text(
-                    _itemList[4] +
-                        ': ' +
-                        _amountList[4].toString() +
-                        ' > ' +
-                        (_amountList[4] * _factor).toString(),
-                    style: Theme.of(context).textTheme.headline5),
+                ListView(
+                  padding: const EdgeInsets.all(8.0),
+                  children: <Widget>[
+                    Text(
+                        _itemList[0] +
+                            ': ' +
+                            _amountList[0].toString() +
+                            ' > ' +
+                            (_amountList[0] * _factor).toString(),
+                        style: Theme.of(context).textTheme.headline5),
+                    Text(
+                        _itemList[1] +
+                            ': ' +
+                            _amountList[1].toString() +
+                            ' > ' +
+                            (_amountList[1] * _factor).toString(),
+                        style: Theme.of(context).textTheme.headline5),
+                    Text(
+                        _itemList[2] +
+                            ': ' +
+                            _amountList[2].toString() +
+                            ' > ' +
+                            (_amountList[2] * _factor).toString(),
+                        style: Theme.of(context).textTheme.headline5),
+                    Text(
+                        _itemList[3] +
+                            ': ' +
+                            _amountList[3].toString() +
+                            ' > ' +
+                            (_amountList[3] * _factor).toString(),
+                        style: Theme.of(context).textTheme.headline5),
+                    Text(
+                        _itemList[4] +
+                            ': ' +
+                            _amountList[4].toString() +
+                            ' > ' +
+                            (_amountList[4] * _factor).toString(),
+                        style: Theme.of(context).textTheme.headline5),
+                  ],
+                ),
 
                 // Slider for recipe multiplication factor
                 Slider(
