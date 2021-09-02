@@ -1,21 +1,32 @@
+//import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(
-    title: 'Title of App',
-    initialRoute: '/login',
-    routes: {
-      '/trivia': (context) => TriviaPage(),
-      '/login': (context) => LoginPage(),
-    },
-  ));
+  runApp(TriviaApp());
 }
 
-//class TriviaApp extends MaterialApp{}
+class TriviaApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Text on Browser Tab',
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => LoginPage(),
+      },
+    );
+  }
+}
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
 
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   String _username = '';
   String _password = '';
 
@@ -23,7 +34,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Login to Trivia App'),
       ),
       body: Center(
         child: Column(
@@ -63,15 +74,22 @@ class LoginPage extends StatelessWidget {
                   _password = text;
                 },
                 onSubmitted: (String text) {
-                  _password = text;
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              TriviaPage(username: _username)));
                 },
               ),
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/trivia');
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TriviaPage(username: _username)));
               },
-              child: Text('to Page 2'),
+              child: Text('LOGIN'),
             ),
           ],
         ),
@@ -81,20 +99,21 @@ class LoginPage extends StatelessWidget {
 }
 
 class TriviaPage extends StatelessWidget {
-  const TriviaPage({Key? key}) : super(key: key);
+  final String username;
+  TriviaPage({Key? key, required this.username}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Trivia'),
+        title: Text('Welcome to Trivia App, ' + username),
       ),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          child: const Text('to Page 1'),
+          child: const Text('to Login'),
         ),
       ),
     );
