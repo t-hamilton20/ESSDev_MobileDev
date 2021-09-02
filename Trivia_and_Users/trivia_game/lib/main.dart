@@ -1,5 +1,3 @@
-//import 'dart:html';
-
 import 'package:flutter/material.dart';
 
 void main() {
@@ -78,18 +76,34 @@ class _LoginPageState extends State<LoginPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              TriviaPage(username: _username)));
+                              WelcomePage(username: _username)));
                 },
               ),
             ),
+            //login button
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => TriviaPage(username: _username)));
+                        builder: (context) =>
+                            WelcomePage(username: _username)));
               },
               child: Text('LOGIN'),
+            ),
+            //sign up button
+            Container(
+              padding: EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              WelcomePage(username: _username)));
+                },
+                child: Text('SIGN UP'),
+              ),
             ),
           ],
         ),
@@ -98,9 +112,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-class TriviaPage extends StatelessWidget {
+class WelcomePage extends StatelessWidget {
   final String username;
-  TriviaPage({Key? key, required this.username}) : super(key: key);
+  WelcomePage({Key? key, required this.username}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
