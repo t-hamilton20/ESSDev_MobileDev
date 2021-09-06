@@ -1,7 +1,35 @@
+import 'dart:async';
+
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+
 import 'package:flutter/material.dart';
 
 void main() {
+  async{
+    // Avoid errors caused by flutter upgrade.
+    // Importing 'package:flutter/widgets.dart' is required.
+    WidgetsFlutterBinding.ensureInitialized();
+    // Open the database and store the reference.
+    final database = openDatabase(
+      // Set the path to the database
+      join(await getDatabasesPath(), 'user_database.db'),
+);
+
+final database = openDatabase(
+  join(await getDatabasesPath(), 'user_database.db'),
+
+  onCreate: (db, version){
+    return db.execute(
+      'CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, email TEXT, username TEXT, password TEXT)'
+    );
+  },
+  version: 1,
+);
+
+}
   runApp(TriviaApp());
+
 }
 
 class TriviaApp extends StatelessWidget {
