@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1061489396014",
+    "project_id": "homeslice-399ef",
+    "storage_bucket": "homeslice-399ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1061489396014:android:edcdbd6c7594a762c392bf",
+        "android_client_info": {
+          "package_name": "com.example.homeslice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1061489396014-0ikq02hqi5vp8qaoqaol3otfahed514o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAy3BBjw3_ihYY1KvldZbRCbc_XzYCWvsU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1061489396014-0ikq02hqi5vp8qaoqaol3otfahed514o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
