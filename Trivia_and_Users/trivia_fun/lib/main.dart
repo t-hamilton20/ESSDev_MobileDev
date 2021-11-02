@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+<<<<<<< Updated upstream
+=======
+//import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:firebase_core/firebase_core.dart';
+import 'login.dart';
+import 'question.dart';
+>>>>>>> Stashed changes
 
 void main() {
   runApp(MyApp());
@@ -47,6 +54,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+<<<<<<< Updated upstream
+=======
+  //final firestoreInstance = FirebaseFirestore.instance;
+>>>>>>> Stashed changes
 
   void _incrementCounter() {
     setState(() {
@@ -56,6 +67,10 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+<<<<<<< Updated upstream
+=======
+      //firestoreInstance.collection("test").add({"count": _counter});
+>>>>>>> Stashed changes
     });
   }
 
