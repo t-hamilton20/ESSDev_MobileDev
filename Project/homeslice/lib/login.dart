@@ -9,6 +9,10 @@
 
 import 'package:flutter/material.dart';
 import 'signup.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+FirebaseAuth auth = FirebaseAuth.instance;
 
 class login extends StatefulWidget {
   const login({Key? key}) : super(key: key);
