@@ -1,17 +1,16 @@
-/* implementation of databse using Firestore
-*  Last updated YYYY-MM-DD by NAME
+/* implementation of database using Firestore
+*  Last updated 2021-11-02 by Josh Friedman
 *
 * Includes:
-* Get_Users
-* Add_User
-* Edit_User_Details
-* Create_Group
-* Edit_Group
-* Delete_Group
-* Like_User
+* addUser
+* getUsers
+* editUserDetails
+* createGroup
+* editGroup
+* deleteGroup
+* likeUser
 */
 
-import "package:firebase_auth/firebase_auth.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
