@@ -14,14 +14,14 @@ import 'package:firebase_core/firebase_core.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
-class signup extends StatefulWidget {
-  const signup({Key? key}) : super(key: key);
+class Signup extends StatefulWidget {
+  const Signup({Key? key}) : super(key: key);
 
   @override
-  _signupState createState() => _signupState();
+  _SignupState createState() => _SignupState();
 }
 
-class _signupState extends State<signup> {
+class _SignupState extends State<Signup> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmController = TextEditingController();
