@@ -10,6 +10,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+FirebaseAuth auth = FirebaseAuth.instance;
 
 class signup extends StatefulWidget {
   const signup({Key? key}) : super(key: key);
@@ -19,8 +22,9 @@ class signup extends StatefulWidget {
 }
 
 class _signupState extends State<signup> {
-  String userEmail = "";
-  String userPassword = "";
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,35 +40,40 @@ class _signupState extends State<signup> {
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // email field
               new TextField(
+                controller: emailController,
                 style: TextStyle(fontSize: 20),
-                //textfield for email input
                 decoration: new InputDecoration(
                     labelText: "Email", hintText: "Enter your email"),
                 onSubmitted: (String emailInput) {
-                  userEmail = emailInput;
                   setState(() {});
                 },
               ),
+
               new SizedBox(
                 height: 40,
               ),
+
+              // password field
               new TextField(
+                controller: passwordController,
                 style: TextStyle(fontSize: 20),
-                //textfield for password input
                 decoration: new InputDecoration(
                     labelText: "Password", hintText: "Enter your password"),
                 onSubmitted: (String passwordInput) {
-                  userPassword = passwordInput;
                   setState(() {});
                 },
               ),
+
               new SizedBox(
                 height: 40,
               ),
+
+              // confirm field
               new TextField(
+                controller: confirmController,
                 style: TextStyle(fontSize: 20),
-                //textfield for confirm password input
                 decoration: new InputDecoration(
                     labelText: "Confirm Password",
                     hintText: "Confirm password"),
@@ -72,9 +81,11 @@ class _signupState extends State<signup> {
                   setState(() {});
                 },
               ),
+
               new SizedBox(
                 height: 40,
               ),
+
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     primary: Theme.of(context).secondaryHeaderColor,
@@ -82,20 +93,29 @@ class _signupState extends State<signup> {
                     textStyle: TextStyle(fontSize: 20)),
                 child: Text("Signup"),
                 onPressed: () async {
-                  try {
-                    UserCredential userCredential = await FirebaseAuth.instance
-                        .createUserWithEmailAndPassword(
-                            email: userEmail, password: userPassword);
-                  } on FirebaseAuthException catch (e) {
-                    if (e.code == 'weak-password') {
-                      print('The password provided is too weak.');
-                    } else if (e.code == 'email-already-in-use') {
-                      print('The account already exists for that email.');
+                  if (confirmController.text != passwordController.text) {
+                    print("Error, passwords do not match");
+                  } else {
+                    try {
+                      UserCredential userCredential = await FirebaseAuth
+                          .instance
+                          .createUserWithEmailAndPassword(
+                              email: emailController.text,
+                              password: passwordController.text);
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'weak-password') {
+                        print('The password provided is too weak.');
+                        _buildPopupDialog(context, "Password is too weak.");
+                      } else if (e.code == 'email-already-in-use') {
+                        print('The account already exists for that email.');
+                        _buildPopupDialog(context,
+                            "An account already exists for that email.");
+                      }
+                    } catch (e) {
+                      print(e);
                     }
-                  } catch (e) {
-                    print(e);
+                    setState(() {});
                   }
-                  setState(() {});
                 },
               ),
             ],
@@ -104,4 +124,25 @@ class _signupState extends State<signup> {
       ),
     );
   }
+}
+
+Widget _buildPopupDialog(BuildContext context, String message) {
+  return new AlertDialog(
+    title: const Text('Error'),
+    content: new Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("message"),
+      ],
+    ),
+    actions: <Widget>[
+      new ElevatedButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        child: const Text('Close'),
+      ),
+    ],
+  );
 }

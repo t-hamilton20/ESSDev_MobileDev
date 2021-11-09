@@ -22,6 +22,10 @@ class login extends StatefulWidget {
 }
 
 class _loginState extends State<login> {
+  // credential variables
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -39,51 +43,88 @@ class _loginState extends State<login> {
               new SizedBox(
                 height: 20,
               ),
+
+              //textfield for email input
               new TextField(
+                controller: emailController,
                 style: TextStyle(fontSize: 20),
-                //textfield for email input
                 decoration: new InputDecoration(
-                    labelText: "Email", hintText: "Enter your email"),
+                    labelText: "Email",
+                    hintText: "Enter your email",
+                    border: new UnderlineInputBorder(
+                        borderSide: new BorderSide(
+                      color: Theme.of(context).secondaryHeaderColor,
+                    ))),
                 onSubmitted: (String emailInput) {
                   setState(() {});
                 },
               ),
+
               new SizedBox(
                 height: 40,
               ),
+
+              // textfield for password input
               new TextField(
+                controller: passwordController,
                 style: TextStyle(fontSize: 20),
-                //textfield for password input
                 decoration: new InputDecoration(
                     labelText: "Password", hintText: "Enter your password"),
                 onSubmitted: (String passwordInput) {
                   setState(() {});
                 },
               ),
+
               new SizedBox(
                 height: 40,
               ),
+
               ElevatedButton(
+                // login button
                 style: ElevatedButton.styleFrom(
                     primary: Theme.of(context).secondaryHeaderColor,
                     fixedSize: Size(100, 50),
                     textStyle: TextStyle(fontSize: 20)),
                 child: Text("Login"),
-                onPressed: () {
+                onPressed: () async {
+                  print("email: " +
+                      emailController.text +
+                      "\npassword: " +
+                      passwordController.text);
+                  try {
+                    UserCredential userCredential = await FirebaseAuth.instance
+                        .signInWithEmailAndPassword(
+                            email: emailController.text,
+                            password: passwordController.text);
+                  } on FirebaseAuthException catch (e) {
+                    if (e.code == 'user-not-found') {
+                      _buildPopupDialog(
+                          context, "No user found for that email.");
+                      print('No user found for that email.');
+                    } else if (e.code == 'wrong-password') {
+                      _buildPopupDialog(context, "Incorrect password.");
+                      print('Wrong password provided for that user.');
+                    }
+                  }
                   setState(() {});
                 },
               ),
+
               SizedBox(
                 height: 120,
               ),
+
               Text(
                 "Don't have an account?",
                 style: TextStyle(fontSize: 20),
               ),
+
               new SizedBox(
                 height: 40,
               ),
+
               ElevatedButton(
+                // button to push signup page onto stack
                 style: ElevatedButton.styleFrom(
                     primary: Theme.of(context).secondaryHeaderColor,
                     fixedSize: Size(100, 50),
@@ -103,4 +144,25 @@ class _loginState extends State<login> {
       ),
     );
   }
+}
+
+Widget _buildPopupDialog(BuildContext context, String message) {
+  return new AlertDialog(
+    title: const Text('Error'),
+    content: new Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("message"),
+      ],
+    ),
+    actions: <Widget>[
+      new ElevatedButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        child: const Text('Close'),
+      ),
+    ],
+  );
 }
