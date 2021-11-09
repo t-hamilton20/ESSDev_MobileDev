@@ -52,7 +52,7 @@ class _AppState extends State<App> {
   }
 }
 
-class homeSwipe extends StatelessWidget {
+class HomeSwipe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
