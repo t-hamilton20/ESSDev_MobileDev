@@ -51,3 +51,16 @@ Future<QuerySnapshot> getUsers(currentUserID) async {
       .limit(50)
       .get();
 }
+
+Future likeUser(currentUserID, likedUserID) async {
+  List likedUsers =
+      (await firestore.collection('users').doc(currentUserID).get())
+          .data()['likedUsers'];
+
+  likedUsers.add(likedUserID);
+
+  return firestore
+      .collection('users')
+      .doc(currentUserID)
+      .update({'likedUsers': likedUsers});
+}
