@@ -22,7 +22,7 @@ class _SetupState extends State<Setup> {
   // User's preferred name
   String _prefName = '';
   // User's preferred pronouns
-  String? _dropdownValue = 'Select Pronouns';
+  String? _dropdownValue = "they/them";
   //User's major
   String _major = 'N/A';
   //User's year of study
@@ -85,25 +85,19 @@ class _SetupState extends State<Setup> {
                   const Text('Pronouns'),
                   DropdownButton<String>(
                     value: _dropdownValue,
-                    onChanged: (String? newValue) {
+                    onChanged: (String? value) {
                       setState(() {
-                        _dropdownValue = newValue;
+                        _dropdownValue = value;
                       });
                     },
-                    items: [
+                    items: <DropdownMenuItem<String>>[
+                      DropdownMenuItem(child: Text("he/him"), value: "he/him"),
                       DropdownMenuItem(
-                        value: '1',
-                        child: Text('he/him'),
-                      ),
+                          child: Text("she/her"), value: "she/her"),
                       DropdownMenuItem(
-                        value: '2',
-                        child: Text('she/her'),
-                      ),
-                      DropdownMenuItem(
-                        value: '3',
-                        child: Text('they/them'),
-                      ),
+                          child: Text("they/them"), value: "they/them"),
                     ],
+                    hint: Text('Select Pronouns'),
                   ),
                   // Major/Program entry
                   const Text('Major'),
@@ -151,11 +145,14 @@ class _SetupState extends State<Setup> {
                 children: <Widget>[
                   // Housemate number
                   const Text('How many housemates?'),
+                  Text(_mates.start.toString() +
+                      ' - ' +
+                      _mates.end.round().toString()),
                   RangeSlider(
                       values: _mates,
-                      min: 0,
+                      min: 1,
                       max: 6,
-                      divisions: 6,
+                      divisions: 5,
                       labels: RangeLabels(
                           _mates.start.toString(), _mates.end.toString()),
                       onChanged: (RangeValues values) {
@@ -165,13 +162,18 @@ class _SetupState extends State<Setup> {
                       }),
                   // Rent Range Selection
                   const Text('Individual Monthly Rent'),
+                  Text(r'$' +
+                      _rent.start.round().toString() +
+                      r' - $' +
+                      _rent.end.round().toString()),
                   RangeSlider(
                       values: _rent,
-                      min: 0,
+                      min: 500,
                       max: 1200,
                       divisions: null,
-                      labels: RangeLabels(_rent.start.round().toString(),
-                          _rent.end.round().toString()),
+                      labels: RangeLabels(
+                          (r'$' + _rent.start.round().toString()),
+                          (r'$' + _rent.end.round().toString())),
                       onChanged: (RangeValues values) {
                         setState(() {
                           _rent = values;
