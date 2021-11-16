@@ -25,6 +25,7 @@ class _LoginState extends State<Login> {
   // credential variables
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool isObscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -67,9 +68,21 @@ class _LoginState extends State<Login> {
               // textfield for password input
               new TextField(
                 controller: passwordController,
+                obscureText: isObscure,
                 style: TextStyle(fontSize: 20),
                 decoration: new InputDecoration(
-                    labelText: "Password", hintText: "Enter your password"),
+                    labelText: "Password",
+                    hintText: "Enter your password",
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isObscure ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isObscure = !isObscure;
+                        });
+                      },
+                    )),
                 onSubmitted: (String passwordInput) {
                   setState(() {});
                 },
@@ -133,7 +146,7 @@ class _LoginState extends State<Login> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => signup()),
+                    MaterialPageRoute(builder: (context) => Signup()),
                   );
                   setState(() {});
                 },

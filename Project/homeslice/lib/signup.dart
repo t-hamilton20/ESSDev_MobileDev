@@ -25,6 +25,7 @@ class _SignupState extends State<Signup> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmController = TextEditingController();
+  bool isObscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +60,20 @@ class _SignupState extends State<Signup> {
               new TextField(
                 controller: passwordController,
                 style: TextStyle(fontSize: 20),
+                obscureText: isObscure,
                 decoration: new InputDecoration(
-                    labelText: "Password", hintText: "Enter your password"),
+                    labelText: "Password",
+                    hintText: "Enter your password",
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isObscure ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isObscure = !isObscure;
+                        });
+                      },
+                    )),
                 onSubmitted: (String passwordInput) {
                   setState(() {});
                 },
@@ -74,9 +87,20 @@ class _SignupState extends State<Signup> {
               new TextField(
                 controller: confirmController,
                 style: TextStyle(fontSize: 20),
+                obscureText: isObscure,
                 decoration: new InputDecoration(
                     labelText: "Confirm Password",
-                    hintText: "Confirm password"),
+                    hintText: "Confirm password",
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isObscure ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isObscure = !isObscure;
+                        });
+                      },
+                    )),
                 onSubmitted: (String confirmPasswordInput) {
                   setState(() {});
                 },
