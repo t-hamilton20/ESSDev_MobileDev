@@ -17,26 +17,42 @@ class Setup extends StatefulWidget {
 }
 
 class _SetupState extends State<Setup> {
-  //Stepper index
+  // Stepper index
   int _index = 0;
+
+  // Mandatory Setup Variables
+
+  // ABOUT ME
   // User's preferred name
   String _prefName = '';
   // User's preferred pronouns
   String? _dropdownValue = "they/them";
-  //User's major
+  // User's major
   String _major = 'N/A';
-  //User's year of study
+  // User's year of study
   double _year = 1;
-  //User profile blurb
+  // User profile blurb
   String _blurb = '';
-  //Desired number of housemates
+
+  // CRITERIA
+  // Desired number of housemates
   RangeValues _mates = const RangeValues(2, 6);
-  //User rent price range
+  // User rent price range
   RangeValues _rent = const RangeValues(700, 1000);
-  //User coed preference
+  // User coed preference
   bool _coed = true;
-  //User campus distance
+  // User campus distance
   RangeValues _mins_to_campus = RangeValues(10, 15);
+
+  // LOCATION
+  bool _north = true;
+  bool _west = true;
+  bool _pets = false;
+  bool _host = false;
+  bool _share = false;
+  double _nights_out = 2;
+  double _tidiness = 3;
+  List<String> _tidy = ["Very Low", "Low", "Medium", "High", "Very High"];
 
   @override
   Widget build(BuildContext context) {
@@ -232,15 +248,80 @@ class _SetupState extends State<Setup> {
                 ],
               ),
             ),
-            // Step 3:
+            // Step 3: Preferences
             Step(
-              title: const Text('Location'),
-              content: Column(),
-            ),
-            //Step 4
-            Step(
-              title: const Text('Ground Rules'),
-              content: Column(),
+              title: const Text('Preferences'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text("What are you down with?"),
+                  SwitchListTile(
+                      value: _north,
+                      title: const Text("North of Princess"),
+                      onChanged: (value) {
+                        setState(() {
+                          _north = value;
+                        });
+                      }),
+                  SwitchListTile(
+                      value: _west,
+                      title: const Text("West Campus"),
+                      onChanged: (value) {
+                        setState(() {
+                          _west = value;
+                        });
+                      }),
+                  SwitchListTile(
+                      value: _host,
+                      title: const Text("Hosting Parties"),
+                      onChanged: (value) {
+                        setState(() {
+                          _host = value;
+                        });
+                      }),
+                  SwitchListTile(
+                      value: _pets,
+                      title: const Text("Pets"),
+                      onChanged: (value) {
+                        setState(() {
+                          _pets = value;
+                        });
+                      }),
+                  SwitchListTile(
+                      value: _share,
+                      title: const Text("Shared Food"),
+                      onChanged: (value) {
+                        setState(() {
+                          _share = value;
+                        });
+                      }),
+                  const Text('Importance of Tidiness'),
+                  Slider(
+                      value: _tidiness,
+                      min: 1,
+                      max: 5,
+                      divisions: 4,
+                      label: _tidy[_tidiness.toInt()],
+                      onChanged: (double value) {
+                        setState(() {
+                          _tidiness = value;
+                        });
+                      }),
+                  const Text('Weekly Nights Out'),
+                  Slider(
+                      value: _nights_out,
+                      min: 0,
+                      max: 7,
+                      divisions: 7,
+                      label: _nights_out.toString(),
+                      onChanged: (double value) {
+                        setState(() {
+                          _nights_out = value;
+                        });
+                      }),
+                ],
+              ),
             ),
           ]),
     );
