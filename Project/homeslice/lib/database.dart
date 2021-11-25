@@ -17,7 +17,6 @@ import "package:cloud_firestore/cloud_firestore.dart";
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-// TODO: Add preferences
 Future<void> addUser(name, email, minHousemates, maxHousemates, minPrice,
     maxPrice, coed, minDist, maxDist,
     {tidiness,
