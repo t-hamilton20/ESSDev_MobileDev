@@ -11,12 +11,22 @@
 * likeUser
 */
 
+import 'dart:math';
+
 import "package:cloud_firestore/cloud_firestore.dart";
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+// TODO: Add preferences
 Future<void> addUser(name, email, minHousemates, maxHousemates, minPrice,
-    maxPrice, coed, minDist, maxDist) {
+    maxPrice, coed, minDist, maxDist,
+    {tidiness,
+    sharingMeals,
+    nearWest,
+    nightsOut,
+    pets,
+    northOfPrincess,
+    hosting}) {
   return firestore.collection("users").add({
     'full_name': name,
     'email': email,
@@ -27,37 +37,51 @@ Future<void> addUser(name, email, minHousemates, maxHousemates, minPrice,
     'minDist': minDist,
     'maxDist': maxDist,
     'coed': coed,
+    'preferences': {
+      'tidiness': tidiness ?? 1, // 1-5
+      'sharingMeals': sharingMeals ?? false, // y/n
+      'nearWest': nearWest ?? false, // y/n
+      'nightsOut': nightsOut ?? 0, // 0-7
+      'pets': pets ?? true, // y/n
+      'northOfPrincess': northOfPrincess ?? true, // y/n
+      'hosting': hosting ?? true // y/n
+    },
     'likedUsers': [],
     'matchedUsers': []
   });
 }
 
-Future<QuerySnapshot> getUsers(currentUserID) async {
+Future<Map> getUsers(currentUserID) async {
   Map<String, dynamic> currentUser =
       (await firestore.collection("users").doc(currentUserID).get()).data()
           as Map<String, dynamic>;
 
-  return firestore
+  QuerySnapshot users = await firestore
       .collection("users")
-      .where("minHousemates",
-          isGreaterThanOrEqualTo: currentUser['minHousemates'])
-      .where("minHousemates", isLessThanOrEqualTo: currentUser['maxHousemates'])
-      .where("minPrice", isGreaterThanOrEqualTo: currentUser['minPrice'])
-      .where("minPrice", isLessThanOrEqualTo: currentUser['maxPrice'])
-      .where("minDist", isGreaterThanOrEqualTo: currentUser['minDist'])
-      .where("minDist", isLessThanOrEqualTo: currentUser['maxDist'])
       .where("coed", isEqualTo: currentUser['coed'])
-      .orderBy("name")
-      .limit(50)
+      // .limit(50)
       .get();
+
+  return Map.fromIterable(users.docs,
+      key: (doc) => doc.id, value: (doc) => doc.data())
+    ..removeWhere((id, user) => id == currentUserID)
+    ..removeWhere((id, user) =>
+        max<num>(currentUser['minHousemates'], user['minHousemates']) >
+        min(currentUser['maxHousemates'], user['maxHousemates']))
+    ..removeWhere((id, user) =>
+        max<num>(currentUser['minPrice'], user['minPrice']) >
+        min(currentUser['maxPrice'], user['maxPrice']))
+    ..removeWhere((id, user) =>
+        max<num>(currentUser['minDist'], user['minDist']) >
+        min(currentUser['maxDist'], user['maxDist']));
 }
 
 Future likeUser(currentUserID, likedUserID) async {
   List likedUsers =
       (await firestore.collection('users').doc(currentUserID).get())
-          .data()['likedUsers'];
+          .data()?['likedUsers'];
 
-  likedUsers.add(likedUserID);
+  likedUsers.add(firestore.collection('users').doc(likedUserID));
 
   return firestore
       .collection('users')

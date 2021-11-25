@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:homeslice/connection_error.dart';
+import 'package:homeslice/database.dart';
 import 'package:homeslice/login.dart';
 import 'package:homeslice/signup.dart';
 import 'package:homeslice/setup.dart';
@@ -31,18 +32,22 @@ class _AppState extends State<App> {
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
+          getUsers("DJYzirMeKchZvCVYKXMy").then((value) {
+            print(value);
+          });
+
           return new MaterialApp(
             theme: ThemeData(
                 primaryColor: Colors.grey[1000],
                 secondaryHeaderColor: Colors.grey[750],
                 brightness: Brightness.dark),
             routes: {
-              '/login': (context) => Login(),
-              '/signup': (context) => Signup(),
+              // '/login': (context) => Login(),
+              // '/signup': (context) => Signup(),
               //'/swiping': (context) => HomeSwipe(),
               //'/setup': (context) => Setup()
             },
-            home: new Login(),
+            // home: new Login(),
           );
         }
         return new Container();
