@@ -59,6 +59,49 @@ class _SetupState extends State<Setup> {
     return Scaffold(
       appBar: AppBar(title: const Text('Profile Set Up')),
       body: Stepper(
+          controlsBuilder: (BuildContext context,
+              {VoidCallback? onStepContinue, VoidCallback? onStepCancel}) {
+            return Row(
+              children: <Widget>[
+                if (_index == 0) ...[
+                  ElevatedButton(
+                    onPressed: onStepContinue,
+                    child: const Text('Next'),
+                  ),
+                ] else if (_index == 1) ...[
+                  Column(children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          Navigator.pushNamed(context, '/swiping');
+                        });
+                      },
+                      child: const Text('Start Searching'),
+                    ),
+                    Row(children: [
+                      ElevatedButton(
+                        onPressed: onStepCancel,
+                        child: const Text('Back'),
+                      ),
+                      ElevatedButton(
+                        onPressed: onStepContinue,
+                        child: const Text('Next'),
+                      ),
+                    ]),
+                  ]),
+                ] else if (_index == 2) ...[
+                  ElevatedButton(
+                    onPressed: onStepCancel,
+                    child: const Text('Back'),
+                  ),
+                  ElevatedButton(
+                    onPressed: onStepContinue,
+                    child: const Text('Finish'),
+                  ),
+                ]
+              ],
+            );
+          },
           currentStep: _index,
           onStepCancel: () {
             if (_index > 0) {
@@ -68,7 +111,7 @@ class _SetupState extends State<Setup> {
             }
           },
           onStepContinue: () {
-            if (_index <= 0) {
+            if (_index <= 2) {
               setState(() {
                 _index += 1;
               });
@@ -237,14 +280,6 @@ class _SetupState extends State<Setup> {
                           _mins_to_campus = values;
                         });
                       }),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Start Searching'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Complete Profile'),
-                  ),
                 ],
               ),
             ),
