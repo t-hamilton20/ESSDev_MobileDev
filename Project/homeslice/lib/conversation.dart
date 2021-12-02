@@ -1,3 +1,5 @@
+// individual conversation class
+
 import 'package:flutter/material.dart';
 
 class Conversation extends StatefulWidget {
@@ -17,9 +19,23 @@ class Conversation extends StatefulWidget {
 }
 
 class _ConversationState extends State<Conversation> {
+  var messages = [
+    new Message(messageText: "Hi", time: "9:00", type: "receiver"),
+    new Message(messageText: "Hi there", time: "9:05", type: "sender"),
+    new Message(
+        messageText: "Do you want to live with me",
+        time: "9:00",
+        type: "receiver"),
+    new Message(
+        messageText: "No you are in commerce", time: "9:00", type: "sender"),
+    new Message(
+        messageText: "Okay fair enough", time: "9:00", type: "receiver"),
+    new Message(messageText: "L8r", time: "9:00", type: "sender"),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Top app bar
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         flexibleSpace: SafeArea(
@@ -30,6 +46,8 @@ class _ConversationState extends State<Conversation> {
                 SizedBox(
                   width: 50,
                 ),
+
+                // Image of profile pic
                 CircleAvatar(
                   backgroundImage: NetworkImage(widget.imageUrl),
                   maxRadius: 20,
@@ -37,6 +55,8 @@ class _ConversationState extends State<Conversation> {
                 SizedBox(
                   width: 15,
                 ),
+
+                // Container used to display name
                 Container(
                   color: Colors.transparent,
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -55,63 +75,125 @@ class _ConversationState extends State<Conversation> {
           ),
         ),
       ),
-      body: Align(
-          alignment: Alignment.bottomLeft,
-          child: Container(
-            child: Row(
-              children: <Widget>[
-                // GestureDetector(
-                //   onTap: () {},
-                //   child: Container(
-                //     height: 30,
-                //     width: 30,
-                //     decoration: BoxDecoration(
-                //       color: Colors.lightBlue,
-                //       borderRadius: BorderRadius.circular(30),
-                //     ),
-                //     child: Icon(
-                //       Icons.add,
-                //       color: Colors.white,
-                //       size: 20,
-                //     ),
-                //   ),
-                // ),
-                SizedBox(
-                  width: 15,
-                ),
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                        hintText: "Write message...",
-                        hintStyle: TextStyle(color: Colors.grey[200]),
-                        border: InputBorder.none),
-                  ),
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                FloatingActionButton(
-                  mini: true,
-                  onPressed: () {},
-                  child: Icon(
-                    Icons.send,
-                    color: Colors.white,
-                    size: 15,
-                  ),
-                  backgroundColor: Theme.of(context).secondaryHeaderColor,
-                  elevation: 0,
-                ),
-              ],
+      body: Stack(children: [
+        // Messages
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: new ListView.builder(
+              itemCount: messages.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return new Container(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 4),
+                  child: messages[index],
+                );
+              },
             ),
-          )),
-    );
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     backgroundColor: Theme.of(context).primaryColor,
-    //     new Row(
+          ),
+        ),
 
-    //     )
-    //     ),
-    // );
+        // Input messages
+        Align(
+            alignment: Alignment.bottomLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).secondaryHeaderColor,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Row(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(
+                            hintText: "Write message...",
+                            hintStyle: TextStyle(color: Colors.grey[200]),
+                            border: InputBorder.none),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: FloatingActionButton(
+                        mini: true,
+                        onPressed: () {},
+                        child: Icon(
+                          Icons.attach_file,
+                          color: Colors.white,
+                          size: 15,
+                        ),
+                        backgroundColor: Theme.of(context).primaryColor,
+                        elevation: 0,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: FloatingActionButton(
+                        mini: true,
+                        onPressed: () {
+                          // add new message
+                        },
+                        child: Icon(
+                          Icons.send,
+                          color: Colors.white,
+                          size: 15,
+                        ),
+                        backgroundColor: Theme.of(context).primaryColor,
+                        elevation: 0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )),
+      ]),
+    );
+  }
+}
+
+class Message extends StatefulWidget {
+  String messageText;
+  String time;
+  String type;
+
+  Message({required this.messageText, required this.time, required this.type});
+
+  @override
+  _MessageState createState() => _MessageState();
+}
+
+class _MessageState extends State<Message> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+      child: Align(
+        alignment: (widget.type ==
+                "receiver" // if type is receiver alignment goes in top left
+            ? Alignment.topLeft
+            : Alignment.topRight),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: (widget.type ==
+                    "receiver" // if type is receiver colour is light grey
+                ? Colors.grey[700]
+                : Colors.grey[900]),
+          ),
+          padding: EdgeInsets.all(16),
+          child: Text(
+            widget.messageText,
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+      ),
+    );
   }
 }
