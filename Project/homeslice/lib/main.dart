@@ -36,6 +36,7 @@ class _AppState extends State<App> {
             theme: ThemeData(
                 primaryColor: Colors.grey[1000],
                 secondaryHeaderColor: Colors.grey[750],
+                hintColor: Colors.grey[800],
                 brightness: Brightness.dark),
             routes: {
               //'/login': (context) => Login(),

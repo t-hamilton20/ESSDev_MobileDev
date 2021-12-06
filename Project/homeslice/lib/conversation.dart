@@ -110,6 +110,7 @@ class _ConversationState extends State<Conversation> {
                     ),
                     Expanded(
                       child: TextField(
+                        cursorColor: Theme.of(context).hintColor,
                         decoration: InputDecoration(
                             hintText: "Write message...",
                             hintStyle: TextStyle(color: Colors.grey[200]),
