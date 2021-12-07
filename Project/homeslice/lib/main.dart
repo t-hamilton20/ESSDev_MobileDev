@@ -34,10 +34,8 @@ class _AppState extends State<App> {
         if (snapshot.connectionState == ConnectionState.done) {
           return new MaterialApp(
             theme: ThemeData(
-                primaryColor: Colors.grey[1000],
-                secondaryHeaderColor: Colors.grey[750],
-                hintColor: Colors.grey[800],
-                brightness: Brightness.dark),
+              colorScheme: ColorScheme.dark(),
+            ),
             routes: {
               //'/login': (context) => Login(),
               //'/signup': (context) => Signup(),
