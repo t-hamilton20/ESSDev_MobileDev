@@ -140,64 +140,64 @@ class _ConversationState extends State<ConversationTile> {
 
           widget.tapFlag = true;
         },
-        onLongPress: () {
-          showMenu(
-              context: context,
-              position: RelativeRect.fromLTRB(
-                  MediaQuery.of(context).size.width * 0.5,
-                  MediaQuery.of(context).size.height * 0.5,
-                  MediaQuery.of(context).size.width * 0.5,
-                  MediaQuery.of(context).size.height * 0.5),
-              items: [
-                // delete option
-                PopupMenuItem(
-                  onTap: () {
-                    // delete from conversations
-                  },
-                  child: Row(
-                    children: <Widget>[
-                      Icon(Icons.delete),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("Delete Conversation"),
-                    ],
-                  ),
-                ),
+        // onLongPress: () {
+        //   showMenu(
+        //       context: context,
+        //       position: RelativeRect.fromLTRB(
+        //           MediaQuery.of(context).size.width * 0.5,
+        //           MediaQuery.of(context).size.height * 0.5,
+        //           MediaQuery.of(context).size.width * 0.5,
+        //           MediaQuery.of(context).size.height * 0.5),
+        //       items: [
+        //         // delete option
+        //         PopupMenuItem(
+        //           onTap: () {
+        //             // delete from conversations
+        //           },
+        //           child: Row(
+        //             children: <Widget>[
+        //               Icon(Icons.delete),
+        //               SizedBox(
+        //                 width: 10,
+        //               ),
+        //               Text("Delete Conversation"),
+        //             ],
+        //           ),
+        //         ),
 
-                // profile option
-                PopupMenuItem(
-                  onTap: () {
-                    // show profile
-                  },
-                  child: Row(
-                    children: <Widget>[
-                      Icon(Icons.person),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("View Profile"),
-                    ],
-                  ),
-                ),
+        //         // profile option
+        //         PopupMenuItem(
+        //           onTap: () {
+        //             // show profile
+        //           },
+        //           child: Row(
+        //             children: <Widget>[
+        //               Icon(Icons.person),
+        //               SizedBox(
+        //                 width: 10,
+        //               ),
+        //               Text("View Profile"),
+        //             ],
+        //           ),
+        //         ),
 
-                // add to group option
-                PopupMenuItem(
-                  onTap: () {
-                    // invite to group
-                  },
-                  child: Row(
-                    children: <Widget>[
-                      Icon(Icons.group),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("Invite to Group"),
-                    ],
-                  ),
-                ),
-              ]);
-        },
+        //         // add to group option
+        //         PopupMenuItem(
+        //           onTap: () {
+        //             // invite to group
+        //           },
+        //           child: Row(
+        //             children: <Widget>[
+        //               Icon(Icons.group),
+        //               SizedBox(
+        //                 width: 10,
+        //               ),
+        //               Text("Invite to Group"),
+        //             ],
+        //           ),
+        //         ),
+        //       ]);
+        // },
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(20)),
