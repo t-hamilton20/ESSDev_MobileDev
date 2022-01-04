@@ -7,7 +7,10 @@
 * search criteria
 * preferences
 */
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Setup extends StatefulWidget {
   const Setup({Key? key}) : super(key: key);
@@ -33,6 +36,9 @@ class _SetupState extends State<Setup> {
   double _year = 1;
   // User profile blurb
   String _blurb = '';
+  // User profile image
+  XFile? profileImg = null;
+  //File? file = null;
 
   // CRITERIA
   // Desired number of housemates
@@ -44,7 +50,7 @@ class _SetupState extends State<Setup> {
   // User campus distance
   RangeValues _mins_to_campus = RangeValues(10, 15);
 
-  // LOCATION
+  // PREFERENCES
   bool _north = true;
   bool _west = true;
   bool _pets = false;
@@ -192,6 +198,46 @@ class _SetupState extends State<Setup> {
                         _blurb = text;
                       }),
                   // Add profile image
+                  const Text("Select Profile Image"),
+                  Row(
+                    children: [
+                      // Get image from camera
+                      ElevatedButton(
+                        onPressed: () async {
+                          XFile? pickedFile = await ImagePicker().pickImage(
+                            source: ImageSource.camera,
+                          );
+                          setState(() {
+                            profileImg = pickedFile;
+                          });
+                        },
+                        child: Icon(Icons.camera),
+                      ),
+                      // Get image from gallery
+                      ElevatedButton(
+                        onPressed: () async {
+                          XFile? pickedFile = await ImagePicker().pickImage(
+                            source: ImageSource.gallery,
+                          );
+                          setState(() {
+                            profileImg = pickedFile;
+                          });
+                        },
+                        child: Icon(Icons.account_box),
+                      ),
+                    ],
+                  ),
+                  // Show Image
+                  // Use Image.file and File(profileImg!.path) for mobile
+                  (profileImg != null)
+                      ? Image.network(
+                          profileImg!.path,
+                          width: 200.0,
+                          height: 200.0,
+                          fit: BoxFit.cover,
+                          alignment: Alignment.topCenter,
+                        )
+                      : Text("No Image Selected"),
                 ],
               ),
             ),
@@ -334,8 +380,8 @@ class _SetupState extends State<Setup> {
                   const Text('Importance of Tidiness'),
                   Slider(
                       value: _tidiness,
-                      min: 1,
-                      max: 5,
+                      min: 0,
+                      max: 4,
                       divisions: 4,
                       label: _tidy[_tidiness.toInt()],
                       onChanged: (double value) {
