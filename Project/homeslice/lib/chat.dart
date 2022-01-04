@@ -111,12 +111,15 @@ class ConversationTile extends StatefulWidget {
   String imageUrl;
   String time;
   bool isMessageRead;
+  bool tapFlag;
+
   ConversationTile(
       {required this.name,
       required this.messageText,
       required this.imageUrl,
       required this.time,
-      required this.isMessageRead});
+      required this.isMessageRead,
+      this.tapFlag = false});
 
   @override
   _ConversationState createState() => _ConversationState();
@@ -134,6 +137,8 @@ class _ConversationState extends State<ConversationTile> {
                 imageUrl: widget.imageUrl,
                 time: widget.time);
           }));
+
+          widget.tapFlag = true;
         },
         onLongPress: () {
           showMenu(
@@ -196,11 +201,13 @@ class _ConversationState extends State<ConversationTile> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: Colors.grey[900],
+            color: (widget.tapFlag ? Colors.grey[500] : Colors.grey[900]),
           ),
           padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              // profile pic
               CircleAvatar(
                 backgroundImage: NetworkImage(widget.imageUrl),
                 maxRadius: 30,
@@ -208,6 +215,7 @@ class _ConversationState extends State<ConversationTile> {
               SizedBox(
                 width: 15,
               ),
+              // container with text
               Container(
                 color: Colors.transparent,
                 child: Column(
@@ -232,6 +240,62 @@ class _ConversationState extends State<ConversationTile> {
                   ],
                 ),
               ),
+              SizedBox(
+                width: 5,
+              ),
+              // popup menu
+              Align(
+                alignment: Alignment.centerRight,
+                child: PopupMenuButton(
+                    itemBuilder: (context) => [
+                          PopupMenuItem(
+                            onTap: () {
+                              // delete from conversations
+                            },
+                            child: Row(
+                              children: <Widget>[
+                                Icon(Icons.delete),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text("Delete Conversation"),
+                              ],
+                            ),
+                          ),
+
+                          // profile option
+                          PopupMenuItem(
+                            onTap: () {
+                              // show profile
+                            },
+                            child: Row(
+                              children: <Widget>[
+                                Icon(Icons.person),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text("View Profile"),
+                              ],
+                            ),
+                          ),
+
+                          // add to group option
+                          PopupMenuItem(
+                            onTap: () {
+                              // invite to group
+                            },
+                            child: Row(
+                              children: <Widget>[
+                                Icon(Icons.group),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text("Invite to Group"),
+                              ],
+                            ),
+                          ),
+                        ]),
+              )
             ],
           ),
         ));

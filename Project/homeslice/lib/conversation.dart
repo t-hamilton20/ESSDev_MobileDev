@@ -187,7 +187,6 @@ class _MessageState extends State<Message> {
       onTap: () {
         widget.displayTime = !widget.displayTime;
         setState(() {});
-        print(widget.displayTime);
       },
       child: Align(
         alignment: (widget.type ==
