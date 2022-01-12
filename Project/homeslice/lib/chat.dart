@@ -205,97 +205,96 @@ class _ConversationState extends State<ConversationTile> {
           ),
           padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            // two different row widgets are used to ensure popup menu is aligned properly
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // profile pic
-              CircleAvatar(
-                backgroundImage: NetworkImage(widget.imageUrl),
-                maxRadius: 30,
-              ),
-              SizedBox(
-                width: 15,
-              ),
-              // container with text
-              Container(
-                color: Colors.transparent,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.name,
-                      style: TextStyle(fontSize: 16),
+              Row(
+                children: [
+                  // profile pic
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(widget.imageUrl),
+                    maxRadius: 30,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  // container with text
+                  Container(
+                    color: Colors.transparent,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.name,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          widget.messageText,
+                          style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.grey[300],
+                              fontWeight: widget.isMessageRead
+                                  ? FontWeight.bold
+                                  : FontWeight.normal),
+                        )
+                      ],
                     ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      widget.messageText,
-                      style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey[300],
-                          fontWeight: widget.isMessageRead
-                              ? FontWeight.bold
-                              : FontWeight.normal),
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: 5,
+                  ),
+                ],
               ),
               // popup menu
-              Align(
-                alignment: Alignment.centerRight,
-                child: PopupMenuButton(
-                    itemBuilder: (context) => [
-                          PopupMenuItem(
-                            onTap: () {
-                              // delete from conversations
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.delete),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text("Delete Conversation"),
-                              ],
-                            ),
+              PopupMenuButton(
+                  itemBuilder: (context) => [
+                        PopupMenuItem(
+                          onTap: () {
+                            // delete from conversations
+                          },
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.delete),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Delete Conversation"),
+                            ],
                           ),
+                        ),
 
-                          // profile option
-                          PopupMenuItem(
-                            onTap: () {
-                              // show profile
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.person),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text("View Profile"),
-                              ],
-                            ),
+                        // profile option
+                        PopupMenuItem(
+                          onTap: () {
+                            // show profile
+                          },
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.person),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("View Profile"),
+                            ],
                           ),
+                        ),
 
-                          // add to group option
-                          PopupMenuItem(
-                            onTap: () {
-                              // invite to group
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.group),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text("Invite to Group"),
-                              ],
-                            ),
+                        // add to group option
+                        PopupMenuItem(
+                          onTap: () {
+                            // invite to group
+                          },
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.group),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Invite to Group"),
+                            ],
                           ),
-                        ]),
-              )
+                        ),
+                      ]),
             ],
           ),
         ));
