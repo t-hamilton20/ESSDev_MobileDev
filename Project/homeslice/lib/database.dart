@@ -51,6 +51,49 @@ Future<void> addUser(name, email, minHousemates, maxHousemates, minPrice,
   });
 }
 
+Future<void> updateUser(id,
+    {name,
+    email,
+    minHousemates,
+    maxHousemates,
+    minPrice,
+    maxPrice,
+    coed,
+    minDist,
+    maxDist,
+    tidiness,
+    sharingMeals,
+    nearWest,
+    nightsOut,
+    pets,
+    northOfPrincess,
+    hosting}) {
+  return firestore.collection("users").doc(id).update({
+        'full_name': name,
+        'email': email,
+        'minHousemates': minHousemates,
+        'maxHousemates': maxHousemates,
+        'minPrice': minPrice,
+        'maxPrice': maxPrice,
+        'minDist': minDist,
+        'maxDist': maxDist,
+        'coed': coed,
+        'preferences': {
+          'tidiness': tidiness ?? 1, // 1-5
+          'sharingMeals': sharingMeals ?? false, // y/n
+          'nearWest': nearWest ?? false, // y/n
+          'nightsOut': nightsOut ?? 0, // 0-7
+          'pets': pets ?? true, // y/n
+          'northOfPrincess': northOfPrincess ?? true, // y/n
+          'hosting': hosting ?? true // y/n
+        },
+      }..removeWhere((key, value) => value == null));
+}
+
+Future<DocumentSnapshot> getUser(userID) {
+  return firestore.collection("users").doc(userID).get();
+}
+
 Future<Map> getUsers(currentUserID) async {
   Map<String, dynamic> currentUser =
       (await firestore.collection("users").doc(currentUserID).get()).data()
