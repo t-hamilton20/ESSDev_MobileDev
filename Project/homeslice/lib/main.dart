@@ -10,7 +10,6 @@ import 'package:homeslice/setup.dart';
 // This code runs the app and navigates between pages
 
 void main() {
-
   WidgetsFlutterBinding.ensureInitialized();
   runApp(App());
 }
