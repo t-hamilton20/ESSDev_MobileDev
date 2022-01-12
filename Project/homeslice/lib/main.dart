@@ -1,4 +1,8 @@
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:homeslice/connection_error.dart';
+import 'package:homeslice/database.dart';
 import 'package:homeslice/login.dart';
 import 'package:homeslice/signup.dart';
 import 'package:homeslice/setup.dart';
@@ -6,15 +10,52 @@ import 'package:homeslice/setup.dart';
 // This code runs the app and navigates between pages
 
 void main() {
-  runApp(new MaterialApp(routes: {
-    //'/login': (context) => login(),
-    //'/signup': (context) => signup(),
-    '/swiping': (context) => homeSwipe(),
-    '/setup': (context) => Setup()
-  }, home: new Setup()));
+
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(App());
 }
 
-class homeSwipe extends StatelessWidget {
+class App extends StatefulWidget {
+  const App({Key? key}) : super(key: key);
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: Firebase.initializeApp(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasError) {
+          print("SNAPSHOT ERROR: " + snapshot.error.toString());
+          return ConnectionError();
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          return new MaterialApp(
+            theme: ThemeData(
+                primaryColor: Colors.grey[1000],
+                secondaryHeaderColor: Colors.grey[750],
+                brightness: Brightness.dark),
+            routes: {
+              '/login': (context) => Login(),
+              '/signup': (context) => Signup(),
+              //'/swiping': (context) => HomeSwipe(),
+              //'/setup': (context) => Setup()
+            },
+            home: new Login(),
+          );
+        }
+        return new Container();
+        //return Loading();
+      },
+    );
+  }
+}
+
+class HomeSwipe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
