@@ -1,3 +1,4 @@
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:homeslice/connection_error.dart';
@@ -9,6 +10,7 @@ import 'package:homeslice/setup.dart';
 // This code runs the app and navigates between pages
 
 void main() {
+
   WidgetsFlutterBinding.ensureInitialized();
   runApp(App());
 }
