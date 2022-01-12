@@ -1,10 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:homeslice/connection_error.dart';
-import 'package:homeslice/database.dart';
+import 'package:homeslice/home_swipe.dart';
 import 'package:homeslice/login.dart';
 import 'package:homeslice/signup.dart';
 import 'package:homeslice/setup.dart';
+import 'package:homeslice/wrapper.dart';
 
 // This code runs the app and navigates between pages
 
@@ -38,25 +39,17 @@ class _AppState extends State<App> {
                 secondaryHeaderColor: Colors.grey[750],
                 brightness: Brightness.dark),
             routes: {
-              '/login': (context) => Login(),
-              '/signup': (context) => Signup(),
-              //'/swiping': (context) => HomeSwipe(),
+              // '/login': (context) => Login(),
+              // '/signup': (context) => Signup(),
+              // '/swiping': (context) => HomeSwipe(),
               //'/setup': (context) => Setup()
             },
-            home: new Login(),
+            // home: new Login(),
+            home: Wrapper(),
           );
         }
-        return new Container();
-        //return Loading();
+        return Center(child: CircularProgressIndicator());
       },
     );
-  }
-}
-
-class HomeSwipe extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
   }
 }

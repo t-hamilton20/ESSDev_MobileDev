@@ -17,6 +17,7 @@ import "package:cloud_firestore/cloud_firestore.dart";
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+// TODO: Check if exists, if does edit user
 Future<void> addUser(name, email, minHousemates, maxHousemates, minPrice,
     maxPrice, coed, minDist, maxDist,
     {tidiness,
@@ -63,7 +64,9 @@ Future<Map> getUsers(currentUserID) async {
 
   return Map.fromIterable(users.docs,
       key: (doc) => doc.id, value: (doc) => doc.data())
-    ..removeWhere((id, user) => id == currentUserID)
+    ..removeWhere((id, user) => id == currentUserID) // Remove yourself
+    ..removeWhere((id, user) => currentUser['likedUsers']
+        .any((user) => user.id == id)) // Remove already liked users
     ..removeWhere((id, user) =>
         max<num>(currentUser['minHousemates'], user['minHousemates']) >
         min(currentUser['maxHousemates'], user['maxHousemates']))
