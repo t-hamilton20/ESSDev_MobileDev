@@ -1,6 +1,8 @@
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:homeslice/connection_error.dart';
+import 'package:homeslice/database.dart';
 import 'package:homeslice/login.dart';
 import 'package:homeslice/signup.dart';
 import 'package:homeslice/setup.dart';
