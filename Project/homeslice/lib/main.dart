@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:homeslice/connection_error.dart';
@@ -5,6 +6,7 @@ import 'package:homeslice/database.dart';
 import 'package:homeslice/login.dart';
 import 'package:homeslice/signup.dart';
 import 'package:homeslice/setup.dart';
+import 'package:provider/provider.dart';
 
 // This code runs the app and navigates between pages
 
@@ -32,18 +34,25 @@ class _AppState extends State<App> {
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
-          return new MaterialApp(
-            theme: ThemeData(
-                primaryColor: Colors.grey[1000],
-                secondaryHeaderColor: Colors.grey[750],
-                brightness: Brightness.dark),
-            routes: {
-              '/login': (context) => Login(),
-              '/signup': (context) => Signup(),
-              //'/swiping': (context) => HomeSwipe(),
-              //'/setup': (context) => Setup()
-            },
-            home: new Login(),
+          return MultiProvider(
+            providers: [
+              StreamProvider<User?>.value(
+                value: FirebaseAuth.instance.authStateChanges(),
+                initialData: null,
+              )
+            ],
+            child: MaterialApp(
+                theme: ThemeData(
+                    primaryColor: Colors.grey[1000],
+                    secondaryHeaderColor: Colors.grey[750],
+                    brightness: Brightness.dark),
+                routes: {
+                  '/login': (context) => Login(),
+                  '/signup': (context) => Signup(),
+                  //'/swiping': (context) => HomeSwipe(),
+                  //'/setup': (context) => Setup()
+                },
+                home: new Login(),
           );
         }
         return new Container();
