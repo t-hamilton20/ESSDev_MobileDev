@@ -47,20 +47,15 @@ class _CardStackState extends State<CardStack> {
   double _angle = 0;
   Size _screenSize = Size.zero;
 
-  //TODO: Add swipe up to see profile
-
   @override
   Widget build(BuildContext context) {
     _screenSize = MediaQuery.of(context).size;
 
-    return Container(
-      padding: EdgeInsets.all(20),
-      child: Stack(
-        children: [
-          ...buildCards(widget.users),
-          Center(child: Text("Swiper gone swiping!")),
-        ].reversed.toList(),
-      ),
+    return Stack(
+      children: [
+        ...buildCards(widget.users),
+        Center(child: Text("Swiper gone swiping!")),
+      ].reversed.toList(),
     );
   }
 
@@ -125,94 +120,97 @@ class _CardStackState extends State<CardStack> {
   }
 
   Widget buildCard(user) {
-    return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(8)),
-      child: Container(
-        alignment: Alignment.bottomCenter,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage("https://via.placeholder.com/500x1000?text=" +
-                user.value['full_name']),
-            fit: BoxFit.cover,
-          ),
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(8)),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          width: double.infinity,
+          alignment: Alignment.bottomCenter,
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.black.withOpacity(0.8),
-                Colors.black.withOpacity(0),
-              ],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
+            image: DecorationImage(
+              image: NetworkImage("https://via.placeholder.com/500x1000?text=" +
+                  user.value['full_name']),
+              fit: BoxFit.cover,
             ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                user.value['full_name'],
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-              ),
-              SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ...(user.value['coed']
-                      ? [
-                          Container(
-                              padding: EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                  border: Border.all(color: Colors.white)),
-                              child: Icon(Icons.wc)),
-                          SizedBox(width: 8)
-                        ]
-                      : []),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(2, 2, 6, 2),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(color: Colors.white)),
-                    child: Row(
-                      children: [
-                        Icon(Icons.home_outlined),
-                        Text(user.value['minHousemates'].toString() +
-                            "-" +
-                            user.value['maxHousemates'].toString())
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(2, 2, 6, 2),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(color: Colors.white)),
-                    child: Row(
-                      children: [
-                        Icon(Icons.attach_money),
-                        Text(user.value['minPrice'].toString() +
-                            "-" +
-                            user.value['maxPrice'].toString())
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 8),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.black.withOpacity(0.8),
+                  Colors.black.withOpacity(0),
                 ],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
               ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Icon(Icons.expand_less),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  user.value['full_name'],
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                 ),
-              ),
-            ],
+                SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ...(user.value['coed']
+                        ? [
+                            Container(
+                                padding: EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(color: Colors.white)),
+                                child: Icon(Icons.wc)),
+                            SizedBox(width: 8)
+                          ]
+                        : []),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(2, 2, 6, 2),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(color: Colors.white)),
+                      child: Row(
+                        children: [
+                          Icon(Icons.home_outlined),
+                          Text(user.value['minHousemates'].toString() +
+                              "-" +
+                              user.value['maxHousemates'].toString())
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(2, 2, 6, 2),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(color: Colors.white)),
+                      child: Row(
+                        children: [
+                          Icon(Icons.attach_money),
+                          Text(user.value['minPrice'].toString() +
+                              "-" +
+                              user.value['maxPrice'].toString())
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Icon(Icons.expand_less),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
