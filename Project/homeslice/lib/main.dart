@@ -48,13 +48,12 @@ class _AppState extends State<App> {
                     secondaryHeaderColor: Colors.grey[750],
                     brightness: Brightness.dark),
                 routes: {
-                  // '/login': (context) => Login(),
-                  // '/signup': (context) => Signup(),
-                  // '/swiping': (context) => HomeSwipe(),
-                  //'/setup': (context) => Setup()
+                  '/login': (context) => Login(),
+                  '/signup': (context) => Signup(),
+                  '/swiping': (context) => HomeSwipe(),
+                  '/setup': (context) => Setup()
                 },
-                // home: new Login(),
-                home: Wrapper(),
+                home: new Login(),
               ));
         }
         return Center(child: CircularProgressIndicator());
