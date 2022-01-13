@@ -41,18 +41,18 @@ class _AppState extends State<App> {
                 initialData: null,
               )
             ],
-            child: MaterialApp(
-                theme: ThemeData(
-                    primaryColor: Colors.grey[1000],
-                    secondaryHeaderColor: Colors.grey[750],
-                    brightness: Brightness.dark),
-                routes: {
-                  '/login': (context) => Login(),
-                  '/signup': (context) => Signup(),
-                  //'/swiping': (context) => HomeSwipe(),
-                  //'/setup': (context) => Setup()
-                },
-                home: new Login(),
+            child: MaterialApp(            
+              theme: ThemeData(
+                primaryColor: Colors.grey[1000],
+                secondaryHeaderColor: Colors.grey[750],
+                brightness: Brightness.dark),
+            routes: {
+              '/login': (context) => Login(),
+              '/signup': (context) => Signup(),
+              '/swiping': (context) => HomeSwipe(),
+              '/setup': (context) => Setup()
+            },
+            home: new Login(),
           );
         }
         return new Container();

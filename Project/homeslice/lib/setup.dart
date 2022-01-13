@@ -11,6 +11,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:homeslice/database.dart';
 
 class Setup extends StatefulWidget {
   const Setup({Key? key}) : super(key: key);
@@ -62,6 +65,9 @@ class _SetupState extends State<Setup> {
 
   @override
   Widget build(BuildContext context) {
+    // User
+    User? user = Provider.of<User?>(context);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Profile Set Up')),
       body: Stepper(
@@ -79,6 +85,23 @@ class _SetupState extends State<Setup> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
+                          addUser(
+                              _prefName,
+                              user?.email,
+                              _mates.start,
+                              _mates.end,
+                              _rent.start,
+                              _rent.end,
+                              _coed,
+                              _mins_to_campus.start,
+                              _mins_to_campus.end,
+                              tidiness: _tidiness,
+                              sharingMeals: _share,
+                              nearWest: _west,
+                              nightsOut: _nights_out,
+                              pets: _pets,
+                              northOfPrincess: _north,
+                              hosting: _host);
                           Navigator.pushNamed(context, '/swiping');
                         });
                       },
@@ -101,7 +124,28 @@ class _SetupState extends State<Setup> {
                     child: const Text('Back'),
                   ),
                   ElevatedButton(
-                    onPressed: onStepContinue,
+                    onPressed: () {
+                      setState(() {
+                        addUser(
+                            _prefName,
+                            user?.email,
+                            _mates.start,
+                            _mates.end,
+                            _rent.start,
+                            _rent.end,
+                            _coed,
+                            _mins_to_campus.start,
+                            _mins_to_campus.end,
+                            tidiness: _tidiness,
+                            sharingMeals: _share,
+                            nearWest: _west,
+                            nightsOut: _nights_out,
+                            pets: _pets,
+                            northOfPrincess: _north,
+                            hosting: _host);
+                        Navigator.pushNamed(context, '/swiping');
+                      });
+                    },
                     child: const Text('Finish'),
                   ),
                 ]
@@ -258,8 +302,8 @@ class _SetupState extends State<Setup> {
                       min: 1,
                       max: 6,
                       divisions: 5,
-                      labels: RangeLabels(
-                          _mates.start.toString(), _mates.end.toString()),
+                      labels: RangeLabels(_mates.start.round().toString(),
+                          _mates.end.round().toString()),
                       onChanged: (RangeValues values) {
                         setState(() {
                           _mates = values;

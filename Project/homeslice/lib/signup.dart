@@ -138,7 +138,9 @@ class _SignupState extends State<Signup> {
                     } catch (e) {
                       print(e);
                     }
-                    setState(() {});
+                    setState(() {
+                      Navigator.pushNamed(context, '/setup');
+                    });
                   }
                 },
               ),
