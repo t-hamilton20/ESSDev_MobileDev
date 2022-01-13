@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:homeslice/database.dart';
 
 enum CardActions { like, dislike }
+enum IconState { like, dislike, none }
 
 class HomeSwipe extends StatefulWidget {
   const HomeSwipe({Key? key}) : super(key: key);
@@ -46,13 +47,53 @@ class _CardStackState extends State<CardStack> {
   int _duration = 0;
   double _angle = 0;
   Size _screenSize = Size.zero;
+  IconState _iconState = IconState.none;
+  double? _iconAlignment;
 
   @override
   Widget build(BuildContext context) {
     _screenSize = MediaQuery.of(context).size;
 
+    _iconAlignment = () {
+      switch (_iconState) {
+        case IconState.like:
+          return null;
+        case IconState.dislike:
+          return 0.0;
+        default:
+          return _iconAlignment;
+      }
+    }();
+
     return Stack(
       children: [
+        Positioned(
+          right: _iconAlignment,
+          child: IgnorePointer(
+            child: AnimatedOpacity(
+              onEnd: () {
+                setState(() {
+                  _iconState = IconState.none;
+                });
+              },
+              opacity: _angle.abs() > 5 ? 0.2 : 0.0,
+              duration: Duration(milliseconds: 100),
+              child: Icon(
+                () {
+                  switch (_iconState) {
+                    case IconState.like:
+                      return Icons.check_circle;
+                    case IconState.dislike:
+                      return Icons.not_interested;
+                    default:
+                      return null;
+                  }
+                }(),
+                size: 512,
+              ),
+            ),
+          ),
+        ),
         ...buildCards(widget.users),
         Center(child: Text("Swiper gone swiping!")),
       ].reversed.toList(),
@@ -87,6 +128,12 @@ class _CardStackState extends State<CardStack> {
                 setState(() {
                   _position += details.delta;
                   _angle = (_position.dx / _screenSize.width) * 45;
+                  if (_angle > 5)
+                    _iconState = IconState.like;
+                  else if (_angle < -5)
+                    _iconState = IconState.dislike;
+                  else
+                    _iconState = IconState.none;
                 });
               },
               onPanEnd: (details) {
