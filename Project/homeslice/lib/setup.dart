@@ -7,7 +7,7 @@
 * search criteria
 * preferences
 */
-import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
@@ -85,24 +85,26 @@ class _SetupState extends State<Setup> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
+                          print("Max Mates:" + _mates.end.round().toString());
+
                           addUser(
                               _prefName,
                               user?.email,
-                              _mates.start,
-                              _mates.end,
-                              _rent.start,
-                              _rent.end,
+                              _mates.start.round(),
+                              _mates.end.round(),
+                              _rent.start.round(),
+                              _rent.end.round(),
                               _coed,
-                              _mins_to_campus.start,
-                              _mins_to_campus.end,
+                              _mins_to_campus.start.round(),
+                              _mins_to_campus.end.round(),
                               tidiness: _tidiness,
                               sharingMeals: _share,
                               nearWest: _west,
-                              nightsOut: _nights_out,
+                              nightsOut: _nights_out.round(),
                               pets: _pets,
                               northOfPrincess: _north,
                               hosting: _host);
-                          Navigator.pushNamed(context, '/swiping');
+                          Navigator.pushNamed(context, '/home');
                         });
                       },
                       child: const Text('Start Searching'),
@@ -126,24 +128,25 @@ class _SetupState extends State<Setup> {
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
+                        print("Max Mates:" + _mates.end.round().toString());
                         addUser(
                             _prefName,
                             user?.email,
-                            _mates.start,
-                            _mates.end,
-                            _rent.start,
-                            _rent.end,
+                            _mates.start.round(),
+                            _mates.end.round(),
+                            _rent.start.round(),
+                            _rent.end.round(),
                             _coed,
-                            _mins_to_campus.start,
-                            _mins_to_campus.end,
+                            _mins_to_campus.start.round(),
+                            _mins_to_campus.end.round(),
                             tidiness: _tidiness,
                             sharingMeals: _share,
                             nearWest: _west,
-                            nightsOut: _nights_out,
+                            nightsOut: _nights_out.round(),
                             pets: _pets,
                             northOfPrincess: _north,
                             hosting: _host);
-                        Navigator.pushNamed(context, '/swiping');
+                        Navigator.pushNamed(context, '/home');
                       });
                     },
                     child: const Text('Finish'),
