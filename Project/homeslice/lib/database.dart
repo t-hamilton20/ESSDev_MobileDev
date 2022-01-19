@@ -17,8 +17,8 @@ import "package:cloud_firestore/cloud_firestore.dart";
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-Future<void> addUser(name, email, minHousemates, maxHousemates, minPrice,
-    maxPrice, coed, minDist, maxDist,
+Future<void> addUser(name, email, pronouns, major, year, blurb, image,
+    minHousemates, maxHousemates, minPrice, maxPrice, coed, minDist, maxDist,
     {tidiness,
     sharingMeals,
     nearWest,
@@ -29,6 +29,11 @@ Future<void> addUser(name, email, minHousemates, maxHousemates, minPrice,
   return firestore.collection("users").add({
     'full_name': name,
     'email': email,
+    'pronouns': pronouns,
+    'major': major,
+    'year': year,
+    'blurb': blurb,
+    'image': image,
     'minHousemates': minHousemates,
     'maxHousemates': maxHousemates,
     'minPrice': minPrice,
