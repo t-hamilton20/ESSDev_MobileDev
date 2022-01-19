@@ -20,22 +20,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 FirebaseStorage storage = FirebaseStorage.instance;
 
-Future<DocumentReference> addUser(
-    id,
-    name,
-    email,
-    pronouns,
-    major,
-    year,
-    blurb,
-    image,
-    minHousemates,
-    maxHousemates,
-    minPrice,
-    maxPrice,
-    coed,
-    minDist,
-    maxDist,
+Future<void> addUser(id, name, email, pronouns, major, year, blurb, image,
+    minHousemates, maxHousemates, minPrice, maxPrice, coed, minDist, maxDist,
     {tidiness,
     sharingMeals,
     nearWest,
@@ -49,7 +35,7 @@ Future<DocumentReference> addUser(
     print(e.message);
   }
 
-  return firestore.collection("users").add({
+  return firestore.collection("users").doc(id).set({
     'full_name': name,
     'email': email,
     'pronouns': pronouns,
