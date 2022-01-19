@@ -11,21 +11,44 @@
 * likeUser
 */
 
+import 'dart:io';
 import 'dart:math';
 
 import "package:cloud_firestore/cloud_firestore.dart";
+import 'package:firebase_storage/firebase_storage.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
+FirebaseStorage storage = FirebaseStorage.instance;
 
-Future<void> addUser(name, email, pronouns, major, year, blurb, image,
-    minHousemates, maxHousemates, minPrice, maxPrice, coed, minDist, maxDist,
+Future<DocumentReference> addUser(
+    id,
+    name,
+    email,
+    pronouns,
+    major,
+    year,
+    blurb,
+    image,
+    minHousemates,
+    maxHousemates,
+    minPrice,
+    maxPrice,
+    coed,
+    minDist,
+    maxDist,
     {tidiness,
     sharingMeals,
     nearWest,
     nightsOut,
     pets,
     northOfPrincess,
-    hosting}) {
+    hosting}) async {
+  try {
+    await storage.ref(id).putFile(File(image.path));
+  } on FirebaseException catch (e) {
+    print(e.message);
+  }
+
   return firestore.collection("users").add({
     'full_name': name,
     'email': email,
@@ -33,7 +56,6 @@ Future<void> addUser(name, email, pronouns, major, year, blurb, image,
     'major': major,
     'year': year,
     'blurb': blurb,
-    'image': image,
     'minHousemates': minHousemates,
     'maxHousemates': maxHousemates,
     'minPrice': minPrice,
