@@ -27,7 +27,15 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Firebase.initializeApp(),
+      future: Firebase.initializeApp(
+          options: FirebaseOptions(
+              apiKey: "AIzaSyBmPxbSERmf9fmaWvfvWc3RrTCWPiPLDHc",
+              authDomain: "homeslice-399ef.firebaseapp.com",
+              projectId: "homeslice-399ef",
+              storageBucket: "homeslice-399ef.appspot.com",
+              messagingSenderId: "1061489396014",
+              appId: "1:1061489396014:web:f0bf01b0cac060ccc392bf",
+              measurementId: "G-ZZHCVN3EZL")),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasError) {
           print("SNAPSHOT ERROR: " + snapshot.error.toString());
