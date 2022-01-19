@@ -50,7 +50,7 @@ class _AppState extends State<App> {
                 routes: {
                   '/login': (context) => Login(),
                   '/signup': (context) => Signup(),
-                  '/swiping': (context) => HomeSwipe(),
+                  '/home': (context) => Wrapper(),
                   '/setup': (context) => Setup()
                 },
                 home: new Login(),
