@@ -16,6 +16,8 @@ import 'dart:math';
 
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
+import "package:image_picker/image_picker.dart";
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 FirebaseStorage storage = FirebaseStorage.instance;
@@ -30,7 +32,12 @@ Future<void> addUser(id, name, email, pronouns, major, year, blurb, image,
     northOfPrincess,
     hosting}) async {
   try {
-    await storage.ref(id).putFile(File(image.path));
+    String filename = id + "." + image.name.split(".").last;
+    if (kIsWeb) {
+      storage.ref(filename).putData(await image.readAsBytes());
+    } else {
+      await storage.ref(filename).putFile(File(image.path));
+    }
   } on FirebaseException catch (e) {
     print(e.message);
   }
@@ -66,6 +73,11 @@ Future<void> addUser(id, name, email, pronouns, major, year, blurb, image,
 Future<void> updateUser(id,
     {name,
     email,
+    pronouns,
+    major,
+    year,
+    blurb,
+    image,
     minHousemates,
     maxHousemates,
     minPrice,
@@ -79,10 +91,27 @@ Future<void> updateUser(id,
     nightsOut,
     pets,
     northOfPrincess,
-    hosting}) {
+    hosting}) async {
+  if (image != null) {
+    try {
+      String filename = id + "." + image.name.split(".").last;
+      if (kIsWeb) {
+        storage.ref(filename).putData(await image.readAsBytes());
+      } else {
+        await storage.ref(filename).putFile(File(image.path));
+      }
+    } on FirebaseException catch (e) {
+      print(e.message);
+    }
+  }
+
   return firestore.collection("users").doc(id).update({
         'full_name': name,
         'email': email,
+        'pronouns': pronouns,
+        'major': major,
+        'year': year,
+        'blurb': blurb,
         'minHousemates': minHousemates,
         'maxHousemates': maxHousemates,
         'minPrice': minPrice,
