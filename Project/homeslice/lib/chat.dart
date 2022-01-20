@@ -9,13 +9,11 @@
 */
 
 import 'package:flutter/material.dart';
-
 import 'conversation.dart';
 import 'chat_database.dart';
 
 class Messages extends StatefulWidget {
   const Messages({Key? key}) : super(key: key);
-
   @override
   _MessagesState createState() => _MessagesState();
 }
@@ -131,13 +129,14 @@ class _ConversationState extends State<ConversationTile> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          addConversation("John", "Paul"); // change to actual users
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return Conversation(
-                name: widget.name,
-                messageText: widget.messageText,
-                imageUrl: widget.imageUrl,
-                time: widget.time);
+              name: widget.name,
+              messageText: widget.messageText,
+              imageUrl: widget.imageUrl,
+              time: widget.time,
+              convoID: getConversation(currentUser, widget.name).toString(),
+            );
           }));
 
           widget.tapFlag = true;

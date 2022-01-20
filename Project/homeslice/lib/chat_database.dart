@@ -11,18 +11,45 @@
 * likeUser
 */
 
-import 'dart:math';
-
 import "package:cloud_firestore/cloud_firestore.dart";
+import 'package:firebase_auth/firebase_auth.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
-Future<void> addConversation(PersonA, PersonB) {
-  return firestore
-      .collection("conversations")
-      .add({'PersonA': PersonA, 'PersonB': PersonB});
+var currentUser = FirebaseAuth.instance.currentUser;
+
+void test() {
+  print(FirebaseAuth.instance.currentUser.toString());
 }
 
-Future<void> addMessage(message, date, time, sender, read, conversationID) {
+Future<void> addConversation(currentPerson, otherUser) {
+  // call this function when two people swipe on each other
+  return firestore
+      .collection("conversations")
+      .add({'currentPerson': currentUser, 'otherUser': otherUser});
+}
+
+Future<String> getConversation(currentPerson, otherUser) async {
+  QuerySnapshot convo = await firestore
+      .collection("conversations")
+      .where("currentPerson", isEqualTo: currentUser)
+      .where("otherUser", isEqualTo: otherUser)
+      .get();
+
+  return convo.docs[0].id;
+}
+
+Future getAllConversations(currentPerson) async {
+  // call this function in chat.dart to get all the conversations the user has
+  QuerySnapshot convos = await firestore
+      .collection("conversations")
+      .where("currentPerson", isEqualTo: currentUser)
+      .get();
+
+  return convos;
+}
+
+Future<void> sendMessage(message, date, time, sender, read, conversationID) {
+  // call this function in conversation.dart to send a message
   return firestore
       .collection("conversations")
       .doc(conversationID)
@@ -34,4 +61,15 @@ Future<void> addMessage(message, date, time, sender, read, conversationID) {
     'sender': sender,
     'read': read
   });
+}
+
+Future getMessages(conversationID) async {
+  // call this function in conversation.dart to send a message
+  QuerySnapshot messages = await firestore
+      .collection("conversations")
+      .doc(conversationID)
+      .collection("messages")
+      .get();
+
+  return messages;
 }

@@ -1,6 +1,7 @@
 // individual conversation class
 
 import 'package:flutter/material.dart';
+import 'chat.dart';
 import 'chat_database.dart';
 
 class Conversation extends StatefulWidget {
@@ -8,12 +9,13 @@ class Conversation extends StatefulWidget {
   String messageText;
   String imageUrl;
   String time;
-  Conversation({
-    required this.name,
-    required this.messageText,
-    required this.imageUrl,
-    required this.time,
-  });
+  String convoID;
+  Conversation(
+      {required this.name,
+      required this.messageText,
+      required this.imageUrl,
+      required this.time,
+      required this.convoID});
 
   @override
   _ConversationState createState() => _ConversationState();
@@ -129,6 +131,7 @@ class _ConversationState extends State<Conversation> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(4.0),
+                      // attach a file button
                       child: FloatingActionButton(
                         mini: true,
                         onPressed: () {},
@@ -143,41 +146,57 @@ class _ConversationState extends State<Conversation> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(4.0),
+                      // send a message button
                       child: FloatingActionButton(
                         mini: true,
-                        onPressed: () {
-                          DateTime date = new DateTime.now();
+                        onPressed: () async {
+                          if (newMessageController.text.isNotEmpty) {
+                            DateTime date = new DateTime.now();
 
-                          // add new message
-                          addMessage(
-                              newMessageController.text,
-                              date.day.toString() +
-                                  "/" +
-                                  date.month.toString() +
-                                  "/" +
-                                  date.year.toString(),
-                              date.hour.toString() +
-                                  ":" +
-                                  date.minute.toString(),
-                              "John",
-                              false,
-                              "p5jov8PC6kow0VwP3lRg");
+                            // add new message
+                            sendMessage(
+                                newMessageController.text,
+                                date.day.toString() +
+                                    "/" +
+                                    date.month.toString() +
+                                    "/" +
+                                    date.year.toString(),
+                                date.hour.toString() +
+                                    ":" +
+                                    date.minute.toString(),
+                                currentUser,
+                                false,
+                                "p5jov8PC6kow0VwP3lRg");
 
-                          firestore
-                              .collection("conversations")
-                              .get()
-                              .then((querySnapshot) {
-                            querySnapshot.docs.forEach((result) {
-                              firestore
-                                  .collection("messages")
-                                  .get()
-                                  .then((querySnapshot) {
-                                querySnapshot.docs.forEach((result) {
-                                  print(result.data());
+                            firestore
+                                .collection("conversations")
+                                .get()
+                                .then((querySnapshot) {
+                              querySnapshot.docs.forEach((result) {
+                                firestore
+                                    .collection("messages")
+                                    .get()
+                                    .then((querySnapshot) {
+                                  querySnapshot.docs.forEach((result) {
+                                    print(result.data());
+                                  });
                                 });
                               });
                             });
-                          });
+
+                            messages.add(new Message(
+                                messageText: newMessageController.text,
+                                time: date.hour.toString() +
+                                    ":" +
+                                    date.minute.toString(),
+                                type: "sender"));
+
+                            print("Conversation ID: " +
+                                widget.convoID.toString());
+
+                            newMessageController.clear();
+                            setState(() {});
+                          }
                         },
                         child: Icon(
                           Icons.send,
