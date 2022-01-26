@@ -8,6 +8,7 @@
 * Recieve_Message
 */
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'conversation.dart';
 import 'chat_database.dart';
@@ -128,14 +129,28 @@ class _ConversationState extends State<ConversationTile> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
+        onTap: () async {
+          var messagesFromDatabase = [];
+          QuerySnapshot database_messages =
+              await getMessages("4JITZIL3sHHcwVVT9EYa");
+          //await getMessages(getConversation(currentUser, widget.name).toString());
+
+          database_messages.docs.forEach((res) {
+            print(res.get("message"));
+            messagesFromDatabase.add(Message(
+                messageText: res.get("message").toString(),
+                time: res.get("time").toString(),
+                type: "receiver"));
+          });
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return Conversation(
               name: widget.name,
               messageText: widget.messageText,
               imageUrl: widget.imageUrl,
               time: widget.time,
-              convoID: getConversation(currentUser, widget.name).toString(),
+              convoID: "4JITZIL3sHHcwVVT9EYa",
+              messages: messagesFromDatabase,
+              //convoID: getConversation(currentUser, widget.name).toString(),
             );
           }));
 

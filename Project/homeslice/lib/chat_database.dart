@@ -48,14 +48,14 @@ Future getAllConversations(currentPerson) async {
   return convos;
 }
 
-Future<void> sendMessage(message, date, time, sender, read, conversationID) {
+Future sendMessage(message, date, time, sender, read, conversationID) async {
   // call this function in conversation.dart to send a message
-  return firestore
+  return await firestore
       .collection("conversations")
       .doc(conversationID)
       .collection("messages")
       .add({
-    'messsage': message,
+    'message': message,
     'date': date,
     'time': time,
     'sender': sender,
@@ -63,13 +63,25 @@ Future<void> sendMessage(message, date, time, sender, read, conversationID) {
   });
 }
 
-Future getMessages(conversationID) async {
+Future<QuerySnapshot<Object?>> getMessages(conversationID) async {
   // call this function in conversation.dart to send a message
   QuerySnapshot messages = await firestore
       .collection("conversations")
       .doc(conversationID)
       .collection("messages")
+      .orderBy("date")
       .get();
 
   return messages;
 }
+
+// Future<Map> getMessages(conversationID) async {
+//   QuerySnapshot messages = await firestore
+//       .collection("conversations")
+//       .doc(conversationID)
+//       .collection("messages")
+//       .get();
+
+//   return Map.fromIterable(messages.docs,
+//       key: (doc) => doc.id, value: (doc) => doc.data());
+// }

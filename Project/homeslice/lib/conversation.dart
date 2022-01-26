@@ -1,5 +1,9 @@
 // individual conversation class
 
+import 'dart:html';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'chat.dart';
 import 'chat_database.dart';
@@ -10,19 +14,21 @@ class Conversation extends StatefulWidget {
   String imageUrl;
   String time;
   String convoID;
+  var messages;
   Conversation(
       {required this.name,
       required this.messageText,
       required this.imageUrl,
       required this.time,
-      required this.convoID});
+      required this.convoID,
+      required this.messages});
 
   @override
   _ConversationState createState() => _ConversationState();
 }
 
 class _ConversationState extends State<Conversation> {
-  var messages = [
+  var messagess = [
     new Message(messageText: "Hi", time: "9:00 PM", type: "receiver"),
     new Message(messageText: "Hi there", time: "9:05 PM", type: "sender"),
     new Message(
@@ -84,14 +90,14 @@ class _ConversationState extends State<Conversation> {
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: SizedBox(
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height * 0.85,
             child: new ListView.builder(
-              itemCount: messages.length,
+              itemCount: widget.messages.length,
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 return new Container(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 4),
-                  child: messages[index],
+                  child: widget.messages[index],
                 );
               },
             ),
@@ -129,21 +135,21 @@ class _ConversationState extends State<Conversation> {
                     SizedBox(
                       width: 15,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      // attach a file button
-                      child: FloatingActionButton(
-                        mini: true,
-                        onPressed: () {},
-                        child: Icon(
-                          Icons.attach_file,
-                          color: Colors.white,
-                          size: 15,
-                        ),
-                        backgroundColor: Theme.of(context).primaryColor,
-                        elevation: 0,
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(4.0),
+                    //   // attach a file button
+                    //   child: FloatingActionButton(
+                    //     mini: true,
+                    //     onPressed: () {},
+                    //     child: Icon(
+                    //       Icons.attach_file,
+                    //       color: Colors.white,
+                    //       size: 15,
+                    //     ),
+                    //     backgroundColor: Theme.of(context).primaryColor,
+                    //     elevation: 0,
+                    //   ),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.all(4.0),
                       // send a message button
@@ -166,35 +172,44 @@ class _ConversationState extends State<Conversation> {
                                     date.minute.toString(),
                                 currentUser,
                                 false,
-                                "p5jov8PC6kow0VwP3lRg");
+                                "4JITZIL3sHHcwVVT9EYa");
 
-                            firestore
-                                .collection("conversations")
-                                .get()
-                                .then((querySnapshot) {
-                              querySnapshot.docs.forEach((result) {
-                                firestore
-                                    .collection("messages")
-                                    .get()
-                                    .then((querySnapshot) {
-                                  querySnapshot.docs.forEach((result) {
-                                    print(result.data());
-                                  });
-                                });
-                              });
-                            });
+                            // firestore
+                            //     .collection("conversations")
+                            //     .get()
+                            //     .then((querySnapshot) {
+                            //   querySnapshot.docs.forEach((result) {
+                            //     firestore
+                            //         .collection("messages")
+                            //         .get()
+                            //         .then((querySnapshot) {
+                            //       querySnapshot.docs.forEach((result) {
+                            //         print(result.data());
+                            //       });
+                            //     });
+                            //   });
+                            // });
 
-                            messages.add(new Message(
+                            widget.messages.add(new Message(
                                 messageText: newMessageController.text,
                                 time: date.hour.toString() +
                                     ":" +
                                     date.minute.toString(),
                                 type: "sender"));
 
-                            print("Conversation ID: " +
-                                widget.convoID.toString());
-
                             newMessageController.clear();
+
+                            // QuerySnapshot database_messages =
+                            //     await getMessages(widget.convoID);
+
+                            // database_messages.docs.forEach((res) {
+                            //   print(res.get("message"));
+                            //   widget.messages.add(Message(
+                            //       messageText: res.get("message").toString(),
+                            //       time: res.get("time").toString(),
+                            //       type: "receiver"));
+                            // });
+
                             setState(() {});
                           }
                         },
