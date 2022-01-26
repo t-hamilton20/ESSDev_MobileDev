@@ -100,7 +100,7 @@ class _CardStackState extends State<CardStack> {
     );
   }
 
-  Widget buildFrontCard(user) {
+  Widget buildFrontCard(user, {gestures = true}) {
     return LayoutBuilder(builder: (context, constraints) {
       Offset center = constraints.biggest.center(Offset.zero);
 
@@ -119,45 +119,51 @@ class _CardStackState extends State<CardStack> {
                   ..translate(_position.dx),
                 child: buildCard(user),
               ),
-              onPanStart: (details) {
-                setState(() {
-                  _duration = 0;
-                });
-              },
-              onPanUpdate: (details) {
-                setState(() {
-                  _position += details.delta;
-                  _angle = (_position.dx / _screenSize.width) * 45;
-                  if (_angle > 5)
-                    _iconState = IconState.like;
-                  else if (_angle < -5)
-                    _iconState = IconState.dislike;
-                  else
-                    _iconState = IconState.none;
-                });
-              },
-              onPanEnd: (details) {
-                setState(() {
-                  _duration = 300;
+              onPanStart: (gestures
+                  ? (details) {
+                      setState(() {
+                        _duration = 0;
+                      });
+                    }
+                  : null),
+              onPanUpdate: (gestures
+                  ? (details) {
+                      setState(() {
+                        _position += details.delta;
+                        _angle = (_position.dx / _screenSize.width) * 45;
+                        if (_angle > 5)
+                          _iconState = IconState.like;
+                        else if (_angle < -5)
+                          _iconState = IconState.dislike;
+                        else
+                          _iconState = IconState.none;
+                      });
+                    }
+                  : null),
+              onPanEnd: (gestures
+                  ? (details) {
+                      setState(() {
+                        _duration = 300;
 
-                  switch (getAction()) {
-                    case CardActions.like:
-                      likeUser("ER8wp6q1krN0pCBaWhbG", user.key);
-                      _position += Offset(2 * _screenSize.width, 0);
-                      _angle = 20;
-                      _nextCard(user);
-                      break;
-                    case CardActions.dislike:
-                      _position -= Offset(2 * _screenSize.width, 0);
-                      _angle = -20;
-                      _nextCard(user);
-                      break;
-                    default:
-                      _position = Offset.zero;
-                      _angle = 0;
-                  }
-                });
-              },
+                        switch (getAction()) {
+                          case CardActions.like:
+                            likeUser("ER8wp6q1krN0pCBaWhbG", user.key);
+                            _position += Offset(2 * _screenSize.width, 0);
+                            _angle = 20;
+                            _nextCard(user);
+                            break;
+                          case CardActions.dislike:
+                            _position -= Offset(2 * _screenSize.width, 0);
+                            _angle = -20;
+                            _nextCard(user);
+                            break;
+                          default:
+                            _position = Offset.zero;
+                            _angle = 0;
+                        }
+                      });
+                    }
+                  : null),
             ),
             buildInfoSheet(user)
           ],
