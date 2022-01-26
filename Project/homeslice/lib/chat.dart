@@ -14,6 +14,9 @@ import 'conversation.dart';
 import 'chat_database.dart';
 
 class Messages extends StatefulWidget {
+  // var conversations; // pass in conversation tiles
+  // Messages(required this.conversations);
+
   const Messages({Key? key}) : super(key: key);
   @override
   _MessagesState createState() => _MessagesState();
@@ -21,6 +24,7 @@ class Messages extends StatefulWidget {
 
 class _MessagesState extends State<Messages> {
   var conversations = [
+    // note these conversation tiles are only for testing and should be passed in to the messages widget
     new ConversationTile(
       name: "Johnny",
       imageUrl:
@@ -112,6 +116,7 @@ class ConversationTile extends StatefulWidget {
   String time;
   bool isMessageRead;
   bool tapFlag;
+  String convoID; // pass in conversation ID here
 
   ConversationTile(
       {required this.name,
@@ -119,6 +124,7 @@ class ConversationTile extends StatefulWidget {
       required this.imageUrl,
       required this.time,
       required this.isMessageRead,
+      this.convoID = "DUMMY STRING", // CHANGE THIS
       this.tapFlag = false});
 
   @override
@@ -130,13 +136,14 @@ class _ConversationState extends State<ConversationTile> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () async {
-          var messagesFromDatabase = [];
-          QuerySnapshot database_messages =
-              await getMessages("4JITZIL3sHHcwVVT9EYa");
-          //await getMessages(getConversation(currentUser, widget.name).toString());
+          var messagesFromDatabase =
+              []; // empty list that will hold Messages objects to be passed into the converation widget
+          QuerySnapshot database_messages = await getMessages(
+              "4JITZIL3sHHcwVVT9EYa"); // replace this with the line below
+          //await getMessages(getConversation(currentUser, widget.name).toString()); // gets the messages for the given conversation
 
           database_messages.docs.forEach((res) {
-            print(res.get("message"));
+            // loops through all the messages and creates the message widgets
             messagesFromDatabase.add(Message(
                 messageText: res.get("message").toString(),
                 time: res.get("time").toString(),
@@ -249,6 +256,21 @@ class _ConversationState extends State<ConversationTile> {
                                 width: 10,
                               ),
                               Text("Invite to Group"),
+                            ],
+                          ),
+                        ),
+
+                        PopupMenuItem(
+                          onTap: () {
+                            // unmatch user
+                          },
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.block),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Unmatch User"),
                             ],
                           ),
                         ),

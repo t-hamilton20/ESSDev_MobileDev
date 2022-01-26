@@ -1,7 +1,6 @@
 // individual conversation class
 
 import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -28,20 +27,8 @@ class Conversation extends StatefulWidget {
 }
 
 class _ConversationState extends State<Conversation> {
-  var messagess = [
-    new Message(messageText: "Hi", time: "9:00 PM", type: "receiver"),
-    new Message(messageText: "Hi there", time: "9:05 PM", type: "sender"),
-    new Message(
-        messageText: "Do you want to live with me",
-        time: "10:00 PM",
-        type: "receiver"),
-    new Message(
-        messageText: "No you are in commerce", time: "9:00", type: "sender"),
-    new Message(
-        messageText: "Okay fair enough", time: "9:00", type: "receiver"),
-    new Message(messageText: "L8r", time: "9:00", type: "sender"),
-  ];
-  final newMessageController = TextEditingController();
+  final newMessageController =
+      TextEditingController(); // controller for the new message text input
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,21 +122,21 @@ class _ConversationState extends State<Conversation> {
                     SizedBox(
                       width: 15,
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(4.0),
-                    //   // attach a file button
-                    //   child: FloatingActionButton(
-                    //     mini: true,
-                    //     onPressed: () {},
-                    //     child: Icon(
-                    //       Icons.attach_file,
-                    //       color: Colors.white,
-                    //       size: 15,
-                    //     ),
-                    //     backgroundColor: Theme.of(context).primaryColor,
-                    //     elevation: 0,
-                    //   ),
-                    // ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      // attach a file button
+                      child: FloatingActionButton(
+                        mini: true,
+                        onPressed: () {},
+                        child: Icon(
+                          Icons.attach_file,
+                          color: Colors.white,
+                          size: 15,
+                        ),
+                        backgroundColor: Theme.of(context).primaryColor,
+                        elevation: 0,
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(4.0),
                       // send a message button
@@ -172,23 +159,7 @@ class _ConversationState extends State<Conversation> {
                                     date.minute.toString(),
                                 currentUser,
                                 false,
-                                "4JITZIL3sHHcwVVT9EYa");
-
-                            // firestore
-                            //     .collection("conversations")
-                            //     .get()
-                            //     .then((querySnapshot) {
-                            //   querySnapshot.docs.forEach((result) {
-                            //     firestore
-                            //         .collection("messages")
-                            //         .get()
-                            //         .then((querySnapshot) {
-                            //       querySnapshot.docs.forEach((result) {
-                            //         print(result.data());
-                            //       });
-                            //     });
-                            //   });
-                            // });
+                                "4JITZIL3sHHcwVVT9EYa"); // replace convoID with actual convoID
 
                             widget.messages.add(new Message(
                                 messageText: newMessageController.text,
@@ -198,17 +169,6 @@ class _ConversationState extends State<Conversation> {
                                 type: "sender"));
 
                             newMessageController.clear();
-
-                            // QuerySnapshot database_messages =
-                            //     await getMessages(widget.convoID);
-
-                            // database_messages.docs.forEach((res) {
-                            //   print(res.get("message"));
-                            //   widget.messages.add(Message(
-                            //       messageText: res.get("message").toString(),
-                            //       time: res.get("time").toString(),
-                            //       type: "receiver"));
-                            // });
 
                             setState(() {});
                           }

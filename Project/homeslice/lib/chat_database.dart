@@ -1,25 +1,10 @@
-/* implementation of database using Firestore
-*  Last updated 2021-11-02 by Josh Friedman
-*
-* Includes:
-* addUser
-* getUsers
-* editUserDetails
-* createGroup
-* editGroup
-* deleteGroup
-* likeUser
-*/
+// File containing methods for chat functionality
 
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:firebase_auth/firebase_auth.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 var currentUser = FirebaseAuth.instance.currentUser;
-
-void test() {
-  print(FirebaseAuth.instance.currentUser.toString());
-}
 
 Future<void> addConversation(currentPerson, otherUser) {
   // call this function when two people swipe on each other
@@ -64,24 +49,14 @@ Future sendMessage(message, date, time, sender, read, conversationID) async {
 }
 
 Future<QuerySnapshot<Object?>> getMessages(conversationID) async {
-  // call this function in conversation.dart to send a message
+  // call this function to get all the messages in a given conversation
   QuerySnapshot messages = await firestore
       .collection("conversations")
       .doc(conversationID)
       .collection("messages")
-      .orderBy("date")
+      .orderBy("date") // order first by date sent
+      .orderBy("time") // order second by time sent
       .get();
 
   return messages;
 }
-
-// Future<Map> getMessages(conversationID) async {
-//   QuerySnapshot messages = await firestore
-//       .collection("conversations")
-//       .doc(conversationID)
-//       .collection("messages")
-//       .get();
-
-//   return Map.fromIterable(messages.docs,
-//       key: (doc) => doc.id, value: (doc) => doc.data());
-// }
