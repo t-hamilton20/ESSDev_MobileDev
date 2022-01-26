@@ -12,6 +12,7 @@ import 'signup.dart';
 import 'setup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:homeslice/wrapper.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -126,7 +127,7 @@ class _LoginState extends State<Login> {
                   }
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Setup()),
+                    MaterialPageRoute(builder: (context) => Wrapper()),
                   );
                   setState(() {});
                 },

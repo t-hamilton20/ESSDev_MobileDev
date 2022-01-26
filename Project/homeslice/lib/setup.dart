@@ -7,10 +7,13 @@
 * search criteria
 * preferences
 */
-import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:homeslice/database.dart';
 
 class Setup extends StatefulWidget {
   const Setup({Key? key}) : super(key: key);
@@ -62,16 +65,18 @@ class _SetupState extends State<Setup> {
 
   @override
   Widget build(BuildContext context) {
+    // User
+    User? user = Provider.of<User?>(context);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Profile Set Up')),
       body: Stepper(
-          controlsBuilder: (BuildContext context,
-              {VoidCallback? onStepContinue, VoidCallback? onStepCancel}) {
+          controlsBuilder: (BuildContext context, ControlsDetails details) {
             return Row(
               children: <Widget>[
                 if (_index == 0) ...[
                   ElevatedButton(
-                    onPressed: onStepContinue,
+                    onPressed: details.onStepContinue,
                     child: const Text('Next'),
                   ),
                 ] else if (_index == 1) ...[
@@ -79,29 +84,82 @@ class _SetupState extends State<Setup> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          Navigator.pushNamed(context, '/swiping');
+                          print("Max Mates:" + _mates.end.round().toString());
+
+                          addUser(
+                              user?.uid,
+                              _prefName,
+                              user?.email,
+                              _dropdownValue,
+                              _major,
+                              _year,
+                              _blurb,
+                              profileImg,
+                              _mates.start.round(),
+                              _mates.end.round(),
+                              _rent.start.round(),
+                              _rent.end.round(),
+                              _coed,
+                              _mins_to_campus.start.round(),
+                              _mins_to_campus.end.round(),
+                              tidiness: _tidiness,
+                              sharingMeals: _share,
+                              nearWest: _west,
+                              nightsOut: _nights_out.round(),
+                              pets: _pets,
+                              northOfPrincess: _north,
+                              hosting: _host);
+                          Navigator.pushNamed(context, '/home');
                         });
                       },
                       child: const Text('Start Searching'),
                     ),
                     Row(children: [
                       ElevatedButton(
-                        onPressed: onStepCancel,
+                        onPressed: details.onStepCancel,
                         child: const Text('Back'),
                       ),
                       ElevatedButton(
-                        onPressed: onStepContinue,
+                        onPressed: details.onStepContinue,
                         child: const Text('Next'),
                       ),
                     ]),
                   ]),
                 ] else if (_index == 2) ...[
                   ElevatedButton(
-                    onPressed: onStepCancel,
+                    onPressed: details.onStepCancel,
                     child: const Text('Back'),
                   ),
                   ElevatedButton(
-                    onPressed: onStepContinue,
+                    onPressed: () {
+                      setState(() {
+                        print("Max Mates:" + _mates.end.round().toString());
+                        addUser(
+                            user?.uid,
+                            _prefName,
+                            user?.email,
+                            _dropdownValue,
+                            _major,
+                            _year,
+                            _blurb,
+                            profileImg,
+                            _mates.start.round(),
+                            _mates.end.round(),
+                            _rent.start.round(),
+                            _rent.end.round(),
+                            _coed,
+                            _mins_to_campus.start.round(),
+                            _mins_to_campus.end.round(),
+                            tidiness: _tidiness,
+                            sharingMeals: _share,
+                            nearWest: _west,
+                            nightsOut: _nights_out.round(),
+                            pets: _pets,
+                            northOfPrincess: _north,
+                            hosting: _host);
+                        Navigator.pushNamed(context, '/home');
+                      });
+                    },
                     child: const Text('Finish'),
                   ),
                 ]
@@ -258,8 +316,8 @@ class _SetupState extends State<Setup> {
                       min: 1,
                       max: 6,
                       divisions: 5,
-                      labels: RangeLabels(
-                          _mates.start.toString(), _mates.end.toString()),
+                      labels: RangeLabels(_mates.start.round().toString(),
+                          _mates.end.round().toString()),
                       onChanged: (RangeValues values) {
                         setState(() {
                           _mates = values;

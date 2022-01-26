@@ -2,12 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:homeslice/connection_error.dart';
-import 'package:homeslice/database.dart';
+import 'package:homeslice/home_swipe.dart';
 import 'package:homeslice/login.dart';
 import 'package:homeslice/signup.dart';
 import 'package:homeslice/setup.dart';
 import 'package:homeslice/chat.dart';
 import 'package:provider/provider.dart';
+import 'package:homeslice/wrapper.dart';
 
 // This code runs the app and navigates between pages
 
@@ -27,11 +28,21 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Firebase.initializeApp(),
+      future: (Firebase.apps.length > 0
+          ? Future(() => Firebase.app())
+          : Firebase.initializeApp(
+              options: FirebaseOptions(
+                  apiKey: "AIzaSyBmPxbSERmf9fmaWvfvWc3RrTCWPiPLDHc",
+                  authDomain: "homeslice-399ef.firebaseapp.com",
+                  projectId: "homeslice-399ef",
+                  storageBucket: "homeslice-399ef.appspot.com",
+                  messagingSenderId: "1061489396014",
+                  appId: "1:1061489396014:web:f0bf01b0cac060ccc392bf",
+                  measurementId: "G-ZZHCVN3EZL"))),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasError) {
           print("SNAPSHOT ERROR: " + snapshot.error.toString());
-          return ConnectionError();
+          return MaterialApp(home: ConnectionError());
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
@@ -50,23 +61,14 @@ class _AppState extends State<App> {
                 routes: {
                   '/login': (context) => Login(),
                   '/signup': (context) => Signup(),
-                  //'/swiping': (context) => HomeSwipe(),
-                  //'/setup': (context) => Setup()
+                  '/home': (context) => Wrapper(),
+                  '/setup': (context) => Setup()
                 },
                 home: new Login(),
               ));
         }
-        return new Container();
-        //return Loading();
+        return Center(child: CircularProgressIndicator());
       },
     );
-  }
-}
-
-class HomeSwipe extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
   }
 }
