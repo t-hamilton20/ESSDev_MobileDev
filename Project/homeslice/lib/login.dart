@@ -7,9 +7,9 @@
 * Send_to_Signup
 */
 
-
 import 'package:flutter/material.dart';
 import 'signup.dart';
+import 'setup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -27,6 +27,7 @@ class _LoginState extends State<Login> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool isObscure = true;
+  bool isSignedIn = false;
 
   @override
   Widget build(BuildContext context) {
@@ -110,16 +111,23 @@ class _LoginState extends State<Login> {
                         .signInWithEmailAndPassword(
                             email: emailController.text,
                             password: passwordController.text);
+                    isSignedIn = true;
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'user-not-found') {
                       _buildPopupDialog(
                           context, "No user found for that email.");
                       print('No user found for that email.');
+                      isSignedIn = false;
                     } else if (e.code == 'wrong-password') {
                       _buildPopupDialog(context, "Incorrect password.");
                       print('Wrong password provided for that user.');
+                      isSignedIn = false;
                     }
                   }
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Setup()),
+                  );
                   setState(() {});
                 },
               ),
