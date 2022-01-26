@@ -71,13 +71,12 @@ class _SetupState extends State<Setup> {
     return Scaffold(
       appBar: AppBar(title: const Text('Profile Set Up')),
       body: Stepper(
-          controlsBuilder: (BuildContext context,
-              {VoidCallback? onStepContinue, VoidCallback? onStepCancel}) {
+          controlsBuilder: (BuildContext context, ControlsDetails details) {
             return Row(
               children: <Widget>[
                 if (_index == 0) ...[
                   ElevatedButton(
-                    onPressed: onStepContinue,
+                    onPressed: details.onStepContinue,
                     child: const Text('Next'),
                   ),
                 ] else if (_index == 1) ...[
@@ -117,18 +116,18 @@ class _SetupState extends State<Setup> {
                     ),
                     Row(children: [
                       ElevatedButton(
-                        onPressed: onStepCancel,
+                        onPressed: details.onStepCancel,
                         child: const Text('Back'),
                       ),
                       ElevatedButton(
-                        onPressed: onStepContinue,
+                        onPressed: details.onStepContinue,
                         child: const Text('Next'),
                       ),
                     ]),
                   ]),
                 ] else if (_index == 2) ...[
                   ElevatedButton(
-                    onPressed: onStepCancel,
+                    onPressed: details.onStepCancel,
                     child: const Text('Back'),
                   ),
                   ElevatedButton(
