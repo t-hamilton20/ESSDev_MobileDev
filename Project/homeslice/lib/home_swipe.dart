@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:homeslice/custom_icons.dart';
 import 'dart:math';
 
 import 'package:homeslice/database.dart';
+import 'package:provider/provider.dart';
 
 enum CardActions { like, dislike }
 enum IconState { like, dislike, none }
@@ -15,10 +17,11 @@ class HomeSwipe extends StatefulWidget {
 }
 
 class _HomeSwipeState extends State<HomeSwipe> {
-  Future<Map> _users = getUsers("ER8wp6q1krN0pCBaWhbG");
-
   @override
   Widget build(BuildContext context) {
+    User? user = Provider.of<User?>(context);
+    Future<Map> _users = getUsers(user?.uid);
+
     return FutureBuilder<Map>(
       future: _users,
       builder: (context, snapshot) {
