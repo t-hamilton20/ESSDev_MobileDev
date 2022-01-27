@@ -23,7 +23,7 @@ Future<String> getConversation(currentPerson, otherUser) async {
   return convo.docs[0].id;
 }
 
-Future getAllConversations(currentPerson) async {
+Future<QuerySnapshot<Object?>> getAllConversations(currentPerson) async {
   // call this function in chat.dart to get all the conversations the user has
   QuerySnapshot convos = await firestore
       .collection("conversations")

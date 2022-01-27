@@ -9,15 +9,16 @@
 */
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'conversation.dart';
 import 'chat_database.dart';
 
 class Messages extends StatefulWidget {
-  // var conversations; // pass in conversation tiles
-  // Messages(required this.conversations);
+  var conversations; // pass in conversation tiles
+  Messages({required this.conversations});
 
-  const Messages({Key? key}) : super(key: key);
   @override
   _MessagesState createState() => _MessagesState();
 }
@@ -51,6 +52,7 @@ class _MessagesState extends State<Messages> {
 
   @override
   Widget build(BuildContext context) {
+    User? user = Provider.of<User?>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -58,25 +60,25 @@ class _MessagesState extends State<Messages> {
         backgroundColor: Theme.of(context).primaryColor,
       ),
 
-      // navigation bar
-      bottomNavigationBar: BottomNavigationBar(
-          fixedColor: Colors.white,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: Icon(Icons.message),
-                label: 'Messages',
-                backgroundColor: Theme.of(context).secondaryHeaderColor),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.house),
-                label: 'Swiping',
-                backgroundColor: Theme.of(context).secondaryHeaderColor),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: 'Settings',
-                backgroundColor: Theme.of(context).secondaryHeaderColor),
-          ]),
+      // // navigation bar
+      // bottomNavigationBar: BottomNavigationBar(
+      //     fixedColor: Colors.white,
+      //     showSelectedLabels: false,
+      //     showUnselectedLabels: false,
+      //     items: <BottomNavigationBarItem>[
+      //       BottomNavigationBarItem(
+      //           icon: Icon(Icons.message),
+      //           label: 'Messages',
+      //           backgroundColor: Theme.of(context).secondaryHeaderColor),
+      //       BottomNavigationBarItem(
+      //           icon: Icon(Icons.house),
+      //           label: 'Swiping',
+      //           backgroundColor: Theme.of(context).secondaryHeaderColor),
+      //       BottomNavigationBarItem(
+      //           icon: Icon(Icons.settings),
+      //           label: 'Settings',
+      //           backgroundColor: Theme.of(context).secondaryHeaderColor),
+      //     ]),
 
       // app body
       body: new Padding(
