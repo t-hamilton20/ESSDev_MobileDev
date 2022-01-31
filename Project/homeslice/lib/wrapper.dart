@@ -46,7 +46,7 @@ class _WrapperState extends State<Wrapper> {
             child: Text("Chat"),
           ),
           Center(
-            child: Settings(),
+            child: Profile(),
           ),
         ],
       ),
