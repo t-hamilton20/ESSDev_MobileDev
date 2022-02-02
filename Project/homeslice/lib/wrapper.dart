@@ -49,10 +49,12 @@ class _WrapperState extends State<Wrapper> {
         },
         children: [
           HomeSwipe(),
-          Messages(conversations: GetConversations(user!.uid)),
           Center(
-            child: Text("Profile"),
+            child: Text("Chat"),
           ),
+          Center(child: Text("Profile")
+              //child: Profile(),
+              ),
         ],
       ),
     );

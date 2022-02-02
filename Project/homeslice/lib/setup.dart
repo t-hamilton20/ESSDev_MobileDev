@@ -8,8 +8,8 @@
 * preferences
 */
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
@@ -40,18 +40,18 @@ class _SetupState extends State<Setup> {
   // User profile blurb
   String _blurb = '';
   // User profile image
-  XFile? profileImg = null;
+  XFile? _profileImg;
   //File? file = null;
 
   // CRITERIA
   // Desired number of housemates
-  RangeValues _mates = const RangeValues(2, 6);
+  RangeValues _mates = RangeValues(2, 6);
   // User rent price range
-  RangeValues _rent = const RangeValues(700, 1000);
+  RangeValues _rent = RangeValues(700, 1000);
   // User coed preference
   bool _coed = true;
   // User campus distance
-  RangeValues _mins_to_campus = RangeValues(10, 15);
+  RangeValues _minsToCampus = RangeValues(10, 15);
 
   // PREFERENCES
   bool _north = true;
@@ -59,7 +59,7 @@ class _SetupState extends State<Setup> {
   bool _pets = false;
   bool _host = false;
   bool _share = false;
-  double _nights_out = 2;
+  double _nightsOut = 2;
   double _tidiness = 3;
   List<String> _tidy = ["Very Low", "Low", "Medium", "High", "Very High"];
 
@@ -82,34 +82,55 @@ class _SetupState extends State<Setup> {
                 ] else if (_index == 1) ...[
                   Column(children: [
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        DocumentSnapshot userDoc = await getUser(user?.uid);
                         setState(() {
-                          print("Max Mates:" + _mates.end.round().toString());
-
-                          addUser(
+                          if (!userDoc.exists) {
+                            addUser(
+                                    user?.uid,
+                                    _prefName,
+                                    user?.email,
+                                    _dropdownValue,
+                                    _major,
+                                    _year,
+                                    _blurb,
+                                    _profileImg,
+                                    _mates.start.round(),
+                                    _mates.end.round(),
+                                    _rent.start.round(),
+                                    _rent.end.round(),
+                                    _coed,
+                                    _minsToCampus.start.round(),
+                                    _minsToCampus.end.round(),
+                                    tidiness: _tidiness,
+                                    sharingMeals: _share,
+                                    nearWest: _west,
+                                    nightsOut: _nightsOut.round(),
+                                    pets: _pets,
+                                    northOfPrincess: _north,
+                                    hosting: _host)
+                                .then((_) =>
+                                    Navigator.pushNamed(context, '/home'));
+                          } else {
+                            updateUser(
                               user?.uid,
-                              _prefName,
-                              user?.email,
-                              _dropdownValue,
-                              _major,
-                              _year,
-                              _blurb,
-                              profileImg,
-                              _mates.start.round(),
-                              _mates.end.round(),
-                              _rent.start.round(),
-                              _rent.end.round(),
-                              _coed,
-                              _mins_to_campus.start.round(),
-                              _mins_to_campus.end.round(),
-                              tidiness: _tidiness,
-                              sharingMeals: _share,
-                              nearWest: _west,
-                              nightsOut: _nights_out.round(),
-                              pets: _pets,
-                              northOfPrincess: _north,
-                              hosting: _host);
-                          Navigator.pushNamed(context, '/home');
+                              name: _prefName,
+                              email: user?.email,
+                              pronouns: _dropdownValue,
+                              major: _major,
+                              year: _year,
+                              blurb: _blurb,
+                              image: _profileImg,
+                              minHousemates: _mates.start.round(),
+                              maxHousemates: _mates.end.round(),
+                              minPrice: _rent.start.round(),
+                              maxPrice: _rent.end.round(),
+                              coed: _coed,
+                              minDist: _minsToCampus.start.round(),
+                              maxDist: _minsToCampus.end.round(),
+                            ).then(
+                                (_) => Navigator.pushNamed(context, '/home'));
+                          }
                         });
                       },
                       child: const Text('Start Searching'),
@@ -131,10 +152,11 @@ class _SetupState extends State<Setup> {
                     child: const Text('Back'),
                   ),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      DocumentSnapshot userDoc = await getUser(user?.uid);
                       setState(() {
-                        print("Max Mates:" + _mates.end.round().toString());
-                        addUser(
+                        if (!userDoc.exists) {
+                          addUser(
                             user?.uid,
                             _prefName,
                             user?.email,
@@ -142,22 +164,41 @@ class _SetupState extends State<Setup> {
                             _major,
                             _year,
                             _blurb,
-                            profileImg,
+                            _profileImg,
                             _mates.start.round(),
                             _mates.end.round(),
                             _rent.start.round(),
                             _rent.end.round(),
                             _coed,
-                            _mins_to_campus.start.round(),
-                            _mins_to_campus.end.round(),
-                            tidiness: _tidiness,
-                            sharingMeals: _share,
-                            nearWest: _west,
-                            nightsOut: _nights_out.round(),
-                            pets: _pets,
-                            northOfPrincess: _north,
-                            hosting: _host);
-                        Navigator.pushNamed(context, '/home');
+                            _minsToCampus.start.round(),
+                            _minsToCampus.end.round(),
+                          ).then((_) => Navigator.pushNamed(context, '/home'));
+                        } else {
+                          updateUser(user?.uid,
+                                  name: _prefName,
+                                  email: user?.email,
+                                  pronouns: _dropdownValue,
+                                  major: _major,
+                                  year: _year,
+                                  blurb: _blurb,
+                                  image: _profileImg,
+                                  minHousemates: _mates.start.round(),
+                                  maxHousemates: _mates.end.round(),
+                                  minPrice: _rent.start.round(),
+                                  maxPrice: _rent.end.round(),
+                                  coed: _coed,
+                                  minDist: _minsToCampus.start.round(),
+                                  maxDist: _minsToCampus.end.round(),
+                                  tidiness: _tidiness,
+                                  sharingMeals: _share,
+                                  nearWest: _west,
+                                  nightsOut: _nightsOut.round(),
+                                  pets: _pets,
+                                  northOfPrincess: _north,
+                                  hosting: _host)
+                              .then(
+                                  (_) => Navigator.pushNamed(context, '/home'));
+                        }
                       });
                     },
                     child: const Text('Finish'),
@@ -239,7 +280,7 @@ class _SetupState extends State<Setup> {
                       min: 1,
                       max: 7,
                       divisions: 6,
-                      label: _year.toString(),
+                      label: _year.round().toString(),
                       onChanged: (double value) {
                         setState(() {
                           _year = value;
@@ -266,7 +307,7 @@ class _SetupState extends State<Setup> {
                             source: ImageSource.camera,
                           );
                           setState(() {
-                            profileImg = pickedFile;
+                            _profileImg = pickedFile;
                           });
                         },
                         child: Icon(Icons.camera),
@@ -278,7 +319,7 @@ class _SetupState extends State<Setup> {
                             source: ImageSource.gallery,
                           );
                           setState(() {
-                            profileImg = pickedFile;
+                            _profileImg = pickedFile;
                           });
                         },
                         child: Icon(Icons.account_box),
@@ -287,9 +328,9 @@ class _SetupState extends State<Setup> {
                   ),
                   // Show Image
                   // Use Image.file and File(profileImg!.path) for mobile
-                  (profileImg != null)
+                  (_profileImg != null)
                       ? Image.network(
-                          profileImg!.path,
+                          _profileImg!.path,
                           width: 200.0,
                           height: 200.0,
                           fit: BoxFit.cover,
@@ -372,16 +413,16 @@ class _SetupState extends State<Setup> {
                   // Distance from campus
                   const Text('How far from campus?'),
                   RangeSlider(
-                      values: _mins_to_campus,
+                      values: _minsToCampus,
                       min: 5,
                       max: 30,
                       divisions: 5,
                       labels: RangeLabels(
-                          _mins_to_campus.start.toString() + 'mins',
-                          _mins_to_campus.end.toString() + 'mins'),
+                          _minsToCampus.start.toString() + 'mins',
+                          _minsToCampus.end.toString() + 'mins'),
                       onChanged: (RangeValues values) {
                         setState(() {
-                          _mins_to_campus = values;
+                          _minsToCampus = values;
                         });
                       }),
                 ],
@@ -449,14 +490,14 @@ class _SetupState extends State<Setup> {
                       }),
                   const Text('Weekly Nights Out'),
                   Slider(
-                      value: _nights_out,
+                      value: _nightsOut,
                       min: 0,
                       max: 7,
                       divisions: 7,
-                      label: _nights_out.toString(),
+                      label: _nightsOut.toString(),
                       onChanged: (double value) {
                         setState(() {
-                          _nights_out = value;
+                          _nightsOut = value;
                         });
                       }),
                 ],
