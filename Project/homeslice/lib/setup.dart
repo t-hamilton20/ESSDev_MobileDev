@@ -8,6 +8,7 @@
 * preferences
 */
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -81,34 +82,37 @@ class _SetupState extends State<Setup> {
                 ] else if (_index == 1) ...[
                   Column(children: [
                     ElevatedButton(
-                      onPressed: () {
-                        setState(() async {
-                          if (!(await getUser(user?.uid)).exists) {
-                            await addUser(
-                                user?.uid,
-                                _prefName,
-                                user?.email,
-                                _dropdownValue,
-                                _major,
-                                _year,
-                                _blurb,
-                                _profileImg,
-                                _mates.start.round(),
-                                _mates.end.round(),
-                                _rent.start.round(),
-                                _rent.end.round(),
-                                _coed,
-                                _minsToCampus.start.round(),
-                                _minsToCampus.end.round(),
-                                tidiness: _tidiness,
-                                sharingMeals: _share,
-                                nearWest: _west,
-                                nightsOut: _nightsOut.round(),
-                                pets: _pets,
-                                northOfPrincess: _north,
-                                hosting: _host);
+                      onPressed: () async {
+                        DocumentSnapshot userDoc = await getUser(user?.uid);
+                        setState(() {
+                          if (!userDoc.exists) {
+                            addUser(
+                                    user?.uid,
+                                    _prefName,
+                                    user?.email,
+                                    _dropdownValue,
+                                    _major,
+                                    _year,
+                                    _blurb,
+                                    _profileImg,
+                                    _mates.start.round(),
+                                    _mates.end.round(),
+                                    _rent.start.round(),
+                                    _rent.end.round(),
+                                    _coed,
+                                    _minsToCampus.start.round(),
+                                    _minsToCampus.end.round(),
+                                    tidiness: _tidiness,
+                                    sharingMeals: _share,
+                                    nearWest: _west,
+                                    nightsOut: _nightsOut.round(),
+                                    pets: _pets,
+                                    northOfPrincess: _north,
+                                    hosting: _host)
+                                .then((_) =>
+                                    Navigator.pushNamed(context, '/home'));
                           } else {
-                            await updateUser(
+                            updateUser(
                               user?.uid,
                               name: _prefName,
                               email: user?.email,
@@ -124,9 +128,9 @@ class _SetupState extends State<Setup> {
                               coed: _coed,
                               minDist: _minsToCampus.start.round(),
                               maxDist: _minsToCampus.end.round(),
-                            );
+                            ).then(
+                                (_) => Navigator.pushNamed(context, '/home'));
                           }
-                          Navigator.pushNamed(context, '/home');
                         });
                       },
                       child: const Text('Start Searching'),
@@ -148,10 +152,11 @@ class _SetupState extends State<Setup> {
                     child: const Text('Back'),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      setState(() async {
-                        if (!(await getUser(user?.uid)).exists) {
-                          await addUser(
+                    onPressed: () async {
+                      DocumentSnapshot userDoc = await getUser(user?.uid);
+                      setState(() {
+                        if (!userDoc.exists) {
+                          addUser(
                             user?.uid,
                             _prefName,
                             user?.email,
@@ -167,32 +172,33 @@ class _SetupState extends State<Setup> {
                             _coed,
                             _minsToCampus.start.round(),
                             _minsToCampus.end.round(),
-                          );
+                          ).then((_) => Navigator.pushNamed(context, '/home'));
                         } else {
-                          await updateUser(user?.uid,
-                              name: _prefName,
-                              email: user?.email,
-                              pronouns: _dropdownValue,
-                              major: _major,
-                              year: _year,
-                              blurb: _blurb,
-                              image: _profileImg,
-                              minHousemates: _mates.start.round(),
-                              maxHousemates: _mates.end.round(),
-                              minPrice: _rent.start.round(),
-                              maxPrice: _rent.end.round(),
-                              coed: _coed,
-                              minDist: _minsToCampus.start.round(),
-                              maxDist: _minsToCampus.end.round(),
-                              tidiness: _tidiness,
-                              sharingMeals: _share,
-                              nearWest: _west,
-                              nightsOut: _nightsOut.round(),
-                              pets: _pets,
-                              northOfPrincess: _north,
-                              hosting: _host);
+                          updateUser(user?.uid,
+                                  name: _prefName,
+                                  email: user?.email,
+                                  pronouns: _dropdownValue,
+                                  major: _major,
+                                  year: _year,
+                                  blurb: _blurb,
+                                  image: _profileImg,
+                                  minHousemates: _mates.start.round(),
+                                  maxHousemates: _mates.end.round(),
+                                  minPrice: _rent.start.round(),
+                                  maxPrice: _rent.end.round(),
+                                  coed: _coed,
+                                  minDist: _minsToCampus.start.round(),
+                                  maxDist: _minsToCampus.end.round(),
+                                  tidiness: _tidiness,
+                                  sharingMeals: _share,
+                                  nearWest: _west,
+                                  nightsOut: _nightsOut.round(),
+                                  pets: _pets,
+                                  northOfPrincess: _north,
+                                  hosting: _host)
+                              .then(
+                                  (_) => Navigator.pushNamed(context, '/home'));
                         }
-                        Navigator.pushNamed(context, '/home');
                       });
                     },
                     child: const Text('Finish'),
