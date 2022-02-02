@@ -6,34 +6,34 @@ import 'package:firebase_auth/firebase_auth.dart';
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 var currentUser = FirebaseAuth.instance.currentUser;
 
-Future<void> addConversation(currentPerson, otherUser) {
+Future<void> addConversation(currentPersonID, otherUserID) {
   // call this function when two people swipe on each other
-  return firestore
-      .collection("conversations")
-      .add({'currentPerson': currentUser, 'otherUser': otherUser});
+  return firestore.collection("conversations").add({
+    "Users": [currentPersonID, otherUserID]
+  });
 }
 
-Future<String> getConversation(currentPerson, otherUser) async {
+Future<String> getConversation(currentPersonID, otherUserID) async {
   QuerySnapshot convo = await firestore
       .collection("conversations")
-      .where("currentPerson", isEqualTo: currentUser)
-      .where("otherUser", isEqualTo: otherUser)
+      .where("Users", arrayContains: currentPersonID)
+      .where("Users", arrayContains: otherUserID)
       .get();
 
   return convo.docs[0].id;
 }
 
-Future<QuerySnapshot<Object?>> getAllConversations(currentPerson) async {
+Future<QuerySnapshot<Object?>> getAllConversations(currentPersonID) async {
   // call this function in chat.dart to get all the conversations the user has
   QuerySnapshot convos = await firestore
       .collection("conversations")
-      .where("currentPerson", isEqualTo: currentUser)
+      .where("Users", arrayContains: currentPersonID)
       .get();
 
   return convos;
 }
 
-Future sendMessage(message, date, time, sender, read, conversationID) async {
+Future sendMessage(message, date, time, senderID, read, conversationID) async {
   // call this function in conversation.dart to send a message
   return await firestore
       .collection("conversations")
@@ -43,7 +43,7 @@ Future sendMessage(message, date, time, sender, read, conversationID) async {
     'message': message,
     'date': date,
     'time': time,
-    'sender': sender,
+    'sender': senderID,
     'read': read
   });
 }
