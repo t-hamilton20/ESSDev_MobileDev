@@ -6,9 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 var currentUser = FirebaseAuth.instance.currentUser;
 
-Future<void> addConversation(currentPersonID, otherUserID) {
+Future<DocumentReference<Map<String, dynamic>>> addConversation(
+    currentPersonID, otherUserID) async {
   // call this function when two people swipe on each other
-  return firestore.collection("conversations").add({
+  return await firestore.collection("conversations").add({
     "Users": [currentPersonID, otherUserID]
   });
 }
@@ -20,7 +21,17 @@ Future<String> getConversation(currentPersonID, otherUserID) async {
       .where("Users", arrayContains: otherUserID)
       .get();
 
-  return convo.docs[0].id;
+  QuerySnapshot messages = await firestore
+      .collection("conversations")
+      .doc(conversationID)
+      .collection("messages")
+      .orderBy("date") // order first by date sent
+      .orderBy("time") // order second by time sent
+      .get();
+
+  return messages;
+
+  return convo.docs[0].id; // returns conversation ID
 }
 
 Future<QuerySnapshot<Object?>> getAllConversations(currentPersonID) async {
