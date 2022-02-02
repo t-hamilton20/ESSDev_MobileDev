@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:homeslice/home_swipe.dart';
+import 'package:homeslice/settings.dart';
 
 class Wrapper extends StatefulWidget {
   const Wrapper({Key? key}) : super(key: key);
@@ -45,7 +46,7 @@ class _WrapperState extends State<Wrapper> {
             child: Text("Chat"),
           ),
           Center(
-            child: Text("Profile"),
+            child: Profile(),
           ),
         ],
       ),
