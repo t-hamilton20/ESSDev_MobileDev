@@ -21,15 +21,15 @@ Future<String> getConversation(currentPersonID, otherUserID) async {
       .where("Users", arrayContains: otherUserID)
       .get();
 
-  QuerySnapshot messages = await firestore
-      .collection("conversations")
-      .doc(conversationID)
-      .collection("messages")
-      .orderBy("date") // order first by date sent
-      .orderBy("time") // order second by time sent
-      .get();
+  // QuerySnapshot messages = await firestore
+  //     .collection("conversations")
+  //     .doc(conversationID)
+  //     .collection("messages")
+  //     .orderBy("date") // order first by date sent
+  //     .orderBy("time") // order second by time sent
+  //     .get();
 
-  return messages;
+  // return messages;
 
   return convo.docs[0].id; // returns conversation ID
 }

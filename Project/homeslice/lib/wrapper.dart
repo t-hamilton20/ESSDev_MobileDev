@@ -5,7 +5,7 @@ import 'package:homeslice/chat_database.dart';
 import 'package:homeslice/conversation.dart';
 import 'package:homeslice/home_swipe.dart';
 import 'package:provider/provider.dart';
-
+import 'chat_database.dart';
 import 'chat.dart';
 
 class Wrapper extends StatefulWidget {
@@ -50,7 +50,7 @@ class _WrapperState extends State<Wrapper> {
         children: [
           HomeSwipe(),
           Center(
-            child: Text("Chat"),
+            child: Text(user!.uid.toString()),
           ),
           Center(child: Text("Profile")
               //child: Profile(),
