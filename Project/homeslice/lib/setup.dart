@@ -82,9 +82,9 @@ class _SetupState extends State<Setup> {
                   Column(children: [
                     ElevatedButton(
                       onPressed: () {
-                        setState(() {
-                          if (user == null) {
-                            addUser(
+                        setState(() async {
+                          if (!(await getUser(user?.uid)).exists) {
+                            await addUser(
                                 user?.uid,
                                 _prefName,
                                 user?.email,
@@ -108,10 +108,10 @@ class _SetupState extends State<Setup> {
                                 northOfPrincess: _north,
                                 hosting: _host);
                           } else {
-                            updateUser(
-                              user.uid,
+                            await updateUser(
+                              user?.uid,
                               name: _prefName,
-                              email: user.email,
+                              email: user?.email,
                               pronouns: _dropdownValue,
                               major: _major,
                               year: _year,
@@ -149,9 +149,9 @@ class _SetupState extends State<Setup> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      setState(() {
-                        if (user == null) {
-                          addUser(
+                      setState(() async {
+                        if (!(await getUser(user?.uid)).exists) {
+                          await addUser(
                             user?.uid,
                             _prefName,
                             user?.email,
@@ -169,9 +169,9 @@ class _SetupState extends State<Setup> {
                             _minsToCampus.end.round(),
                           );
                         } else {
-                          updateUser(user.uid,
+                          await updateUser(user?.uid,
                               name: _prefName,
-                              email: user.email,
+                              email: user?.email,
                               pronouns: _dropdownValue,
                               major: _major,
                               year: _year,
