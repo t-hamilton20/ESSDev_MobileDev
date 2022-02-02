@@ -31,13 +31,16 @@ Future<void> addUser(id, name, email, pronouns, major, year, blurb, image,
     pets,
     northOfPrincess,
     hosting}) async {
+  String imgUrl = '';
   try {
     String filename = id + "." + image.name.split(".").last;
+    Reference ref = storage.ref(filename);
     if (kIsWeb) {
-      storage.ref(filename).putData(await image.readAsBytes());
+      await ref.putData(await image.readAsBytes());
     } else {
-      await storage.ref(filename).putFile(File(image.path));
+      await ref.putFile(File(image.path));
     }
+    imgUrl = await ref.getDownloadURL();
   } on FirebaseException catch (e) {
     print(e.message);
   }
@@ -49,6 +52,7 @@ Future<void> addUser(id, name, email, pronouns, major, year, blurb, image,
     'major': major,
     'year': year,
     'blurb': blurb,
+    'image': imgUrl,
     'minHousemates': minHousemates,
     'maxHousemates': maxHousemates,
     'minPrice': minPrice,
@@ -92,14 +96,17 @@ Future<void> updateUser(id,
     pets,
     northOfPrincess,
     hosting}) async {
+  String? imgUrl;
   if (image != null) {
     try {
       String filename = id + "." + image.name.split(".").last;
+      Reference ref = storage.ref(filename);
       if (kIsWeb) {
-        storage.ref(filename).putData(await image.readAsBytes());
+        await ref.putData(await image.readAsBytes());
       } else {
-        await storage.ref(filename).putFile(File(image.path));
+        await ref.putFile(File(image.path));
       }
+      imgUrl = await ref.getDownloadURL();
     } on FirebaseException catch (e) {
       print(e.message);
     }
@@ -112,6 +119,7 @@ Future<void> updateUser(id,
         'major': major,
         'year': year,
         'blurb': blurb,
+        'image': imgUrl,
         'minHousemates': minHousemates,
         'maxHousemates': maxHousemates,
         'minPrice': minPrice,
@@ -137,8 +145,7 @@ Future<DocumentSnapshot> getUser(userID) {
 
 Future<Map> getUsers(currentUserID) async {
   Map<String, dynamic> currentUser =
-      (await firestore.collection("users").doc(currentUserID).get()).data()
-          as Map<String, dynamic>;
+      (await getUser(currentUserID)).data() as Map<String, dynamic>;
 
   QuerySnapshot users = await firestore
       .collection("users")
@@ -160,6 +167,12 @@ Future<Map> getUsers(currentUserID) async {
     ..removeWhere((id, user) =>
         max<num>(currentUser['minDist'], user['minDist']) >
         min(currentUser['maxDist'], user['maxDist']));
+}
+
+Future<List> getMatches(currentUserID) async {
+  Map<String, dynamic> currentUser =
+      (await getUser(currentUserID)).data() as Map<String, dynamic>;
+  return currentUser['matchedUsers'];
 }
 
 Future likeUser(currentUserID, likedUserID) async {
