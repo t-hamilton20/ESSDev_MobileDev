@@ -184,8 +184,7 @@ class _CardStackState extends State<CardStack> {
           alignment: Alignment.bottomCenter,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage("https://via.placeholder.com/500x1000?text=" +
-                  user.value['full_name']),
+              image: NetworkImage(user.value['image']),
               fit: BoxFit.cover,
             ),
           ),
@@ -324,7 +323,7 @@ class _CardStackState extends State<CardStack> {
               ),
               SizedBox(width: 8),
               Text(
-                "he/him",
+                user.value['pronouns'],
                 style: TextStyle(
                   fontStyle: FontStyle.italic,
                 ),
@@ -332,13 +331,13 @@ class _CardStackState extends State<CardStack> {
             ],
           ),
           Text(
-            "1st year, Engineering",
+            "${ordinalNumber(user.value['year'])} year, ${user.value['major']}",
             style: TextStyle(fontStyle: FontStyle.italic),
           ),
           Padding(
             padding: const EdgeInsets.all(20),
             child: Text(
-              "\"Reprehenderit Lorem magna laborum esse pariatur laboris nisi proident. Cupidatat labore tempor aute ea aliqua in dolor cillum nulla incididunt qui dolor. Eu ex id sunt laboris dolor laboris cupidatat cupidatat officia sunt proident ullamco anim anim.\"",
+              "\"${user.value['blurb']}\"",
               style: TextStyle(fontStyle: FontStyle.italic),
             ),
           ),
@@ -514,5 +513,20 @@ class _CardStackState extends State<CardStack> {
         ),
       ],
     );
+  }
+
+  String ordinalNumber(int n) {
+    if (n < 0) throw Exception('Invalid Number');
+
+    switch (n % 10) {
+      case 1:
+        return '${n}st';
+      case 2:
+        return '${n}nd';
+      case 3:
+        return '${n}rd';
+      default:
+        return '${n}th';
+    }
   }
 }
