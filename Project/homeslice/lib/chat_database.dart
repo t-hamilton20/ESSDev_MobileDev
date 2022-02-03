@@ -31,7 +31,7 @@ Future<String> getConversation(currentPersonID, otherUserID) async {
 
   // return messages;
 
-  return convo.docs[0].id; // returns conversation ID
+  return await convo.docs[0].id; // returns conversation ID
 }
 
 Future<QuerySnapshot<Object?>> getAllConversations(currentPersonID) async {
@@ -41,7 +41,7 @@ Future<QuerySnapshot<Object?>> getAllConversations(currentPersonID) async {
       .where("Users", arrayContains: currentPersonID)
       .get();
 
-  return convos;
+  return await convos;
 }
 
 Future sendMessage(message, date, time, senderID, read, conversationID) async {

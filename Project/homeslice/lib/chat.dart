@@ -74,11 +74,11 @@ class _MessagesState extends State<Messages> {
               new SizedBox(
                 height: 300,
                 child: new ListView.builder(
-                  itemCount: conversations.length,
+                  itemCount: widget.conversations.length,
                   itemBuilder: (context, index) {
                     return new Container(
                       padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
-                      child: conversations[index],
+                      child: widget.conversations[index],
                     );
                   },
                 ),
