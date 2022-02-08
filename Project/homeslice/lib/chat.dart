@@ -30,12 +30,6 @@ class _ConversationListState extends State<ConversationList> {
     Future<List> _conversations = getConversationsForUser(user!.uid);
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("Homeslice"),
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
-
       // app body
       body: new Padding(
         padding: EdgeInsets.fromLTRB(50, 30, 50, 30),
@@ -52,12 +46,29 @@ class _ConversationListState extends State<ConversationList> {
                     future: _conversations,
                     builder: (BuildContext context,
                         AsyncSnapshot<List<dynamic>> snapshot) {
-                      if (snapshot.data!.isNotEmpty) {
-                        return snapshot.data![0][0];
-                      } else {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.done:
+                          if (snapshot.data!.isNotEmpty) {
+                            print(snapshot.data.toString());
+                            return new ListView.builder(
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, index) {
+                                  return SizedBox(
+                                    height: 100,
+                                    child: new Container(
+                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
+                                      child: snapshot.data![index],
+                                    ),
+                                  );
+                                });
+                          } else {
+                            return Center(
+                              child: Text("No Active Conversations"),
+                            );
+                          }
+
+                        default:
+                          return Center(child: CircularProgressIndicator());
                       }
                     }),
               ),
