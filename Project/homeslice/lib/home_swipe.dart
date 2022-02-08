@@ -82,7 +82,7 @@ class _CardStackState extends State<CardStack> {
                   _iconState = IconState.none;
                 });
               },
-              opacity: _angle.abs() > 5 ? 0.2 : 0.0,
+              opacity: _angle.abs() > 5 ? 0.5 : 0.0,
               duration: Duration(milliseconds: 100),
               child: Icon(
                 () {
