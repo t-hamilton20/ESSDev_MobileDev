@@ -175,15 +175,51 @@ Future<List> getMatches(currentUserID) async {
 }
 
 Future likeUser(currentUserID, likedUserID) async {
-  List likedUsers =
+  DocumentReference me = firestore.collection('users').doc(currentUserID);
+  List myLikedUsers =
       (await firestore.collection('users').doc(currentUserID).get())
               .data()?['likedUsers'] ??
           [];
+  List myMatchedUsers =
+      (await firestore.collection('users').doc(currentUserID).get())
+              .data()?['matchedUsers'] ??
+          [];
+  List theirLikedUsers =
+      (await firestore.collection('users').doc(likedUserID).get())
+              .data()?['likedUsers'] ??
+          [];
+  List theirMatchedUsers =
+      (await firestore.collection('users').doc(likedUserID).get())
+              .data()?['matchedUsers'] ??
+          [];
 
-  likedUsers.add(firestore.collection('users').doc(likedUserID));
+  if (theirLikedUsers.contains(me)) {
+    // It's a Match!
+    myMatchedUsers.add(
+        firestore.collection('users').doc(likedUserID)); // Add to my matched
+    theirLikedUsers.remove(me); // Remove from their liked
+    theirMatchedUsers.add(me); // Add to their matched
 
-  return firestore
-      .collection('users')
-      .doc(currentUserID)
-      .update({'likedUsers': likedUsers});
+    return Future.wait([
+      firestore
+          .collection('users')
+          .doc(currentUserID)
+          .update({'matchedUsers': myMatchedUsers}), // Update my matched users
+      firestore
+          .collection('users')
+          .doc(likedUserID)
+          .update({'likedUsers': theirLikedUsers}), // Update their liked users
+      firestore.collection('users').doc(likedUserID).update(
+          {'matchedUsers': theirMatchedUsers}) // Update their matched users
+    ]);
+  } else {
+    // Better luck next time :(
+    myLikedUsers
+        .add(firestore.collection('users').doc(likedUserID)); // Add to my liked
+
+    return firestore
+        .collection('users')
+        .doc(currentUserID)
+        .update({'likedUsers': myLikedUsers});
+  }
 }
