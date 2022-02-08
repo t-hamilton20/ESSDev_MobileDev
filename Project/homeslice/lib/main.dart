@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:homeslice/auth_wrapper.dart';
 import 'package:homeslice/connection_error.dart';
 import 'package:homeslice/home_swipe.dart';
 import 'package:homeslice/login.dart';
@@ -61,7 +62,7 @@ class _AppState extends State<App> {
                   '/home': (context) => Wrapper(),
                   '/setup': (context) => Setup()
                 },
-                home: new Login(),
+                home: new AuthWrapper(),
               ));
         }
         return Center(child: CircularProgressIndicator());
