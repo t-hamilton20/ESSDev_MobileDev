@@ -177,7 +177,8 @@ Future<List> getMatches(currentUserID) async {
 Future likeUser(currentUserID, likedUserID) async {
   List likedUsers =
       (await firestore.collection('users').doc(currentUserID).get())
-          .data()?['likedUsers'];
+              .data()?['likedUsers'] ??
+          [];
 
   likedUsers.add(firestore.collection('users').doc(likedUserID));
 

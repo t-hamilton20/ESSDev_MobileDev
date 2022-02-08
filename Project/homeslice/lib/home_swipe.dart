@@ -53,9 +53,12 @@ class _CardStackState extends State<CardStack> {
   IconState _iconState = IconState.none;
   double? _iconAlignment;
 
+  User? currentUser;
+
   @override
   Widget build(BuildContext context) {
     _screenSize = MediaQuery.of(context).size;
+    currentUser = Provider.of<User?>(context);
 
     _iconAlignment = () {
       switch (_iconState) {
@@ -150,7 +153,7 @@ class _CardStackState extends State<CardStack> {
 
                         switch (getAction()) {
                           case CardActions.like:
-                            likeUser("ER8wp6q1krN0pCBaWhbG", user.key);
+                            likeUser(currentUser?.uid, user.key);
                             _position += Offset(2 * _screenSize.width, 0);
                             _angle = 20;
                             _nextCard(user);
