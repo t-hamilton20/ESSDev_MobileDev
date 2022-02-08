@@ -52,13 +52,12 @@ Future sendMessage(message, date, time, senderID, read, conversationID) async {
   return await firestore
       .collection("conversations")
       .doc(conversationID)
-      .collection("messages")
+      .collection("Messages")
       .add({
     'message': message,
     'date': date,
     'time': time,
     'sender': senderID,
-    'read': read
   });
 }
 
@@ -67,9 +66,9 @@ Future<QuerySnapshot<Object?>> getMessages(conversationID) async {
   QuerySnapshot messages = await firestore
       .collection("conversations")
       .doc(conversationID)
-      .collection("messages")
-      .orderBy("date") // order first by date sent
-      .orderBy("time") // order second by time sent
+      .collection("Messages")
+      .orderBy("Date") // order first by date sent
+      .orderBy("Time") // order second by time sent
       .get();
 
   return messages;
@@ -80,11 +79,14 @@ Future<List> getConversationsForUser(String uid) async {
   QuerySnapshot database_conversations =
       await getAllConversations(uid); // get all conversations
 
-  print("query: " + database_conversations.toString());
-  //database_conversations.docs.forEach((res) async {
   for (var doc in database_conversations.docs) {
+    // loop through each conversation
     String otherUserID = "";
+    String convoID = doc.id.toString().trim(); // get convo ID
+    print("convo ID: " + doc.id.toString());
+
     if (await doc.get("Users")[0] == uid) {
+      // get the other user ID
       otherUserID = await doc.get("Users")[1];
     } else {
       otherUserID = await doc.get("Users")[0];
@@ -97,6 +99,7 @@ Future<List> getConversationsForUser(String uid) async {
         messageText: "test",
         imageUrl: otherUser["image"],
         time: "4:20",
+        convoID: convoID,
         isMessageRead: true));
   }
   ;

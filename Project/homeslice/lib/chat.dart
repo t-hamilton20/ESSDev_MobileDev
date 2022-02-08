@@ -96,7 +96,7 @@ class ConversationTile extends StatefulWidget {
       required this.imageUrl,
       required this.time,
       required this.isMessageRead,
-      this.convoID = "DUMMY STRING", // CHANGE THIS
+      required this.convoID, // CHANGE THIS
       this.tapFlag = false});
 
   @override
@@ -110,26 +110,27 @@ class _ConversationState extends State<ConversationTile> {
         onTap: () async {
           var messagesFromDatabase =
               []; // empty list that will hold Messages objects to be passed into the converation widget
-          QuerySnapshot database_messages = await getMessages(
-              "4JITZIL3sHHcwVVT9EYa"); // replace this with the line below
-          //await getMessages(getConversation(currentUser, widget.name).toString()); // gets the messages for the given conversation
-
+          QuerySnapshot database_messages = await getMessages(widget.convoID);
+          print("\n\n\nconvo ID : " + widget.convoID);
           database_messages.docs.forEach((res) {
+            print("\nin loop");
             // loops through all the messages and creates the message widgets
+            print("message : " + res.get("Text".toString()));
             messagesFromDatabase.add(Message(
-                messageText: res.get("message").toString(),
-                time: res.get("time").toString(),
+                messageText: res.get("Text").toString(),
+                time: res.get("Time").toString(),
                 type: "receiver"));
           });
+
+          print("num of messages: " + messagesFromDatabase.length.toString());
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return Conversation(
               name: widget.name,
               messageText: widget.messageText,
               imageUrl: widget.imageUrl,
               time: widget.time,
-              convoID: "4JITZIL3sHHcwVVT9EYa",
+              convoID: widget.convoID,
               messages: messagesFromDatabase,
-              //convoID: getConversation(currentUser, widget.name).toString(),
             );
           }));
 

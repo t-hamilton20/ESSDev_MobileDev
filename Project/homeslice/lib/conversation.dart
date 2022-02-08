@@ -125,17 +125,17 @@ class _ConversationState extends State<Conversation> {
                     Padding(
                       padding: const EdgeInsets.all(4.0),
                       // attach a file button
-                      child: FloatingActionButton(
-                        mini: true,
-                        onPressed: () {},
-                        child: Icon(
-                          Icons.attach_file,
-                          color: Colors.white,
-                          size: 15,
-                        ),
-                        backgroundColor: Theme.of(context).primaryColor,
-                        elevation: 0,
-                      ),
+                      // child: FloatingActionButton(
+                      //   mini: true,
+                      //   onPressed: () {},
+                      //   child: Icon(
+                      //     Icons.attach_file,
+                      //     color: Colors.white,
+                      //     size: 15,
+                      //   ),
+                      //   backgroundColor: Theme.of(context).primaryColor,
+                      //   elevation: 0,
+                      // ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(4.0),
@@ -159,7 +159,8 @@ class _ConversationState extends State<Conversation> {
                                     date.minute.toString(),
                                 currentUser,
                                 false,
-                                "4JITZIL3sHHcwVVT9EYa"); // replace convoID with actual convoID
+                                widget
+                                    .convoID); // replace convoID with actual convoID
 
                             widget.messages.add(new Message(
                                 messageText: newMessageController.text,
