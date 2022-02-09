@@ -86,7 +86,6 @@ class ConversationTile extends StatefulWidget {
   String messageText;
   String imageUrl;
   String time;
-  bool isMessageRead;
   bool tapFlag;
   String convoID; // pass in conversation ID here
 
@@ -95,8 +94,7 @@ class ConversationTile extends StatefulWidget {
       required this.messageText,
       required this.imageUrl,
       required this.time,
-      required this.isMessageRead,
-      required this.convoID, // CHANGE THIS
+      required this.convoID,
       this.tapFlag = false});
 
   @override
@@ -106,6 +104,10 @@ class ConversationTile extends StatefulWidget {
 class _ConversationState extends State<ConversationTile> {
   @override
   Widget build(BuildContext context) {
+    User? user = Provider.of<User?>(context);
+
+    var lastMessage = getLastMessageText(widget.convoID);
+
     return GestureDetector(
         onTap: () async {
           var messagesFromDatabase =
@@ -116,13 +118,19 @@ class _ConversationState extends State<ConversationTile> {
             print("\nin loop");
             // loops through all the messages and creates the message widgets
             print("message : " + res.get("Text".toString()));
+            String messageType = "receiver";
+            if (res.get("Sender") == user!.uid) {
+              // check who is sending the message
+              messageType = "sender";
+            } else {
+              messageType = "receiver";
+            }
             messagesFromDatabase.add(Message(
                 messageText: res.get("Text").toString(),
-                time: res.get("Time").toString(),
-                type: "receiver"));
+                time: res.get("Timestamp").toString(),
+                type: messageType));
           });
 
-          print("num of messages: " + messagesFromDatabase.length.toString());
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return Conversation(
               name: widget.name,
@@ -167,17 +175,17 @@ class _ConversationState extends State<ConversationTile> {
                           style: TextStyle(fontSize: 16),
                         ),
                         SizedBox(
-                          height: 5,
+                          height: 15,
                         ),
                         Text(
-                          widget.messageText,
-                          style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.grey[300],
-                              fontWeight: widget.isMessageRead
-                                  ? FontWeight.bold
-                                  : FontWeight.normal),
-                        )
+                          widget.messageText +
+                              "  ·  " +
+                              widget.time.split(' ')[1] +
+                              ' ' +
+                              widget.time.split(' ')[2],
+                          style:
+                              TextStyle(fontSize: 13, color: Colors.grey[300]),
+                        ),
                       ],
                     ),
                   ),

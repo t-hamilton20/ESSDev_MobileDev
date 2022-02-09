@@ -24,16 +24,6 @@ Future<String> getConversation(currentPersonID, otherUserID) async {
       .where("Users", arrayContains: otherUserID)
       .get();
 
-  // QuerySnapshot messages = await firestore
-  //     .collection("conversations")
-  //     .doc(conversationID)
-  //     .collection("messages")
-  //     .orderBy("date") // order first by date sent
-  //     .orderBy("time") // order second by time sent
-  //     .get();
-
-  // return messages;
-
   return await convo.docs[0].id; // returns conversation ID
 }
 
@@ -47,17 +37,21 @@ Future<QuerySnapshot<Object?>> getAllConversations(currentPersonID) async {
   return await convos;
 }
 
-Future sendMessage(message, date, time, senderID, read, conversationID) async {
+Future sendMessage(message, timestamp, senderID, read, conversationID) async {
   // call this function in conversation.dart to send a message
+
+  print("sending message sent by " +
+      senderID.toString() +
+      " into " +
+      conversationID.toString());
   return await firestore
       .collection("conversations")
       .doc(conversationID)
       .collection("Messages")
       .add({
-    'message': message,
-    'date': date,
-    'time': time,
-    'sender': senderID,
+    'Text': message,
+    'Timestamp': timestamp,
+    'Sender': senderID,
   });
 }
 
@@ -67,8 +61,7 @@ Future<QuerySnapshot<Object?>> getMessages(conversationID) async {
       .collection("conversations")
       .doc(conversationID)
       .collection("Messages")
-      .orderBy("Date") // order first by date sent
-      .orderBy("Time") // order second by time sent
+      .orderBy("Timestamp")
       .get();
 
   return messages;
@@ -94,13 +87,26 @@ Future<List> getConversationsForUser(String uid) async {
     print("Received other user ID: " + otherUserID);
     otherUserID = otherUserID.trim();
     Map otherUser = (await getUser(otherUserID)).data() as Map<String, dynamic>;
+
+    QuerySnapshot messages = await firestore
+        .collection("conversations")
+        .doc(convoID)
+        .collection("Messages")
+        .orderBy("Timestamp")
+        .get();
+
+    DocumentSnapshot lastMessage = messages.docs.last;
+    String lastMessageText = lastMessage["Text"];
+    if (lastMessageText.length > 50) {
+      lastMessageText = lastMessageText.substring(0, 50) + "...";
+    }
+
     conversationsFromDatabase.add(new ConversationTile(
         name: otherUser["full_name"],
-        messageText: "test",
+        messageText: lastMessageText,
         imageUrl: otherUser["image"],
-        time: "4:20",
-        convoID: convoID,
-        isMessageRead: true));
+        time: lastMessage["Timestamp"],
+        convoID: convoID));
   }
   ;
 
@@ -125,4 +131,30 @@ Future<List> getConversationsListForUser(String uid) async {
   });
 
   return await conversationsFromDatabase;
+}
+
+Future<DocumentSnapshot> getLastMessage(String convoID) async {
+  QuerySnapshot messages = await firestore
+      .collection("conversations")
+      .doc(convoID)
+      .collection("Messages")
+      .orderBy("Timestamp")
+      .get();
+
+  DocumentSnapshot lastMessage = messages.docs.last;
+  print("\nLast message: " + lastMessage["Text"]);
+  return lastMessage;
+}
+
+Future<String> getLastMessageText(String convoID) async {
+  QuerySnapshot messages = await firestore
+      .collection("conversations")
+      .doc(convoID)
+      .collection("Messages")
+      .orderBy("Timestamp")
+      .get();
+
+  DocumentSnapshot lastMessage = messages.docs.last;
+  print("\nLast message: " + lastMessage["Text"]);
+  return lastMessage["Text"];
 }

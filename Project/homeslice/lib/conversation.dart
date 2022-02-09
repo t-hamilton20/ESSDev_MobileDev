@@ -2,10 +2,14 @@
 
 import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'chat.dart';
 import 'chat_database.dart';
+import 'package:intl/date_symbol_data_http_request.dart';
 
 class Conversation extends StatefulWidget {
   String name;
@@ -31,6 +35,8 @@ class _ConversationState extends State<Conversation> {
       TextEditingController(); // controller for the new message text input
   @override
   Widget build(BuildContext context) {
+    User? user = Provider.of<User?>(context);
+
     return Scaffold(
       // Top app bar
       appBar: AppBar(
@@ -145,28 +151,20 @@ class _ConversationState extends State<Conversation> {
                         onPressed: () async {
                           if (newMessageController.text.isNotEmpty) {
                             DateTime date = new DateTime.now();
+                            DateFormat df = DateFormat.yMd().add_jm();
+                            print("timestamp" + df.format(date));
 
                             // add new message
                             sendMessage(
                                 newMessageController.text,
-                                date.day.toString() +
-                                    "/" +
-                                    date.month.toString() +
-                                    "/" +
-                                    date.year.toString(),
-                                date.hour.toString() +
-                                    ":" +
-                                    date.minute.toString(),
-                                currentUser,
+                                df.format(date),
+                                user!.uid,
                                 false,
-                                widget
-                                    .convoID); // replace convoID with actual convoID
+                                widget.convoID);
 
                             widget.messages.add(new Message(
                                 messageText: newMessageController.text,
-                                time: date.hour.toString() +
-                                    ":" +
-                                    date.minute.toString(),
+                                time: df.format(date),
                                 type: "sender"));
 
                             newMessageController.clear();
