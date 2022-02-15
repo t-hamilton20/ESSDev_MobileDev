@@ -37,13 +37,16 @@ Future<QuerySnapshot<Object?>> getAllConversations(currentPersonID) async {
   return await convos;
 }
 
-Future sendMessage(message, timestamp, senderID, read, conversationID) async {
+Future sendMessage(
+    message, timestamp, senderID, int milli, read, conversationID) async {
   // call this function in conversation.dart to send a message
 
   print("sending message sent by " +
       senderID.toString() +
       " into " +
       conversationID.toString());
+
+  print("milli: " + DateTime.now().millisecondsSinceEpoch.toString());
   return await firestore
       .collection("conversations")
       .doc(conversationID)
@@ -52,6 +55,7 @@ Future sendMessage(message, timestamp, senderID, read, conversationID) async {
     'Text': message,
     'Timestamp': timestamp,
     'Sender': senderID,
+    'Milli': milli,
   });
 }
 
@@ -61,7 +65,7 @@ Future<QuerySnapshot<Object?>> getMessages(conversationID) async {
       .collection("conversations")
       .doc(conversationID)
       .collection("Messages")
-      .orderBy("Timestamp")
+      .orderBy("Milli")
       .get();
 
   return messages;
@@ -92,7 +96,7 @@ Future<List> getConversationsForUser(String uid) async {
         .collection("conversations")
         .doc(convoID)
         .collection("Messages")
-        .orderBy("Timestamp")
+        .orderBy("Milli")
         .get();
 
     DocumentSnapshot lastMessage = messages.docs.last;
@@ -138,7 +142,7 @@ Future<DocumentSnapshot> getLastMessage(String convoID) async {
       .collection("conversations")
       .doc(convoID)
       .collection("Messages")
-      .orderBy("Timestamp")
+      .orderBy("Milli")
       .get();
 
   DocumentSnapshot lastMessage = messages.docs.last;
@@ -151,7 +155,7 @@ Future<String> getLastMessageText(String convoID) async {
       .collection("conversations")
       .doc(convoID)
       .collection("Messages")
-      .orderBy("Timestamp")
+      .orderBy("Milli")
       .get();
 
   DocumentSnapshot lastMessage = messages.docs.last;

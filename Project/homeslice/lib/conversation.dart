@@ -159,6 +159,7 @@ class _ConversationState extends State<Conversation> {
                                 newMessageController.text,
                                 df.format(date),
                                 user!.uid,
+                                date.millisecondsSinceEpoch,
                                 false,
                                 widget.convoID);
 
