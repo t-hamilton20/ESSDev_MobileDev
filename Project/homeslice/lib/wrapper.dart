@@ -5,6 +5,7 @@ import 'package:homeslice/chat_database.dart';
 import 'package:homeslice/conversation.dart';
 import 'package:homeslice/database.dart';
 import 'package:homeslice/home_swipe.dart';
+import 'package:homeslice/themes.dart';
 import 'package:provider/provider.dart';
 import 'chat_database.dart';
 import 'chat.dart';
@@ -53,7 +54,19 @@ class _WrapperState extends State<Wrapper> {
           Center(
             child: ConversationList(),
           ),
-          Center(child: Text("Profile")
+          Center(
+              child: Column(
+            children: [
+              Text("Profile"),
+              Switch(
+                  value: currentTheme.getTheme(),
+                  onChanged: (value) {
+                    setState(() {
+                      currentTheme.switchTheme();
+                    });
+                  }),
+            ],
+          )
               //child: Profile(),
               ),
         ],

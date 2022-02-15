@@ -10,6 +10,7 @@ import 'package:homeslice/setup.dart';
 import 'package:homeslice/chat.dart';
 import 'package:provider/provider.dart';
 import 'package:homeslice/wrapper.dart';
+import 'themes.dart';
 
 // This code runs the app and navigates between pages
 
@@ -26,6 +27,16 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    currentTheme.addListener(() {
+      print("Changes");
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -50,13 +61,17 @@ class _AppState extends State<App> {
                 StreamProvider<User?>.value(
                   value: FirebaseAuth.instance.authStateChanges(),
                   initialData: null,
-                )
+                ),
               ],
               child: MaterialApp(
-                theme: ThemeData(
-                    primaryColor: Colors.grey[1000],
-                    secondaryHeaderColor: Colors.grey[750],
-                    brightness: Brightness.dark),
+                theme: getLightTheme(),
+                darkTheme: getDarkTheme(),
+                //theme: themeProvider.getDarkMode() ? themeProvider.getDarkTheme() : themeProvider.getLightTheme(),
+                themeMode: currentTheme.currentTheme(),
+                // theme: ThemeData(
+                //     primaryColor: Colors.grey[1000],
+                //     secondaryHeaderColor: Colors.grey[750],
+                //     brightness: Brightness.dark),
                 routes: {
                   '/login': (context) => Login(),
                   '/signup': (context) => Signup(),

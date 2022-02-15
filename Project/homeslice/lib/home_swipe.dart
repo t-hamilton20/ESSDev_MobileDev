@@ -4,6 +4,7 @@ import 'package:homeslice/custom_icons.dart';
 import 'dart:math';
 
 import 'package:homeslice/database.dart';
+import 'package:homeslice/themes.dart';
 import 'package:provider/provider.dart';
 
 enum CardActions { like, dislike }
