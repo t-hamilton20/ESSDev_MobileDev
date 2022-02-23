@@ -11,11 +11,27 @@ class ThemeNotifier with ChangeNotifier {
   }
 
   bool getTheme() {
+    // dynamic currentTheme = await StorageManager.readData("isDark");
+    // if (currentTheme.toString() == "null") {
+    //   StorageManager.storeData("isDark", true);
+    // }
+    // print(currentTheme.toString());
     return _isDark;
+  }
+
+  Future<dynamic> getSavedTheme() async {
+    dynamic currentTheme = await StorageManager.readData("isDark");
+    if (currentTheme.toString() == "null") {
+      StorageManager.storeData("isDark", true);
+      currentTheme = true;
+    }
+
+    return currentTheme;
   }
 
   void switchTheme() {
     _isDark = !_isDark;
+    //StorageManager.storeData("isDark", _isDark);
     notifyListeners();
   }
 }
@@ -46,37 +62,23 @@ ThemeData getLightTheme() {
   return _lightTheme;
 }
 
-// class DynamicTheme with ChangeNotifier {
-//   ThemeData _darkTheme = ThemeData(
-//     primarySwatch: Colors.grey,
-//     primaryColor: Colors.black,
-//     brightness: Brightness.dark,
-//     backgroundColor: const Color(0xFF212121),
-//     dividerColor: Colors.black12,
-//   );
+class StorageManager {
+  static Future<void> storeData(String key, dynamic value) async {
+    final preferences = await SharedPreferences.getInstance();
+    if (value is int) {
+      preferences.setInt(key, value);
+    } else if (value is String) {
+      preferences.setString(key, value);
+    } else if (value is bool) {
+      preferences.setBool(key, value);
+    } else {
+      print("Error. Invalid Type.");
+    }
+  }
 
-//   ThemeData _lightTheme = ThemeData(
-//     primarySwatch: Colors.grey,
-//     primaryColor: Colors.white,
-//     brightness: Brightness.light,
-//     backgroundColor: const Color(0xFFE5E5E5),
-//     dividerColor: Colors.white54,
-//   );
-
-//   ThemeData getDarkTheme() {
-//     return _darkTheme;
-//   }
-
-//   ThemeData getLightTheme() {
-//     return _lightTheme;
-//   }
-
-//   // ChangeNotifier : will provide a notifier for any changes in the value to all it's listeners
-//   bool isDarkMode = false;
-//   getDarkMode() => this.isDarkMode;
-
-//   void changeDarkMode() {
-//     this.isDarkMode = !this.isDarkMode;
-//     notifyListeners(); // Notify all it's listeners about update. If you comment this line then you will see that new added items will not be reflected in the list.
-//   }
-// }
+  static Future<dynamic> readData(String key) async {
+    final preferences = await SharedPreferences.getInstance();
+    dynamic returnObj = preferences.get(key);
+    return returnObj;
+  }
+}
