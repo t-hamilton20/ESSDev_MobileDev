@@ -1,85 +1,102 @@
-library config.globals;
+// library config.globals;
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ThemeNotifier with ChangeNotifier {
-  static bool _isDark = false;
+class ThemeProvider 
+// class ThemeNotifier with ChangeNotifier {
+//   static bool _isDark = false;
+//   ThemeData dark = ThemeData.dark();
+//   ThemeData light = ThemeData.light();
 
-  ThemeMode currentTheme() {
-    return _isDark ? ThemeMode.dark : ThemeMode.light;
-  }
+//   ThemeMode currentTheme() {
+//     return _isDark ? ThemeMode.dark : ThemeMode.light;
+//   }
 
-  bool getTheme() {
-    // dynamic currentTheme = await StorageManager.readData("isDark");
-    // if (currentTheme.toString() == "null") {
-    //   StorageManager.storeData("isDark", true);
-    // }
-    // print(currentTheme.toString());
-    return _isDark;
-  }
+//   // bool getTheme() {
+//   //   // dynamic currentTheme = await StorageManager.readData("isDark");
+//   //   // if (currentTheme.toString() == "null") {
+//   //   //   StorageManager.storeData("isDark", true);
+//   //   // }
+//   //   // print(currentTheme.toString());
+//   //   return _isDark;
+//   // }
 
-  Future<dynamic> getSavedTheme() async {
-    dynamic currentTheme = await StorageManager.readData("isDark");
-    if (currentTheme.toString() == "null") {
-      print("testing theme");
-      StorageManager.storeData("isDark", true);
-      currentTheme = true;
-    }
+//   bool getTheme() {
+//     return _isDark;
+//   }
 
-    return currentTheme;
-  }
+//   Future<dynamic> getSavedTheme() async {
+//     dynamic currentTheme = await StorageManager.readData("isDark");
+//     if (currentTheme.toString() == "null") {
+//       print("testing theme");
+//       StorageManager.storeData("isDark", true);
+//       currentTheme = true;
+//     }
 
-  void switchTheme() {
-    _isDark = !_isDark;
-    //StorageManager.storeData("isDark", _isDark);
-    notifyListeners();
-  }
-}
+//     return currentTheme;
+//   }
 
-ThemeNotifier currentTheme = ThemeNotifier();
+//   Future<void> switchTheme() async {
+//     _isDark = !_isDark;
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//     if (_isDark) {
+//       // dark theme
+//       prefs.setBool("isDark", true); // set pref
+//       print("set dark");
+//     } else {
+//       // light theme
+//       prefs.setBool("isDark", false); // set pref
+//       print("set light");
+//     }
+//     //StorageManager.storeData("isDark", _isDark);
+//     notifyListeners();
+//   }
+// }
 
-ThemeData _darkTheme = ThemeData(
-  primarySwatch: Colors.grey,
-  primaryColor: Colors.black,
-  brightness: Brightness.dark,
-  backgroundColor: const Color(0xFF212121),
-  dividerColor: Colors.black12,
-);
+// ThemeNotifier currentTheme = ThemeNotifier();
 
-ThemeData _lightTheme = ThemeData(
-  primarySwatch: Colors.grey,
-  primaryColor: Colors.white,
-  brightness: Brightness.light,
-  backgroundColor: const Color(0xFFE5E5E5),
-  dividerColor: Colors.white54,
-);
+// ThemeData _darkTheme = ThemeData(
+//   primarySwatch: Colors.grey,
+//   primaryColor: Colors.black,
+//   brightness: Brightness.dark,
+//   backgroundColor: const Color(0xFF212121),
+//   dividerColor: Colors.black12,
+// );
 
-ThemeData getDarkTheme() {
-  return _darkTheme;
-}
+// ThemeData _lightTheme = ThemeData(
+//   primarySwatch: Colors.grey,
+//   primaryColor: Colors.white,
+//   brightness: Brightness.light,
+//   backgroundColor: const Color(0xFFE5E5E5),
+//   dividerColor: Colors.white54,
+// );
 
-ThemeData getLightTheme() {
-  return _lightTheme;
-}
+// ThemeData getDarkTheme() {
+//   return _darkTheme;
+// }
 
-class StorageManager {
-  static Future<void> storeData(String key, dynamic value) async {
-    final preferences = await SharedPreferences.getInstance();
-    if (value is int) {
-      preferences.setInt(key, value);
-    } else if (value is String) {
-      preferences.setString(key, value);
-    } else if (value is bool) {
-      preferences.setBool(key, value);
-    } else {
-      print("Error. Invalid Type.");
-    }
-  }
+// ThemeData getLightTheme() {
+//   return _lightTheme;
+// }
 
-  static Future<dynamic> readData(String key) async {
-    final preferences = await SharedPreferences.getInstance();
-    dynamic returnObj = preferences.get(key);
-    return returnObj;
-  }
-}
+// class StorageManager {
+//   static Future<void> storeData(String key, dynamic value) async {
+//     final preferences = await SharedPreferences.getInstance();
+//     if (value is int) {
+//       preferences.setInt(key, value);
+//     } else if (value is String) {
+//       preferences.setString(key, value);
+//     } else if (value is bool) {
+//       preferences.setBool(key, value);
+//     } else {
+//       print("Error. Invalid Type.");
+//     }
+//   }
+
+//   static Future<dynamic> readData(String key) async {
+//     final preferences = await SharedPreferences.getInstance();
+//     dynamic returnObj = preferences.get(key);
+//     return returnObj;
+//   }
+// }
