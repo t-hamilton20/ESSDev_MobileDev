@@ -41,127 +41,130 @@ class _LoginState extends State<Login> {
       body: new Padding(
         padding: EdgeInsets.fromLTRB(50, 30, 50, 30),
         child: new Center(
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              new SizedBox(
-                height: 20,
-              ),
+          child: SingleChildScrollView(
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                new SizedBox(
+                  height: 20,
+                ),
 
-              //textfield for email input
-              new TextField(
-                controller: emailController,
-                style: TextStyle(fontSize: 20),
-                decoration: new InputDecoration(
-                    labelText: "Email",
-                    hintText: "Enter your email",
-                    border: new UnderlineInputBorder(
-                        borderSide: new BorderSide(
-                      color: Theme.of(context).secondaryHeaderColor,
-                    ))),
-                onSubmitted: (String emailInput) {
-                  setState(() {});
-                },
-              ),
+                //textfield for email input
+                new TextField(
+                  controller: emailController,
+                  style: TextStyle(fontSize: 20),
+                  decoration: new InputDecoration(
+                      labelText: "Email",
+                      hintText: "Enter your email",
+                      border: new UnderlineInputBorder(
+                          borderSide: new BorderSide(
+                        color: Theme.of(context).secondaryHeaderColor,
+                      ))),
+                  onSubmitted: (String emailInput) {
+                    setState(() {});
+                  },
+                ),
 
-              new SizedBox(
-                height: 40,
-              ),
+                new SizedBox(
+                  height: 40,
+                ),
 
-              // textfield for password input
-              new TextField(
-                controller: passwordController,
-                obscureText: isObscure,
-                style: TextStyle(fontSize: 20),
-                decoration: new InputDecoration(
-                    labelText: "Password",
-                    hintText: "Enter your password",
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        isObscure ? Icons.visibility : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          isObscure = !isObscure;
-                        });
-                      },
-                    )),
-                onSubmitted: (String passwordInput) {
-                  setState(() {});
-                },
-              ),
+                // textfield for password input
+                new TextField(
+                  controller: passwordController,
+                  obscureText: isObscure,
+                  style: TextStyle(fontSize: 20),
+                  decoration: new InputDecoration(
+                      labelText: "Password",
+                      hintText: "Enter your password",
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          isObscure ? Icons.visibility : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isObscure = !isObscure;
+                          });
+                        },
+                      )),
+                  onSubmitted: (String passwordInput) {
+                    setState(() {});
+                  },
+                ),
 
-              new SizedBox(
-                height: 40,
-              ),
+                new SizedBox(
+                  height: 40,
+                ),
 
-              ElevatedButton(
-                // login button
-                style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).secondaryHeaderColor,
-                    fixedSize: Size(100, 50),
-                    textStyle: TextStyle(fontSize: 20)),
-                child: Text("Login"),
-                onPressed: () async {
-                  print("email: " +
-                      emailController.text +
-                      "\npassword: " +
-                      passwordController.text);
-                  try {
-                    UserCredential userCredential = await FirebaseAuth.instance
-                        .signInWithEmailAndPassword(
-                            email: emailController.text,
-                            password: passwordController.text);
-                    isSignedIn = true;
-                  } on FirebaseAuthException catch (e) {
-                    if (e.code == 'user-not-found') {
-                      _buildPopupDialog(
-                          context, "No user found for that email.");
-                      print('No user found for that email.');
-                      isSignedIn = false;
-                    } else if (e.code == 'wrong-password') {
-                      _buildPopupDialog(context, "Incorrect password.");
-                      print('Wrong password provided for that user.');
-                      isSignedIn = false;
+                ElevatedButton(
+                  // login button
+                  style: ElevatedButton.styleFrom(
+                      primary: Theme.of(context).secondaryHeaderColor,
+                      fixedSize: Size(100, 50),
+                      textStyle: TextStyle(fontSize: 20)),
+                  child: Text("Login"),
+                  onPressed: () async {
+                    print("email: " +
+                        emailController.text +
+                        "\npassword: " +
+                        passwordController.text);
+                    try {
+                      UserCredential userCredential = await FirebaseAuth
+                          .instance
+                          .signInWithEmailAndPassword(
+                              email: emailController.text,
+                              password: passwordController.text);
+                      isSignedIn = true;
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'user-not-found') {
+                        _buildPopupDialog(
+                            context, "No user found for that email.");
+                        print('No user found for that email.');
+                        isSignedIn = false;
+                      } else if (e.code == 'wrong-password') {
+                        _buildPopupDialog(context, "Incorrect password.");
+                        print('Wrong password provided for that user.');
+                        isSignedIn = false;
+                      }
                     }
-                  }
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Wrapper()),
-                  );
-                  setState(() {});
-                },
-              ),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Wrapper()),
+                    );
+                    setState(() {});
+                  },
+                ),
 
-              SizedBox(
-                height: 120,
-              ),
+                SizedBox(
+                  height: 120,
+                ),
 
-              Text(
-                "Don't have an account?",
-                style: TextStyle(fontSize: 20),
-              ),
+                Text(
+                  "Don't have an account?",
+                  style: TextStyle(fontSize: 20),
+                ),
 
-              new SizedBox(
-                height: 40,
-              ),
+                new SizedBox(
+                  height: 40,
+                ),
 
-              ElevatedButton(
-                // button to push signup page onto stack
-                style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).secondaryHeaderColor,
-                    fixedSize: Size(100, 50),
-                    textStyle: TextStyle(fontSize: 20)),
-                child: Text("Signup"),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Signup()),
-                  );
-                  setState(() {});
-                },
-              ),
-            ],
+                ElevatedButton(
+                  // button to push signup page onto stack
+                  style: ElevatedButton.styleFrom(
+                      primary: Theme.of(context).secondaryHeaderColor,
+                      fixedSize: Size(100, 50),
+                      textStyle: TextStyle(fontSize: 20)),
+                  child: Text("Signup"),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Signup()),
+                    );
+                    setState(() {});
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
