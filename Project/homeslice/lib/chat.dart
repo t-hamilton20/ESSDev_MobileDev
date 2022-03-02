@@ -28,6 +28,7 @@ class _ConversationListState extends State<ConversationList> {
   Widget build(BuildContext context) {
     User? user = Provider.of<User?>(context);
     Future<List> _conversations = getConversationsForUser(user!.uid);
+    Future<Map> _matches = getMatches(user.uid);
 
     return Scaffold(
       // app body
@@ -43,24 +44,53 @@ class _ConversationListState extends State<ConversationList> {
               new SizedBox(
                 height: 300,
                 child: FutureBuilder<List<dynamic>>(
-                    future: _conversations,
+                    future: Future.wait([_conversations, _matches]),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<dynamic>> snapshot) {
+                      if (snapshot.hasError) print(snapshot.error);
                       switch (snapshot.connectionState) {
                         case ConnectionState.done:
                           if (snapshot.data!.isNotEmpty) {
-                            print(snapshot.data.toString());
-                            return new ListView.builder(
-                                itemCount: snapshot.data!.length,
-                                itemBuilder: (context, index) {
-                                  return SizedBox(
-                                    height: 100,
-                                    child: new Container(
-                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
-                                      child: snapshot.data![index],
-                                    ),
-                                  );
-                                });
+                            // print(snapshot.data.toString());
+                            List conversations = snapshot.data![0];
+                            Map matches = snapshot.data![1];
+
+                            return ListView(
+                              children: [
+                                ExpansionTile(
+                                  initiallyExpanded: true,
+                                  title: Text("New Matches"),
+                                  children: matches.entries
+                                      .map((m) => SizedBox(
+                                            height: 100,
+                                            child: new Container(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  0, 0, 0, 8),
+                                              child: MatchTile(
+                                                name: m.value["full_name"],
+                                                imageUrl: m.value["image"],
+                                                id: m.key,
+                                              ),
+                                            ),
+                                          ))
+                                      .toList(),
+                                ),
+                                ExpansionTile(
+                                  initiallyExpanded: true,
+                                  title: Text("Conversations"),
+                                  children: conversations
+                                      .map((c) => SizedBox(
+                                            height: 100,
+                                            child: new Container(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  0, 0, 0, 8),
+                                              child: c,
+                                            ),
+                                          ))
+                                      .toList(),
+                                ),
+                              ],
+                            );
                           } else {
                             return Center(
                               child: Text("No Active Conversations"),
@@ -177,14 +207,28 @@ class _ConversationState extends State<ConversationTile> {
                         SizedBox(
                           height: 15,
                         ),
-                        Text(
-                          widget.messageText +
+                        Row(
+                          children: [
+                            Builder(builder: (context) {
+                              return SizedBox(
+                                width: MediaQuery.of(context).size.width / 6,
+                                child: Text(
+                                  widget.messageText,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 13, color: Colors.grey[300]),
+                                ),
+                              );
+                            }),
+                            Text(
                               "  ·  " +
-                              widget.time.split(' ')[1] +
-                              ' ' +
-                              widget.time.split(' ')[2],
-                          style:
-                              TextStyle(fontSize: 13, color: Colors.grey[300]),
+                                  widget.time.split(' ')[1] +
+                                  ' ' +
+                                  widget.time.split(' ')[2],
+                              style: TextStyle(
+                                  fontSize: 13, color: Colors.grey[300]),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -237,6 +281,137 @@ class _ConversationState extends State<ConversationTile> {
                                 width: 10,
                               ),
                               Text("Invite to Group"),
+                            ],
+                          ),
+                        ),
+
+                        PopupMenuItem(
+                          onTap: () {
+                            // unmatch user
+                          },
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.block),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Unmatch User"),
+                            ],
+                          ),
+                        ),
+                      ]),
+            ],
+          ),
+        ));
+  }
+}
+
+// widget used for new matches
+class MatchTile extends StatefulWidget {
+  String name;
+  String imageUrl;
+  bool tapFlag;
+  String id;
+
+  MatchTile(
+      {required this.name,
+      required this.imageUrl,
+      required this.id,
+      this.tapFlag = false});
+
+  @override
+  _MatchState createState() => _MatchState();
+}
+
+class _MatchState extends State<MatchTile> {
+  @override
+  Widget build(BuildContext context) {
+    User? user = Provider.of<User?>(context);
+
+    return GestureDetector(
+        onTap: () async {
+          unmatch(user!.uid, widget.id); // remove user from matches
+
+          // start a new conversation
+          DocumentReference convoDoc =
+              await addConversation(user.uid, widget.id);
+
+          print("\n\n\nconvo ID : " + convoDoc.id);
+
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return Conversation(
+              name: widget.name,
+              messageText: "",
+              imageUrl: widget.imageUrl,
+              time: "",
+              convoID: convoDoc.id,
+              messages: [],
+            );
+          }));
+
+          widget.tapFlag = true;
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            color: (widget.tapFlag ? Colors.grey[500] : Colors.grey[900]),
+          ),
+          padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+          child: Row(
+            // two different row widgets are used to ensure popup menu is aligned properly
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  // profile pic
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(widget.imageUrl),
+                    maxRadius: 30,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  // container with text
+                  Container(
+                    color: Colors.transparent,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.name,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          "Tap to start talking!",
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey[300],
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              // popup menu
+              PopupMenuButton(
+                  itemBuilder: (context) => [
+                        // profile option
+                        PopupMenuItem(
+                          onTap: () {
+                            // show profile
+                          },
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.person),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("View Profile"),
                             ],
                           ),
                         ),
