@@ -22,6 +22,7 @@ class ThemeNotifier with ChangeNotifier {
   Future<dynamic> getSavedTheme() async {
     dynamic currentTheme = await StorageManager.readData("isDark");
     if (currentTheme.toString() == "null") {
+      print("testing theme");
       StorageManager.storeData("isDark", true);
       currentTheme = true;
     }

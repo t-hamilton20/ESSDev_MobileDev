@@ -10,12 +10,14 @@ import 'package:homeslice/setup.dart';
 import 'package:homeslice/chat.dart';
 import 'package:provider/provider.dart';
 import 'package:homeslice/wrapper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'themes.dart';
 
 // This code runs the app and navigates between pages
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   runApp(App());
 }
 
