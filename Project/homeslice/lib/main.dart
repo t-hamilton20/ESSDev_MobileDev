@@ -7,6 +7,7 @@ import 'package:homeslice/home_swipe.dart';
 import 'package:homeslice/login.dart';
 import 'package:homeslice/signup.dart';
 import 'package:homeslice/setup.dart';
+import 'package:homeslice/chat.dart';
 import 'package:provider/provider.dart';
 import 'package:homeslice/wrapper.dart';
 import 'package:homeslice/settings.dart';

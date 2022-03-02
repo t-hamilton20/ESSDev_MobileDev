@@ -15,6 +15,7 @@ import 'dart:io';
 import 'dart:math';
 
 import "package:cloud_firestore/cloud_firestore.dart";
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 
@@ -138,6 +139,27 @@ Future<void> updateUser(id,
       }..removeWhere((key, value) => value == null));
 }
 
+Future<List<void>> deleteUser(User user, password) async {
+  try {
+    return Future.wait([
+      user.delete(), // Delete from firebase auth
+      firestore.collection('users').doc(user.uid).delete(),
+    ]);
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'require-recent-login') {
+      print("requires recent login!");
+      AuthCredential credential =
+          EmailAuthProvider.credential(email: user.email!, password: password);
+      await FirebaseAuth.instance.currentUser!
+          .reauthenticateWithCredential(credential);
+
+      // Try again
+      return deleteUser(user, password);
+    }
+  }
+  throw NullThrownError();
+}
+
 Future<DocumentSnapshot> getUser(userID) {
   return firestore.collection("users").doc(userID).get();
 }
@@ -168,10 +190,44 @@ Future<Map> getUsers(currentUserID) async {
         min(currentUser['maxDist'], user['maxDist']));
 }
 
-Future<List> getMatches(currentUserID) async {
+Future<Map> getMatches(currentUserID) async {
   Map<String, dynamic> currentUser =
       (await getUser(currentUserID)).data() as Map<String, dynamic>;
-  return currentUser['matchedUsers'];
+
+  List matchedIDs = currentUser['matchedUsers'].map((m) => m.id).toList();
+
+  List docs = (await firestore.collection('users').get()).docs;
+  docs.removeWhere((doc) => !matchedIDs.contains(doc.id));
+
+  List<MapEntry> data =
+      docs.map((doc) => MapEntry(doc.id, doc.data())).toList();
+
+  return Map.fromEntries(data);
+}
+
+Future unmatch(currentUserID, likedUserID) async {
+  DocumentReference me = firestore.collection('users').doc(currentUserID);
+  DocumentReference them = firestore.collection('users').doc(likedUserID);
+  List myMatchedUsers =
+      (await firestore.collection('users').doc(currentUserID).get())
+              .data()?['matchedUsers'] ??
+          [];
+  List theirMatchedUsers =
+      (await firestore.collection('users').doc(likedUserID).get())
+              .data()?['matchedUsers'] ??
+          [];
+
+  myMatchedUsers.remove(them); // Remove them from my matched users
+  theirMatchedUsers.remove(me); // Remove me from their matched users
+
+  return Future.wait([
+    firestore
+        .collection('users')
+        .doc(currentUserID)
+        .update({'matchedUsers': myMatchedUsers}), // Update my matched users
+    firestore.collection('users').doc(likedUserID).update(
+        {'matchedUsers': theirMatchedUsers}) // Update their matched users
+  ]);
 }
 
 Future likeUser(currentUserID, likedUserID) async {
