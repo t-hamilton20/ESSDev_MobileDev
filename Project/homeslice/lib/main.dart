@@ -9,6 +9,7 @@ import 'package:homeslice/signup.dart';
 import 'package:homeslice/setup.dart';
 import 'package:provider/provider.dart';
 import 'package:homeslice/wrapper.dart';
+import 'package:homeslice/settings.dart';
 
 // This code runs the app and navigates between pages
 
@@ -60,7 +61,8 @@ class _AppState extends State<App> {
                   '/login': (context) => Login(),
                   '/signup': (context) => Signup(),
                   '/home': (context) => Wrapper(),
-                  '/setup': (context) => Setup()
+                  '/setup': (context) => Setup(),
+                  '/options': (context) => Settings(),
                 },
                 home: new AuthWrapper(),
               ));
