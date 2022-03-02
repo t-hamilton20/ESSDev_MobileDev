@@ -5,15 +5,20 @@ class ConnectionError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(Icons.cloud_off),
-          Text("Couldn't connect. Please try again later. :("),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("HomeSlice"),
+      ),
+      body: Container(
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(Icons.cloud_off),
+            Text("Couldn't connect. Please try again later. :("),
+          ],
+        ),
       ),
     );
   }
