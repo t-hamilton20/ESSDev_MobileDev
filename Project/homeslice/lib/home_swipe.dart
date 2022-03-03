@@ -292,6 +292,7 @@ class _CardStackState extends State<CardStack> {
     } else if (_position.dx <= -delta) {
       return CardActions.dislike;
     }
+    return null;
   }
 
   void _nextCard(user) async {

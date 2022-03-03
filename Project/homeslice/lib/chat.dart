@@ -112,39 +112,37 @@ class _ConversationListState extends State<ConversationList> {
 
 // widget used for each individual convo
 class ConversationTile extends StatefulWidget {
-  String name;
-  String messageText;
-  String imageUrl;
-  String time;
-  bool tapFlag;
-  String convoID; // pass in conversation ID here
+  final String name;
+  final String messageText;
+  final String imageUrl;
+  final String time;
+  final String convoID; // pass in conversation ID here
 
   ConversationTile(
       {required this.name,
       required this.messageText,
       required this.imageUrl,
       required this.time,
-      required this.convoID,
-      this.tapFlag = false});
+      required this.convoID});
 
   @override
   _ConversationState createState() => _ConversationState();
 }
 
 class _ConversationState extends State<ConversationTile> {
+  bool tapFlag = false;
+
   @override
   Widget build(BuildContext context) {
     User? user = Provider.of<User?>(context);
-
-    var lastMessage = getLastMessageText(widget.convoID);
 
     return GestureDetector(
         onTap: () async {
           var messagesFromDatabase =
               []; // empty list that will hold Messages objects to be passed into the converation widget
-          QuerySnapshot database_messages = await getMessages(widget.convoID);
+          QuerySnapshot databaseMessages = await getMessages(widget.convoID);
           print("\n\n\nconvo ID : " + widget.convoID);
-          database_messages.docs.forEach((res) {
+          databaseMessages.docs.forEach((res) {
             print("\nin loop");
             // loops through all the messages and creates the message widgets
             print("message : " + res.get("Text".toString()));
@@ -172,12 +170,12 @@ class _ConversationState extends State<ConversationTile> {
             );
           }));
 
-          widget.tapFlag = true;
+          tapFlag = true;
         },
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: (widget.tapFlag ? Colors.grey[500] : Colors.grey[900]),
+            color: (tapFlag ? Colors.grey[500] : Colors.grey[900]),
           ),
           padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
           child: Row(
@@ -308,22 +306,19 @@ class _ConversationState extends State<ConversationTile> {
 
 // widget used for new matches
 class MatchTile extends StatefulWidget {
-  String name;
-  String imageUrl;
-  bool tapFlag;
-  String id;
+  final String name;
+  final String imageUrl;
+  final String id;
 
-  MatchTile(
-      {required this.name,
-      required this.imageUrl,
-      required this.id,
-      this.tapFlag = false});
+  MatchTile({required this.name, required this.imageUrl, required this.id});
 
   @override
   _MatchState createState() => _MatchState();
 }
 
 class _MatchState extends State<MatchTile> {
+  bool tapFlag = false;
+
   @override
   Widget build(BuildContext context) {
     User? user = Provider.of<User?>(context);
@@ -349,12 +344,12 @@ class _MatchState extends State<MatchTile> {
             );
           }));
 
-          widget.tapFlag = true;
+          tapFlag = true;
         },
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: (widget.tapFlag ? Colors.grey[500] : Colors.grey[900]),
+            color: (tapFlag ? Colors.grey[500] : Colors.grey[900]),
           ),
           padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
           child: Row(
