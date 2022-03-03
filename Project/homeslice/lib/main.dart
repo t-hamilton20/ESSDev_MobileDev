@@ -18,7 +18,11 @@ import 'themes.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  runApp(App());
+  runApp(ChangeNotifierProvider(
+    child: App(),
+    create: (BuildContext context) =>
+        ThemeProvider(true), // true/false indicates dark mode
+  ));
 }
 
 class App extends StatefulWidget {
@@ -30,14 +34,14 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    currentTheme.addListener(() {
-      print("Changes");
-      setState(() {});
-    });
-  }
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   currentTheme.addListener(() {
+  //     print("Changes");
+  //     setState(() {});
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -65,23 +69,19 @@ class _AppState extends State<App> {
                   initialData: null,
                 ),
               ],
-              child: MaterialApp(
-                theme: getLightTheme(),
-                darkTheme: getDarkTheme(),
-                //theme: themeProvider.getDarkMode() ? themeProvider.getDarkTheme() : themeProvider.getLightTheme(),
-                themeMode: currentTheme.currentTheme(),
-                // theme: ThemeData(
-                //     primaryColor: Colors.grey[1000],
-                //     secondaryHeaderColor: Colors.grey[750],
-                //     brightness: Brightness.dark),
-                routes: {
-                  '/login': (context) => Login(),
-                  '/signup': (context) => Signup(),
-                  '/home': (context) => Wrapper(),
-                  '/setup': (context) => Setup()
-                },
-                home: new AuthWrapper(),
-              ));
+              child: Consumer<ThemeProvider>(
+                  builder: (context, themeProvider, child) {
+                return MaterialApp(
+                  theme: themeProvider.getTheme!,
+                  routes: {
+                    '/login': (context) => Login(),
+                    '/signup': (context) => Signup(),
+                    '/home': (context) => Wrapper(),
+                    '/setup': (context) => Setup()
+                  },
+                  home: new AuthWrapper(),
+                );
+              }));
         }
         return Center(child: CircularProgressIndicator());
       },

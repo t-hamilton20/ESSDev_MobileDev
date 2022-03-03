@@ -58,13 +58,13 @@ class _WrapperState extends State<Wrapper> {
               child: Column(
             children: [
               Text("Profile"),
-              Switch(
-                  value: currentTheme.getTheme(),
-                  onChanged: (value) {
-                    setState(() {
-                      currentTheme.switchTheme();
-                    });
-                  }),
+              // Switch(
+              //     //value: currentTheme.getTheme(),
+              //     onChanged: (value) {
+              //       setState(() {
+              //         //currentTheme.switchTheme();
+              //       });
+              //     }),
             ],
           )
               //child: Profile(),
