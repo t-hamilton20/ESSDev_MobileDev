@@ -18,14 +18,7 @@ import 'package:homeslice/database.dart';
 import 'package:homeslice/home_swipe.dart';
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:homeslice/custom_icons.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:homeslice/custom_icons.dart';
 import 'dart:math';
-
-import 'package:homeslice/database.dart';
-import 'package:provider/provider.dart';
 
 class Profile extends HomeSwipe {
   const Profile({Key? key}) : super(key: key);

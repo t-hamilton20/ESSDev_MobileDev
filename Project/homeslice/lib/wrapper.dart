@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:homeslice/chat_database.dart';
 import 'package:homeslice/conversation.dart';
 import 'package:homeslice/database.dart';
+import 'package:homeslice/settings.dart';
 import 'package:homeslice/home_swipe.dart';
 import 'package:provider/provider.dart';
 import 'chat_database.dart';
