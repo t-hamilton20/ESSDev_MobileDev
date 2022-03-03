@@ -9,8 +9,6 @@
 
 import 'package:flutter/material.dart';
 import 'signup.dart';
-import 'setup.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:homeslice/wrapper.dart';
 
@@ -109,11 +107,9 @@ class _LoginState extends State<Login> {
                         "\npassword: " +
                         passwordController.text);
                     try {
-                      UserCredential userCredential = await FirebaseAuth
-                          .instance
-                          .signInWithEmailAndPassword(
-                              email: emailController.text,
-                              password: passwordController.text);
+                      await FirebaseAuth.instance.signInWithEmailAndPassword(
+                          email: emailController.text,
+                          password: passwordController.text);
                       isSignedIn = true;
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'user-not-found') {

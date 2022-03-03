@@ -24,7 +24,7 @@ Future<String> getConversation(currentPersonID, otherUserID) async {
       .where("Users", arrayContains: otherUserID)
       .get();
 
-  return await convo.docs[0].id; // returns conversation ID
+  return convo.docs[0].id; // returns conversation ID
 }
 
 Future<QuerySnapshot<Object?>> getAllConversations(currentPersonID) async {
@@ -34,7 +34,7 @@ Future<QuerySnapshot<Object?>> getAllConversations(currentPersonID) async {
       .where("Users", arrayContains: currentPersonID)
       .get();
 
-  return await convos;
+  return convos;
 }
 
 Future sendMessage(
@@ -73,10 +73,10 @@ Future<QuerySnapshot<Object?>> getMessages(conversationID) async {
 
 Future<List> getConversationsForUser(String uid) async {
   List<ConversationTile> conversationsFromDatabase = [];
-  QuerySnapshot database_conversations =
+  QuerySnapshot databaseConversations =
       await getAllConversations(uid); // get all conversations
 
-  for (var doc in database_conversations.docs) {
+  for (var doc in databaseConversations.docs) {
     // loop through each conversation
     String otherUserID = "";
     String convoID = doc.id.toString().trim(); // get convo ID
@@ -112,7 +112,6 @@ Future<List> getConversationsForUser(String uid) async {
         time: lastMessage["Timestamp"],
         convoID: convoID));
   }
-  ;
 
   print("tiles being passed: " + conversationsFromDatabase.length.toString());
   return conversationsFromDatabase;
@@ -120,10 +119,10 @@ Future<List> getConversationsForUser(String uid) async {
 
 Future<List> getConversationsListForUser(String uid) async {
   var conversationsFromDatabase = [];
-  QuerySnapshot database_conversations =
+  QuerySnapshot databaseConversations =
       await getAllConversations(uid); // get all conversations
 
-  database_conversations.docs.forEach((res) async {
+  databaseConversations.docs.forEach((res) async {
     String otherUserID = "";
     if (res.get("Users")[0] == uid) {
       otherUserID = await res.get("Users")[1];
@@ -134,7 +133,7 @@ Future<List> getConversationsListForUser(String uid) async {
     conversationsFromDatabase.add(otherUserID);
   });
 
-  return await conversationsFromDatabase;
+  return conversationsFromDatabase;
 }
 
 Future<DocumentSnapshot> getLastMessage(String convoID) async {

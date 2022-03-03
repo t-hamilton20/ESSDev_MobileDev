@@ -10,7 +10,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -121,8 +120,7 @@ class _SignupState extends State<Signup> {
                     print("Error, passwords do not match");
                   } else {
                     try {
-                      UserCredential userCredential = await FirebaseAuth
-                          .instance
+                      await FirebaseAuth.instance
                           .createUserWithEmailAndPassword(
                               email: emailController.text,
                               password: passwordController.text);

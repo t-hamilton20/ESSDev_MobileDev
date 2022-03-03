@@ -3,11 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:homeslice/auth_wrapper.dart';
 import 'package:homeslice/connection_error.dart';
-import 'package:homeslice/home_swipe.dart';
 import 'package:homeslice/login.dart';
 import 'package:homeslice/signup.dart';
 import 'package:homeslice/setup.dart';
-import 'package:homeslice/chat.dart';
 import 'package:provider/provider.dart';
 import 'package:homeslice/wrapper.dart';
 

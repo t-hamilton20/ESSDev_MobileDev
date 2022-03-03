@@ -7,12 +7,13 @@ import 'package:provider/provider.dart';
 import 'chat_database.dart';
 
 class Conversation extends StatefulWidget {
-  String name;
-  String messageText;
-  String imageUrl;
-  String time;
-  String convoID;
-  var messages;
+  final String name;
+  final String messageText;
+  final String imageUrl;
+  final String time;
+  final String convoID;
+  final List messages;
+
   Conversation(
       {required this.name,
       required this.messageText,
@@ -188,28 +189,26 @@ class _ConversationState extends State<Conversation> {
 
 // Message class for each individual message
 class Message extends StatefulWidget {
-  String messageText;
-  String time;
-  String type; // sender or receiver
-  bool displayTime;
+  final String messageText;
+  final String time;
+  final String type; // sender or receiver
 
-  Message(
-      {required this.messageText,
-      required this.time,
-      required this.type,
-      this.displayTime = false});
+  Message({required this.messageText, required this.time, required this.type});
 
   @override
   _MessageState createState() => _MessageState();
 }
 
 class _MessageState extends State<Message> {
+  bool displayTime = false;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.displayTime = !widget.displayTime;
-        setState(() {});
+        setState(() {
+          displayTime = !displayTime;
+        });
       },
       child: Align(
         alignment: (widget.type ==
@@ -247,7 +246,7 @@ class _MessageState extends State<Message> {
               ),
               // used to display time
               Visibility(
-                visible: widget.displayTime,
+                visible: displayTime,
                 child: Align(
                   alignment: (widget.type ==
                           "receiver" // if type is receiver alignment goes in top left

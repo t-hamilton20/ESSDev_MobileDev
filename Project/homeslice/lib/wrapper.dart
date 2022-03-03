@@ -1,12 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:homeslice/chat_database.dart';
-import 'package:homeslice/conversation.dart';
-import 'package:homeslice/database.dart';
 import 'package:homeslice/home_swipe.dart';
-import 'package:provider/provider.dart';
-import 'chat_database.dart';
 import 'chat.dart';
 
 class Wrapper extends StatefulWidget {
@@ -22,7 +15,6 @@ class _WrapperState extends State<Wrapper> {
 
   @override
   Widget build(BuildContext context) {
-    User? user = Provider.of<User?>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("HomeSlice"),
