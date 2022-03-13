@@ -109,8 +109,7 @@ class _SetupState extends State<Setup> {
                                     pets: _pets,
                                     northOfPrincess: _north,
                                     hosting: _host)
-                                .then((_) =>
-                                    Navigator.pushNamed(context, '/home'));
+                                .then((_) => Navigator.pop(context));
                           } else {
                             updateUser(
                               user?.uid,
@@ -128,8 +127,7 @@ class _SetupState extends State<Setup> {
                               coed: _coed,
                               minDist: _minsToCampus.start.round(),
                               maxDist: _minsToCampus.end.round(),
-                            ).then(
-                                (_) => Navigator.pushNamed(context, '/home'));
+                            ).then((_) => Navigator.pop(context));
                           }
                         });
                       },
@@ -172,7 +170,7 @@ class _SetupState extends State<Setup> {
                             _coed,
                             _minsToCampus.start.round(),
                             _minsToCampus.end.round(),
-                          ).then((_) => Navigator.pushNamed(context, '/home'));
+                          ).then((_) => Navigator.pop(context));
                         } else {
                           updateUser(user?.uid,
                                   name: _prefName,
@@ -196,8 +194,7 @@ class _SetupState extends State<Setup> {
                                   pets: _pets,
                                   northOfPrincess: _north,
                                   hosting: _host)
-                              .then(
-                                  (_) => Navigator.pushNamed(context, '/home'));
+                              .then((_) => Navigator.pop(context));
                         }
                       });
                     },

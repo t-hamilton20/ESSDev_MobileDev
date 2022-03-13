@@ -445,41 +445,44 @@ class _SettingsState extends State<Settings> {
     // User
     User? user = Provider.of<User?>(context);
     return Scaffold(
+        appBar: AppBar(
+          title: Text("HomeSlice"),
+        ),
         body: Column(
-      children: [
-        //Edit Profile Info - goes to setup
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              Navigator.pushNamed(context, '/setup');
-            });
-          },
-          child: const Text('Edit Profile Info'),
-        ),
+          children: [
+            //Edit Profile Info - goes to setup
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  Navigator.pushNamed(context, '/setup');
+                });
+              },
+              child: const Text('Edit Profile Info'),
+            ),
 
-        //Edit Account Details - goes to Settings
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              Navigator.pushNamed(context, '/setup');
-            });
-          },
-          child: const Text('Edit Account Details'),
-        ),
-        SwitchListTile(
-            value: false,
-            title: const Text("Night Mode"),
-            onChanged: (value) {
-              setState(() {});
-            }),
+            //Edit Account Details - goes to Settings
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  Navigator.pushNamed(context, '/setup');
+                });
+              },
+              child: const Text('Edit Account Details'),
+            ),
+            SwitchListTile(
+                value: false,
+                title: const Text("Night Mode"),
+                onChanged: (value) {
+                  setState(() {});
+                }),
 
-        SwitchListTile(
-            value: false,
-            title: const Text("Unlist Account"),
-            onChanged: (value) {
-              setState(() {});
-            }),
-      ],
-    ));
+            SwitchListTile(
+                value: false,
+                title: const Text("Unlist Account"),
+                onChanged: (value) {
+                  setState(() {});
+                }),
+          ],
+        ));
   }
 }
