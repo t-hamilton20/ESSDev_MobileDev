@@ -107,12 +107,15 @@ class _CardStackState extends State<CardStack> {
   }
 
   Widget buildFrontCard(user, {gestures = true}) {
+    PageController _pageController = PageController();
+
     return LayoutBuilder(builder: (context, constraints) {
       Offset center = constraints.biggest.center(Offset.zero);
 
       return ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(8)),
         child: PageView(
+          controller: _pageController,
           scrollDirection: Axis.vertical,
           children: [
             GestureDetector(
@@ -123,7 +126,10 @@ class _CardStackState extends State<CardStack> {
                   ..rotateZ(_angle * (pi / 180))
                   ..translate(-center.dx, -center.dy)
                   ..translate(_position.dx),
-                child: buildCard(user),
+                child: buildCard(user,
+                    onTap: () => _pageController.animateToPage(1,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.ease)),
               ),
               onPanStart: (gestures
                   ? (details) {
@@ -178,7 +184,7 @@ class _CardStackState extends State<CardStack> {
     });
   }
 
-  Widget buildCard(user) {
+  Widget buildCard(user, {onTap}) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: ClipRRect(
@@ -260,11 +266,14 @@ class _CardStackState extends State<CardStack> {
                     SizedBox(width: 8),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: Icon(Icons.expand_less),
+                GestureDetector(
+                  onTap: onTap,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Icon(Icons.expand_less),
+                    ),
                   ),
                 ),
               ],
