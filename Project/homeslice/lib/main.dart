@@ -18,11 +18,14 @@ import 'themes.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  runApp(ChangeNotifierProvider(
+  SharedPreferences.getInstance().then((prefs) {
+    var isDark = prefs.getBool("darkTheme") ?? false;
+    return runApp(ChangeNotifierProvider(
     child: App(),
-    create: (BuildContext context) =>
-        ThemeProvider(true), // true/false indicates dark mode
+    create: (BuildContext context) => ThemeProvider(true),
   ));
+  
+  
 }
 
 class App extends StatefulWidget {
@@ -74,7 +77,7 @@ class _AppState extends State<App> {
                 return MaterialApp(
                   theme: themeProvider.getTheme!,
                   routes: {
-                    '/login': (context) => Login(),
+                    '/logizn': (context) => Login(),
                     '/signup': (context) => Signup(),
                     '/home': (context) => Wrapper(),
                     '/setup': (context) => Setup()

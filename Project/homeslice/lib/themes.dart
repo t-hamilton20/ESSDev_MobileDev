@@ -5,21 +5,78 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider extends ChangeNotifier {
   late ThemeData _currentTheme;
+  late Typography defaultTypography;
+  late SharedPreferences prefs;
 
-  ThemeData light = ThemeData.light();
-  ThemeData dark = ThemeData.dark();
+  ThemeData dark = ThemeData.dark().copyWith();
 
-  ThemeProvider(bool isDark) {
+  ThemeData light = ThemeData.light().copyWith();
+
+  ThemeProvider(bool darkThemeOn) {
     _currentTheme = dark;
-    this._currentTheme = isDark ? dark : light;
+    _currentTheme = darkThemeOn ? dark : light;
   }
 
-  void swapTheme() {
-    _currentTheme = _currentTheme == dark ? light : dark;
+  Future<void> swapTheme() async {
+    prefs = await SharedPreferences.getInstance();
+
+    if (_currentTheme == dark) {
+      _currentTheme = light;
+      await prefs.setBool("darkTheme", false);
+    } else {
+      _currentTheme = dark;
+      await prefs.setBool("darkTheme", true);
+    }
+
+    notifyListeners();
   }
 
-  ThemeData? get getTheme => _currentTheme;
+  ThemeData getTheme() => _currentTheme;
 }
+
+// class ThemeProvider extends ChangeNotifier {
+//   late ThemeData _currentTheme;
+//   SharedPreferences prefs;
+
+//   ThemeData light = ThemeData.light();
+//   ThemeData dark = ThemeData.dark();
+
+//   ThemeProvider(bool isDark) {
+//     _currentTheme = dark;
+//     this._currentTheme = isDark ? dark : light;
+//   }
+
+//   void swapTheme() {
+//     //SharedPreferences prefs = await SharedPreferences.getInstance();
+//     _currentTheme = _currentTheme == dark ? light : dark;
+//     // if (_currentTheme == dark) {
+//     //   _currentTheme = light;
+//     //   print("setting prefs, false");
+//     //   await prefs.setBool("isDark", false);
+//     // } else {
+//     //   _currentTheme = dark;
+//     //   print("setting prefs, true");
+//     //   await prefs.setBool("isDark", true);
+//     // }
+//     notifyListeners();
+//   }
+
+//   Future<void> swapTheme() async {
+//     prefs = await SharedPreferences.getInstance();
+
+//     if (_currentTheme == dark) {
+//       _currentTheme = light;
+//       await prefs.setBool("darkTheme", false);
+//     } else {
+//       _currentTheme = dark;
+//       await prefs.setBool("darkTheme", true);
+//     }
+
+//     notifyListeners();
+//   }
+
+//   ThemeData? get getTheme => _currentTheme;
+// }
 // class ThemeNotifier with ChangeNotifier {
 //   static bool _isDark = false;
 //   ThemeData dark = ThemeData.dark();

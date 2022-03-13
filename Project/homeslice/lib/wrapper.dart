@@ -58,11 +58,19 @@ class _WrapperState extends State<Wrapper> {
               child: Column(
             children: [
               Text("Profile"),
+              IconButton(
+                icon: new Icon(Icons.light),
+                onPressed: () {
+                  ThemeProvider themeProvider =
+                      Provider.of<ThemeProvider>(context);
+                  themeProvider.swapTheme();
+                },
+              )
               // Switch(
-              //     //value: currentTheme.getTheme(),
+              //     value: currentTheme.getTheme(),
               //     onChanged: (value) {
               //       setState(() {
-              //         //currentTheme.switchTheme();
+              //         ThemeProvider.
               //       });
               //     }),
             ],
