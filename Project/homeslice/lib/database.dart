@@ -74,7 +74,7 @@ Future<void> addUser(id, name, email, pronouns, major, year, blurb, image,
   });
 }
 
-Future<void> updateUser(id,
+Future updateUser(id,
     {name,
     email,
     pronouns,
@@ -112,31 +112,38 @@ Future<void> updateUser(id,
     }
   }
 
-  return firestore.collection("users").doc(id).update({
-        'full_name': name,
-        'email': email,
-        'pronouns': pronouns,
-        'major': major,
-        'year': year,
-        'blurb': blurb,
-        'image': imgUrl,
-        'minHousemates': minHousemates,
-        'maxHousemates': maxHousemates,
-        'minPrice': minPrice,
-        'maxPrice': maxPrice,
-        'minDist': minDist,
-        'maxDist': maxDist,
-        'coed': coed,
-        'preferences': {
-          'tidiness': tidiness ?? 1, // 1-5
-          'sharingMeals': sharingMeals ?? false, // y/n
-          'nearWest': nearWest ?? false, // y/n
-          'nightsOut': nightsOut ?? 0, // 0-7
-          'pets': pets ?? true, // y/n
-          'northOfPrincess': northOfPrincess ?? true, // y/n
-          'hosting': hosting ?? true // y/n
-        },
-      }..removeWhere((key, value) => value == null));
+  try {
+    var x = firestore.collection("users").doc(id).update({
+          'full_name': name,
+          'email': email,
+          'pronouns': pronouns,
+          'major': major,
+          'year': year,
+          'blurb': blurb,
+          'image': imgUrl,
+          'minHousemates': minHousemates,
+          'maxHousemates': maxHousemates,
+          'minPrice': minPrice,
+          'maxPrice': maxPrice,
+          'minDist': minDist,
+          'maxDist': maxDist,
+          'coed': coed,
+          'preferences': {
+            'tidiness': tidiness ?? 1, // 1-5
+            'sharingMeals': sharingMeals ?? false, // y/n
+            'nearWest': nearWest ?? false, // y/n
+            'nightsOut': nightsOut ?? 0, // 0-7
+            'pets': pets ?? true, // y/n
+            'northOfPrincess': northOfPrincess ?? true, // y/n
+            'hosting': hosting ?? true // y/n
+          },
+        }..removeWhere((key, value) => value == null));
+
+    print(x);
+    return x;
+  } catch (e) {
+    print(e);
+  }
 }
 
 Future<List<void>> deleteUser(User user, password) async {
