@@ -4,6 +4,9 @@ import 'package:homeslice/conversation.dart';
 import 'package:homeslice/database.dart';
 import 'package:homeslice/settings.dart';
 import 'package:homeslice/home_swipe.dart';
+import 'package:homeslice/themes.dart';
+import 'package:provider/provider.dart';
+import 'chat_database.dart';
 import 'chat.dart';
 
 class Wrapper extends StatefulWidget {

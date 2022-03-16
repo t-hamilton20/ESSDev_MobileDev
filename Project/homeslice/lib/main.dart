@@ -10,13 +10,25 @@ import 'package:homeslice/setup.dart';
 import 'package:homeslice/chat.dart';
 import 'package:provider/provider.dart';
 import 'package:homeslice/wrapper.dart';
-import 'package:homeslice/settings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'themes.dart';
 
 // This code runs the app and navigates between pages
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(App());
+  SharedPreferences prefs =
+      await SharedPreferences.getInstance(); // get instance of prefs
+  SharedPreferences.getInstance().then((prefs) {
+    var isDark = prefs.getBool("darkTheme") ?? false; // get dark/light pref
+    print("is dark: " + isDark.toString());
+
+    return runApp(ChangeNotifierProvider(
+      child: App(),
+      create: (BuildContext context) =>
+          ThemeProvider(isDark), // pass in pref to provider
+    ));
+  });
 }
 
 class App extends StatefulWidget {
@@ -27,6 +39,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  @override
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -51,22 +64,21 @@ class _AppState extends State<App> {
                 StreamProvider<User?>.value(
                   value: FirebaseAuth.instance.authStateChanges(),
                   initialData: null,
-                )
+                ),
               ],
-              child: MaterialApp(
-                theme: ThemeData(
-                    primaryColor: Colors.grey[1000],
-                    secondaryHeaderColor: Colors.grey[750],
-                    brightness: Brightness.dark),
-                routes: {
-                  '/login': (context) => Login(),
-                  '/signup': (context) => Signup(),
-                  '/home': (context) => Wrapper(),
-                  '/setup': (context) => Setup(),
-                  '/options': (context) => Settings(),
-                },
-                home: new AuthWrapper(),
-              ));
+              child: Consumer<ThemeProvider>(
+                  builder: (context, themeProvider, child) {
+                return MaterialApp(
+                  theme: themeProvider.getTheme(), // get theme from provider
+                  routes: {
+                    '/login': (context) => Login(),
+                    '/signup': (context) => Signup(),
+                    '/home': (context) => Wrapper(),
+                    '/setup': (context) => Setup()
+                  },
+                  home: new AuthWrapper(),
+                );
+              }));
         }
         return Center(child: CircularProgressIndicator());
       },
