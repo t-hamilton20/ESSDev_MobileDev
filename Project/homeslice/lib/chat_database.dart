@@ -106,6 +106,7 @@ Future<List> getConversationsForUser(String uid) async {
     }
 
     conversationsFromDatabase.add(new ConversationTile(
+        id: otherUserID,
         name: otherUser["full_name"],
         messageText: lastMessageText,
         imageUrl: otherUser["image"],

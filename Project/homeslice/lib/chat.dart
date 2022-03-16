@@ -51,9 +51,11 @@ class _ConversationListState extends State<ConversationList> {
                       switch (snapshot.connectionState) {
                         case ConnectionState.done:
                           if (snapshot.data!.isNotEmpty) {
-                            // print(snapshot.data.toString());
+                            print(snapshot.data.toString());
                             List conversations = snapshot.data![0];
                             Map matches = snapshot.data![1];
+                            matches.removeWhere((key, value) =>
+                                conversations.map((c) => c.id).contains(key));
 
                             return ListView(
                               children: [
@@ -113,6 +115,7 @@ class _ConversationListState extends State<ConversationList> {
 // widget used for each individual convo
 class ConversationTile extends StatefulWidget {
   final String name;
+  final String id;
   final String messageText;
   final String imageUrl;
   final String time;
@@ -120,6 +123,7 @@ class ConversationTile extends StatefulWidget {
 
   ConversationTile(
       {required this.name,
+      required this.id,
       required this.messageText,
       required this.imageUrl,
       required this.time,
@@ -325,11 +329,11 @@ class _MatchState extends State<MatchTile> {
 
     return GestureDetector(
         onTap: () async {
-          unmatch(user!.uid, widget.id); // remove user from matches
+          // unmatch(user!.uid, widget.id); // remove user from matches
 
           // start a new conversation
           DocumentReference convoDoc =
-              await addConversation(user.uid, widget.id);
+              await addConversation(user!.uid, widget.id);
 
           print("\n\n\nconvo ID : " + convoDoc.id);
 
