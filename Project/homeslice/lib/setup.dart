@@ -77,7 +77,7 @@ class _SetupState extends State<Setup> {
     // User's major
     _major = user["major"];
     // User's year of study
-    _year = user["year"];
+    _year = user["year"].toDouble();
     // User profile blurb
     _blurb = user["blurb"];
     // User profile image
@@ -86,13 +86,16 @@ class _SetupState extends State<Setup> {
 
     // CRITERIA
     // Desired number of housemates
-    _mates = RangeValues(user["minHousemates"], user["maxHousemates"]);
+    _mates = RangeValues(
+        user["minHousemates"].toDouble(), user["maxHousemates"].toDouble());
     // User rent price range
-    _rent = RangeValues(user["minPrice"], user["maxPrice"]);
+    _rent =
+        RangeValues(user["minPrice"].toDouble(), user["maxPrice"].toDouble());
     // User coed preference
     _coed = user["coed"];
     // User campus distance
-    _minsToCampus = RangeValues(user["minDist"], user["maxDist"]);
+    _minsToCampus =
+        RangeValues(user["minDist"].toDouble(), user["maxDist"].toDouble());
 
     // PREFERENCES
     _north = user['preferences']["northOfPrincess"];
@@ -100,8 +103,8 @@ class _SetupState extends State<Setup> {
     _pets = user['preferences']["pets"];
     _host = user['preferences']["hosting"];
     _share = user['preferences']["sharingMeals"];
-    _nightsOut = user['preferences']["nightsOut"];
-    _tidiness = user['preferences']['tidiness'];
+    _nightsOut = user['preferences']["nightsOut"].toDouble();
+    _tidiness = user['preferences']['tidiness'].toDouble();
   }
 
   @override
@@ -129,7 +132,7 @@ class _SetupState extends State<Setup> {
                 appBar: AppBar(title: const Text('Profile Details')),
                 body: Stepper(
                     controlsBuilder:
-                        (BuildContext context, ControlsDetails details) {
+                        (BuildContext ctx, ControlsDetails details) {
                       return Row(
                         children: <Widget>[
                           if (_index == 0) ...[
@@ -143,8 +146,6 @@ class _SetupState extends State<Setup> {
                                 onPressed: () async {
                                   setState(() {
                                     if (!snapshot.data!.exists) {
-                                      //print("User: " + user!.uid);
-                                      print("Name: " + _prefName);
                                       addUser(
                                               user?.uid,
                                               _prefName,
@@ -170,36 +171,6 @@ class _SetupState extends State<Setup> {
                                               hosting: _host)
                                           .then((_) => Navigator.pop(context));
                                     } else {
-                                      print(user?.uid);
-                                      print(_prefName);
-                                      print(user?.email);
-                                      print(_dropdownValue);
-                                      print(_major);
-                                      print("Year: " + _year.toString());
-                                      print("Blurb: " + _blurb);
-                                      print(_profileImg.toString());
-                                      print("Mates: " +
-                                          _mates.start.round().toString());
-                                      print(_mates.end.round());
-                                      print("Rent: " +
-                                          _rent.start.round().toString());
-                                      print(_rent.end.round());
-                                      print("Coed: " + _coed.toString());
-                                      print("Travel time: " +
-                                          _minsToCampus.start
-                                              .round()
-                                              .toString());
-                                      print(_minsToCampus.end.round());
-                                      print(
-                                          "Tidiness: " + _tidiness.toString());
-                                      print("Sharing: " + _share.toString());
-                                      print("West: " + _west.toString());
-                                      print("Nights out: " +
-                                          _nightsOut.round().toString());
-                                      print("Pets: " + _pets.toString());
-                                      print("North : " + _north.toString());
-                                      print("Host: " + _host.toString());
-
                                       updateUser(user?.uid,
                                               name: _prefName,
                                               email: user?.email,
