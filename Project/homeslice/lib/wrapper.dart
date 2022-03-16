@@ -62,7 +62,7 @@ class _WrapperState extends State<Wrapper> {
                 icon: new Icon(Icons.light),
                 onPressed: () {
                   ThemeProvider themeProvider =
-                      Provider.of<ThemeProvider>(context);
+                      Provider.of<ThemeProvider>(context, listen: false);
                   themeProvider.swapTheme();
                 },
               )

@@ -20,12 +20,12 @@ Future<void> main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   SharedPreferences.getInstance().then((prefs) {
     var isDark = prefs.getBool("darkTheme") ?? false;
+    print("is dark: " + isDark.toString());
     return runApp(ChangeNotifierProvider(
-    child: App(),
-    create: (BuildContext context) => ThemeProvider(true),
-  ));
-  
-  
+      child: App(),
+      create: (BuildContext context) => ThemeProvider(isDark),
+    ));
+  });
 }
 
 class App extends StatefulWidget {
@@ -75,7 +75,7 @@ class _AppState extends State<App> {
               child: Consumer<ThemeProvider>(
                   builder: (context, themeProvider, child) {
                 return MaterialApp(
-                  theme: themeProvider.getTheme!,
+                  theme: themeProvider.getTheme(),
                   routes: {
                     '/logizn': (context) => Login(),
                     '/signup': (context) => Signup(),
