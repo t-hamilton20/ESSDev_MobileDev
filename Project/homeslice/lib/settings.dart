@@ -10,6 +10,7 @@
 * Delete_Account
 */
 
+import 'package:homeslice/themes.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -473,6 +474,9 @@ class _SettingsState extends State<Settings> {
                 value: false,
                 title: const Text("Night Mode"),
                 onChanged: (value) {
+                  ThemeProvider themeProvider =
+                      Provider.of<ThemeProvider>(context, listen: false);
+                  themeProvider.swapTheme();
                   setState(() {});
                 }),
 

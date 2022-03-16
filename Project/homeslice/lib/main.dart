@@ -5,6 +5,7 @@ import 'package:homeslice/auth_wrapper.dart';
 import 'package:homeslice/connection_error.dart';
 import 'package:homeslice/home_swipe.dart';
 import 'package:homeslice/login.dart';
+import 'package:homeslice/settings.dart';
 import 'package:homeslice/signup.dart';
 import 'package:homeslice/setup.dart';
 import 'package:homeslice/chat.dart';
@@ -74,7 +75,8 @@ class _AppState extends State<App> {
                     '/login': (context) => Login(),
                     '/signup': (context) => Signup(),
                     '/home': (context) => Wrapper(),
-                    '/setup': (context) => Setup()
+                    '/setup': (context) => Setup(),
+                    '/options': (context) => Settings()
                   },
                   home: new AuthWrapper(),
                 );
