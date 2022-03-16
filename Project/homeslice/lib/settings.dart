@@ -480,7 +480,12 @@ class _SettingsState extends State<Settings> {
                 value: false,
                 title: const Text("Unlist Account"),
                 onChanged: (value) {
-                  setState(() {});
+                  setState(() {
+                    updateUser(
+                      user?.uid,
+                      hidden: value,
+                    );
+                  });
                 }),
           ],
         ));
