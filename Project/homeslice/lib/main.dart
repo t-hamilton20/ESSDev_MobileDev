@@ -64,6 +64,7 @@ class _AppState extends State<App> {
                   '/home': (context) => Wrapper(),
                   '/setup': (context) => Setup(),
                   '/options': (context) => Settings(),
+                  '/deets': (context) => AccountDeets(),
                 },
                 home: new AuthWrapper(),
               ));

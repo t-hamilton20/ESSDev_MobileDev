@@ -464,7 +464,7 @@ class _SettingsState extends State<Settings> {
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  Navigator.pushNamed(context, '/setup');
+                  Navigator.pushNamed(context, '/deets');
                 });
               },
               child: const Text('Edit Account Details'),
@@ -489,5 +489,67 @@ class _SettingsState extends State<Settings> {
                 }),
           ],
         ));
+  }
+}
+
+class AccountDeets extends StatefulWidget {
+  const AccountDeets({Key? key}) : super(key: key);
+
+  @override
+  _AccountDeetsState createState() => _AccountDeetsState();
+}
+
+class _AccountDeetsState extends State<AccountDeets> {
+  //String _email = '';
+  @override
+  Widget build(BuildContext context) {
+    // User
+    User? user = Provider.of<User?>(context);
+    Future<DocumentSnapshot> _doc = getUser(user?.uid);
+
+    return Scaffold(
+      body: FutureBuilder<DocumentSnapshot>(
+        future: _doc,
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text("HomeSlice"),
+                ),
+                body: Column(
+                  children: [
+                    //Edit Profile Info - goes to setup
+
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {});
+                      },
+                      child: const Text('Change Email'),
+                    ),
+
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {});
+                      },
+                      child: const Text('Change Password'),
+                    ),
+
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {});
+                      },
+                      child: const Text('Delete Account'),
+                    ),
+                  ],
+                ),
+              );
+
+            default:
+              return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
+    );
   }
 }
