@@ -19,6 +19,7 @@ import 'package:homeslice/database.dart';
 import 'package:homeslice/home_swipe.dart';
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:homeslice/custom_icons.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:math';
 
 class Profile extends HomeSwipe {
@@ -452,7 +453,7 @@ class _SettingsState extends State<Settings> {
         ),
         body: Column(
           children: [
-            //Edit Profile Info - goes to setup
+            //Edit Profile Info - goes to Setup
             ElevatedButton(
               onPressed: () {
                 setState(() {
@@ -462,7 +463,7 @@ class _SettingsState extends State<Settings> {
               child: const Text('Edit Profile Info'),
             ),
 
-            //Edit Account Details - goes to Settings
+            //Edit Account Details - goes to Account Deets
             ElevatedButton(
               onPressed: () {
                 setState(() {
@@ -471,6 +472,8 @@ class _SettingsState extends State<Settings> {
               },
               child: const Text('Edit Account Details'),
             ),
+
+            // Night Mode Toggle
             SwitchListTile(
                 value: night,
                 title: const Text("Night Mode"),
@@ -482,6 +485,7 @@ class _SettingsState extends State<Settings> {
                   setState(() {});
                 }),
 
+            // Unlist Account Toggle
             SwitchListTile(
                 value: false,
                 title: const Text("Unlist Account"),
@@ -506,12 +510,21 @@ class AccountDeets extends StatefulWidget {
 }
 
 class _AccountDeetsState extends State<AccountDeets> {
-  //String _email = '';
+  String _email = '';
+  String _newEmail = '';
+  String _password = '';
+  String _newPassword = '';
+  String _newPassTwo = '';
+
+  void getEmail(user) {
+    _email = user["email"];
+  }
+
   @override
   Widget build(BuildContext context) {
     // User
     User? user = Provider.of<User?>(context);
-    Future<DocumentSnapshot> _doc = getUser(user?.uid);
+    Future<DocumentSnapshot> _doc = getUser(user!.uid);
 
     return Scaffold(
       body: FutureBuilder<DocumentSnapshot>(
@@ -519,32 +532,166 @@ class _AccountDeetsState extends State<AccountDeets> {
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
+              getEmail(snapshot.data);
               return Scaffold(
                 appBar: AppBar(
                   title: Text("HomeSlice"),
                 ),
                 body: Column(
                   children: [
-                    //Edit Profile Info - goes to setup
+                    // Current email linked to account
+                    Text("Email: " + _email),
 
+                    // Change account button & popup
                     ElevatedButton(
-                      onPressed: () {
-                        setState(() {});
-                      },
+                      onPressed: () => showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('Change Email'),
+                          content: Text(_newEmail),
+                          actions: <Widget>[
+                            TextField(
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Enter password",
+                                ),
+                                onChanged: (text) {
+                                  _password = text;
+                                }),
+                            TextField(
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Enter new email",
+                                ),
+                                onChanged: (text) {
+                                  _newEmail = text;
+                                }),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                if (_password != '') {
+                                  AuthCredential creds =
+                                      EmailAuthProvider.credential(
+                                          email: _email, password: _password);
+                                  user
+                                      .reauthenticateWithCredential(creds)
+                                      .then((_) {
+                                    user.updateEmail(_newEmail);
+                                  });
+                                  Navigator.pop(context, 'OK');
+                                }
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      ),
                       child: const Text('Change Email'),
                     ),
 
+                    // Change password button & popup
                     ElevatedButton(
-                      onPressed: () {
-                        setState(() {});
-                      },
+                      onPressed: () => showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('Change Password'),
+                          actions: <Widget>[
+                            TextField(
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Enter current password",
+                                ),
+                                onChanged: (text) {
+                                  _password = text;
+                                }),
+                            TextField(
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Enter new password",
+                                ),
+                                onChanged: (text) {
+                                  _newPassword = text;
+                                }),
+                            TextField(
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Confirm new password",
+                                ),
+                                onChanged: (text) {
+                                  _newPassTwo = text;
+                                }),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                if (_password != '' &&
+                                    _newPassword != '' &&
+                                    _newPassTwo != '') {
+                                  AuthCredential creds =
+                                      EmailAuthProvider.credential(
+                                          email: _email, password: _password);
+                                  user
+                                      .reauthenticateWithCredential(creds)
+                                      .then((_) {
+                                    if (_newPassword == _newPassTwo) {
+                                      user.updatePassword(_newPassword);
+                                    }
+                                  });
+                                  Navigator.pop(context, 'OK');
+                                }
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      ),
                       child: const Text('Change Password'),
                     ),
 
+                    // Delete account button & popup
                     ElevatedButton(
-                      onPressed: () {
-                        setState(() {});
-                      },
+                      onPressed: () => showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text(
+                              'Are you sure you want to DELETE your account?'),
+                          actions: <Widget>[
+                            TextField(
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Enter current password",
+                                ),
+                                onChanged: (text) {
+                                  _password = text;
+                                }),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                if (_password != '') {
+                                  AuthCredential creds =
+                                      EmailAuthProvider.credential(
+                                          email: _email, password: _password);
+                                  user
+                                      .reauthenticateWithCredential(creds)
+                                      .then((_) {
+                                    user.delete();
+                                  });
+                                  Navigator.pop(context, 'OK');
+                                }
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      ),
                       child: const Text('Delete Account'),
                     ),
                   ],
