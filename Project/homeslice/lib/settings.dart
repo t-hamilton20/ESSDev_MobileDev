@@ -444,6 +444,10 @@ class _SettingsState extends State<Settings> {
   bool night = false;
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider =
+        Provider.of<ThemeProvider>(context, listen: false);
+    night = themeProvider.getThemeBool();
+
     // User
     User? user = Provider.of<User?>(context);
     return Scaffold(
