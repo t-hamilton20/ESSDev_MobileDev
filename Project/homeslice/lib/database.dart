@@ -82,6 +82,7 @@ Future updateUser(id,
     year,
     blurb,
     image,
+    hidden,
     minHousemates,
     maxHousemates,
     minPrice,
@@ -121,6 +122,7 @@ Future updateUser(id,
           'year': year,
           'blurb': blurb,
           'image': imgUrl,
+          'hidden': hidden,
           'minHousemates': minHousemates,
           'maxHousemates': maxHousemates,
           'minPrice': minPrice,
@@ -139,9 +141,11 @@ Future updateUser(id,
           },
         }..removeWhere((key, value) => value == null));
 
+    print("X: ");
     print(x);
     return x;
   } catch (e) {
+    print("Error: ");
     print(e);
   }
 }
@@ -194,7 +198,8 @@ Future<Map> getUsers(currentUserID) async {
         min(currentUser['maxPrice'], user['maxPrice']))
     ..removeWhere((id, user) =>
         max<num>(currentUser['minDist'], user['minDist']) >
-        min(currentUser['maxDist'], user['maxDist']));
+        min(currentUser['maxDist'], user['maxDist']))
+    ..removeWhere((id, user) => user['hidden'] ?? false);
 }
 
 Future<Map> getMatches(currentUserID) async {
