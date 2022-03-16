@@ -77,7 +77,7 @@ class _SetupState extends State<Setup> {
     // User's major
     _major = user["major"];
     // User's year of study
-    _year = user["year"];
+    _year = user["year"].toDouble();
     // User profile blurb
     _blurb = user["blurb"];
     // User profile image
@@ -86,13 +86,16 @@ class _SetupState extends State<Setup> {
 
     // CRITERIA
     // Desired number of housemates
-    _mates = RangeValues(user["minHousemates"], user["maxHousemates"]);
+    _mates = RangeValues(
+        user["minHousemates"].toDouble(), user["maxHousemates"].toDouble());
     // User rent price range
-    _rent = RangeValues(user["minPrice"], user["maxPrice"]);
+    _rent =
+        RangeValues(user["minPrice"].toDouble(), user["maxPrice"].toDouble());
     // User coed preference
     _coed = user["coed"];
     // User campus distance
-    _minsToCampus = RangeValues(user["minDist"], user["maxDist"]);
+    _minsToCampus =
+        RangeValues(user["minDist"].toDouble(), user["maxDist"].toDouble());
 
     // PREFERENCES
     _north = user['preferences']["northOfPrincess"];
@@ -100,8 +103,8 @@ class _SetupState extends State<Setup> {
     _pets = user['preferences']["pets"];
     _host = user['preferences']["hosting"];
     _share = user['preferences']["sharingMeals"];
-    _nightsOut = user['preferences']["nightsOut"];
-    _tidiness = user['preferences']['tidiness'];
+    _nightsOut = user['preferences']["nightsOut"].toDouble();
+    _tidiness = user['preferences']['tidiness'].toDouble();
   }
 
   @override
