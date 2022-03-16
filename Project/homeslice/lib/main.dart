@@ -17,13 +17,16 @@ import 'themes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  SharedPreferences prefs =
+      await SharedPreferences.getInstance(); // get instance of prefs
   SharedPreferences.getInstance().then((prefs) {
-    var isDark = prefs.getBool("darkTheme") ?? false;
+    var isDark = prefs.getBool("darkTheme") ?? false; // get dark/light pref
     print("is dark: " + isDark.toString());
+
     return runApp(ChangeNotifierProvider(
       child: App(),
-      create: (BuildContext context) => ThemeProvider(isDark),
+      create: (BuildContext context) =>
+          ThemeProvider(isDark), // pass in pref to provider
     ));
   });
 }
@@ -37,15 +40,6 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   currentTheme.addListener(() {
-  //     print("Changes");
-  //     setState(() {});
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -75,9 +69,9 @@ class _AppState extends State<App> {
               child: Consumer<ThemeProvider>(
                   builder: (context, themeProvider, child) {
                 return MaterialApp(
-                  theme: themeProvider.getTheme(),
+                  theme: themeProvider.getTheme(), // get theme from provider
                   routes: {
-                    '/logizn': (context) => Login(),
+                    '/login': (context) => Login(),
                     '/signup': (context) => Signup(),
                     '/home': (context) => Wrapper(),
                     '/setup': (context) => Setup()
