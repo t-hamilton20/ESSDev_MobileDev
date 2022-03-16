@@ -441,6 +441,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  bool night = false;
   @override
   Widget build(BuildContext context) {
     // User
@@ -471,12 +472,13 @@ class _SettingsState extends State<Settings> {
               child: const Text('Edit Account Details'),
             ),
             SwitchListTile(
-                value: false,
+                value: night,
                 title: const Text("Night Mode"),
                 onChanged: (value) {
                   ThemeProvider themeProvider =
                       Provider.of<ThemeProvider>(context, listen: false);
                   themeProvider.swapTheme();
+                  night = !themeProvider.getThemeBool();
                   setState(() {});
                 }),
 
