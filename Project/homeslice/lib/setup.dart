@@ -132,7 +132,7 @@ class _SetupState extends State<Setup> {
                 appBar: AppBar(title: const Text('Profile Details')),
                 body: Stepper(
                     controlsBuilder:
-                        (BuildContext context, ControlsDetails details) {
+                        (BuildContext ctx, ControlsDetails details) {
                       return Row(
                         children: <Widget>[
                           if (_index == 0) ...[
@@ -146,8 +146,6 @@ class _SetupState extends State<Setup> {
                                 onPressed: () async {
                                   setState(() {
                                     if (!snapshot.data!.exists) {
-                                      //print("User: " + user!.uid);
-                                      print("Name: " + _prefName);
                                       addUser(
                                               user?.uid,
                                               _prefName,
@@ -173,36 +171,6 @@ class _SetupState extends State<Setup> {
                                               hosting: _host)
                                           .then((_) => Navigator.pop(context));
                                     } else {
-                                      print(user?.uid);
-                                      print(_prefName);
-                                      print(user?.email);
-                                      print(_dropdownValue);
-                                      print(_major);
-                                      print("Year: " + _year.toString());
-                                      print("Blurb: " + _blurb);
-                                      print(_profileImg.toString());
-                                      print("Mates: " +
-                                          _mates.start.round().toString());
-                                      print(_mates.end.round());
-                                      print("Rent: " +
-                                          _rent.start.round().toString());
-                                      print(_rent.end.round());
-                                      print("Coed: " + _coed.toString());
-                                      print("Travel time: " +
-                                          _minsToCampus.start
-                                              .round()
-                                              .toString());
-                                      print(_minsToCampus.end.round());
-                                      print(
-                                          "Tidiness: " + _tidiness.toString());
-                                      print("Sharing: " + _share.toString());
-                                      print("West: " + _west.toString());
-                                      print("Nights out: " +
-                                          _nightsOut.round().toString());
-                                      print("Pets: " + _pets.toString());
-                                      print("North : " + _north.toString());
-                                      print("Host: " + _host.toString());
-
                                       updateUser(user?.uid,
                                               name: _prefName,
                                               email: user?.email,

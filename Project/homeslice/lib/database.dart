@@ -114,7 +114,7 @@ Future updateUser(id,
   }
 
   try {
-    var x = firestore.collection("users").doc(id).update({
+    return firestore.collection("users").doc(id).update({
           'full_name': name,
           'email': email,
           'pronouns': pronouns,
@@ -140,13 +140,9 @@ Future updateUser(id,
             'hosting': hosting ?? true // y/n
           },
         }..removeWhere((key, value) => value == null));
-
-    print("X: ");
-    print(x);
-    return x;
   } catch (e) {
     print("Error: ");
-    print(e);
+    throw e;
   }
 }
 
