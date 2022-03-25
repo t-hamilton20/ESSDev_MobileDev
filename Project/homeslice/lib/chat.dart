@@ -218,7 +218,7 @@ class _ConversationState extends State<ConversationTile> {
                           children: [
                             Builder(builder: (context) {
                               return SizedBox(
-                                width: MediaQuery.of(context).size.width / 6,
+                                width: MediaQuery.of(context).size.width / 7,
                                 child: Text(
                                   widget.messageText,
                                   overflow: TextOverflow.ellipsis,
