@@ -47,9 +47,20 @@ class _ProfileState extends State<Profile> {
                   onPressed: () {
                     Navigator.pushNamed(context, '/options');
                   },
-                  label: const Text('Edit'),
-                  icon: const Icon(Icons.settings),
-                  backgroundColor: Colors.white,
+                  label: Text(
+                    'Edit',
+                    style: TextStyle(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white),
+                  ),
+                  icon: Icon(
+                    Icons.settings,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
+                  ),
+                  backgroundColor: Theme.of(context).primaryColor,
                 ),
                 body: buildFrontCard(snapshot.data!.data(), gestures: false),
               );
@@ -107,8 +118,18 @@ class _ProfileState extends State<Profile> {
                                 padding: EdgeInsets.all(2),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(4),
-                                    border: Border.all(color: Colors.white)),
-                                child: Icon(Icons.wc)),
+                                    border: Border.all(
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.light
+                                            ? Colors.black
+                                            : Colors.white)),
+                                child: Icon(
+                                  Icons.wc,
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Colors.black
+                                      : Colors.white,
+                                )),
                             SizedBox(width: 8)
                           ]
                         : []),
@@ -116,13 +137,30 @@ class _ProfileState extends State<Profile> {
                       padding: EdgeInsets.fromLTRB(2, 2, 6, 2),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
-                          border: Border.all(color: Colors.white)),
+                          border: Border.all(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.black
+                                  : Colors.white)),
                       child: Row(
                         children: [
-                          Icon(Icons.home_outlined),
-                          Text(user['minHousemates'].toString() +
-                              "-" +
-                              user['maxHousemates'].toString())
+                          Icon(
+                            Icons.home_outlined,
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Colors.black
+                                    : Colors.white,
+                          ),
+                          Text(
+                            user['minHousemates'].toString() +
+                                "-" +
+                                user['maxHousemates'].toString(),
+                            style: TextStyle(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black
+                                    : Colors.white),
+                          )
                         ],
                       ),
                     ),
@@ -131,13 +169,30 @@ class _ProfileState extends State<Profile> {
                       padding: EdgeInsets.fromLTRB(2, 2, 6, 2),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
-                          border: Border.all(color: Colors.white)),
+                          border: Border.all(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.black
+                                  : Colors.white)),
                       child: Row(
                         children: [
-                          Icon(Icons.attach_money),
-                          Text(user['minPrice'].toString() +
-                              "-" +
-                              user['maxPrice'].toString())
+                          Icon(
+                            Icons.attach_money,
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Colors.black
+                                    : Colors.white,
+                          ),
+                          Text(
+                            user['minPrice'].toString() +
+                                "-" +
+                                user['maxPrice'].toString(),
+                            style: TextStyle(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black
+                                    : Colors.white),
+                          )
                         ],
                       ),
                     ),
@@ -148,7 +203,12 @@ class _ProfileState extends State<Profile> {
                   padding: const EdgeInsets.all(8),
                   child: SizedBox(
                     width: double.infinity,
-                    child: Icon(Icons.expand_less),
+                    child: Icon(
+                      Icons.expand_less,
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.black
+                          : Colors.white,
+                    ),
                   ),
                 ),
               ],
