@@ -245,21 +245,6 @@ class _ConversationState extends State<ConversationTile> {
               // popup menu
               PopupMenuButton(
                   itemBuilder: (context) => [
-                        PopupMenuItem(
-                          onTap: () {
-                            // delete from conversations
-                          },
-                          child: Row(
-                            children: <Widget>[
-                              Icon(Icons.delete),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text("Delete Conversation"),
-                            ],
-                          ),
-                        ),
-
                         // profile option
                         PopupMenuItem(
                           onTap: () {
