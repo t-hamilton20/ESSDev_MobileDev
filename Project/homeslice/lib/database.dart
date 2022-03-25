@@ -228,6 +228,17 @@ Future unmatch(currentUserID, likedUserID) async {
   myMatchedUsers.remove(them); // Remove them from my matched users
   theirMatchedUsers.remove(me); // Remove me from their matched users
 
+  // Delete conversation if exists
+  QuerySnapshot convos = await firestore
+      .collection('conversations')
+      .where("Users", arrayContains: currentUserID)
+      .get();
+  if (convos.docs.length > 0) {
+    convos.docs
+        .where((doc) => (doc.data() as Map)['Users'].contains(likedUserID))
+        .forEach((doc) => doc.reference.delete());
+  }
+
   return Future.wait([
     firestore
         .collection('users')
