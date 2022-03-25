@@ -452,7 +452,7 @@ class _SetupState extends State<Setup> {
                 children: <Widget>[
                   // Housemate number
                   const Text('How many housemates?'),
-                  Text(_mates.start.toString() +
+                  Text(_mates.start.round().toString() +
                       ' - ' +
                       _mates.end.round().toString()),
                   RangeSlider(

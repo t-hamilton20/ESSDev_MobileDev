@@ -48,11 +48,15 @@ class _ConversationListState extends State<ConversationList> {
                     builder: (BuildContext context,
                         AsyncSnapshot<List<dynamic>> snapshot) {
                       if (snapshot.hasError) print(snapshot.error);
+                      print("entering switch");
                       switch (snapshot.connectionState) {
                         case ConnectionState.done:
+                          print("connection done");
                           if (snapshot.data!.isNotEmpty) {
+                            print("data received, not empty");
                             print(snapshot.data.toString());
                             List conversations = snapshot.data![0];
+                            print("test: " + conversations.length.toString());
                             Map matches = snapshot.data![1];
                             matches.removeWhere((key, value) =>
                                 conversations.map((c) => c.id).contains(key));
@@ -94,6 +98,7 @@ class _ConversationListState extends State<ConversationList> {
                               ],
                             );
                           } else {
+                            print("else");
                             return Center(
                               child: Text("No Active Conversations"),
                             );
@@ -271,24 +276,10 @@ class _ConversationState extends State<ConversationTile> {
                           ),
                         ),
 
-                        // add to group option
                         PopupMenuItem(
                           onTap: () {
-                            // invite to group
-                          },
-                          child: Row(
-                            children: <Widget>[
-                              Icon(Icons.group),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text("Invite to Group"),
-                            ],
-                          ),
-                        ),
-
-                        PopupMenuItem(
-                          onTap: () {
+                            unmatch(user!.uid,
+                                widget.id); // remove user from matches
                             // unmatch user
                           },
                           child: Row(
@@ -417,6 +408,8 @@ class _MatchState extends State<MatchTile> {
 
                         PopupMenuItem(
                           onTap: () {
+                            unmatch(user!.uid,
+                                widget.id); // remove user from matches
                             // unmatch user
                           },
                           child: Row(
