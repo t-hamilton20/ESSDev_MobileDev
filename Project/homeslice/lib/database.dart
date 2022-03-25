@@ -236,7 +236,14 @@ Future unmatch(currentUserID, likedUserID) async {
   if (convos.docs.length > 0) {
     convos.docs
         .where((doc) => (doc.data() as Map)['Users'].contains(likedUserID))
-        .forEach((doc) => doc.reference.delete());
+        .forEach((doc) {
+      doc.reference.collection("Messages").get().then((messages) {
+        messages.docs.forEach((message) {
+          message.reference.delete();
+        });
+      });
+      doc.reference.delete();
+    });
   }
 
   return Future.wait([
