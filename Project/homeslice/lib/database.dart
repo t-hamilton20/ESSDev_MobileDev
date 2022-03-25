@@ -186,6 +186,8 @@ Future<Map> getUsers(currentUserID) async {
     ..removeWhere((id, user) => id == currentUserID) // Remove yourself
     ..removeWhere((id, user) => currentUser['likedUsers']
         .any((user) => user.id == id)) // Remove already liked users
+    ..removeWhere((id, user) => currentUser['matchedUsers']
+        .any((user) => user.id == id)) // Remove already matched users
     ..removeWhere((id, user) =>
         max<num>(currentUser['minHousemates'], user['minHousemates']) >
         min(currentUser['maxHousemates'], user['maxHousemates']))
