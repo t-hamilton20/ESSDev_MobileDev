@@ -186,6 +186,8 @@ Future<Map> getUsers(currentUserID) async {
     ..removeWhere((id, user) => id == currentUserID) // Remove yourself
     ..removeWhere((id, user) => currentUser['likedUsers']
         .any((user) => user.id == id)) // Remove already liked users
+    ..removeWhere((id, user) => currentUser['matchedUsers']
+        .any((user) => user.id == id)) // Remove already matched users
     ..removeWhere((id, user) =>
         max<num>(currentUser['minHousemates'], user['minHousemates']) >
         min(currentUser['maxHousemates'], user['maxHousemates']))
@@ -236,7 +238,14 @@ Future unmatch(currentUserID, likedUserID) async {
   if (convos.docs.length > 0) {
     convos.docs
         .where((doc) => (doc.data() as Map)['Users'].contains(likedUserID))
-        .forEach((doc) => doc.reference.delete());
+        .forEach((doc) {
+      doc.reference.collection("Messages").get().then((messages) {
+        messages.docs.forEach((message) {
+          message.reference.delete();
+        });
+      });
+      doc.reference.delete();
+    });
   }
 
   return Future.wait([
