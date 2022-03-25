@@ -75,7 +75,7 @@ class _AppState extends State<App> {
                     '/login': (context) => Login(),
                     '/signup': (context) => Signup(),
                     '/home': (context) => Wrapper(),
-                    '/setup': (context) => Setup(),
+                    '/setup': (context) => SetupWrapper(),
                     '/options': (context) => Settings(),
                     '/deets': (context) => AccountDeets(),
                   },
