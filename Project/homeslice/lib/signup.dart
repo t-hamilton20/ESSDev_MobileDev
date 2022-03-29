@@ -33,7 +33,7 @@ class _SignupState extends State<Signup> {
       appBar: AppBar(
         centerTitle: true,
         title: Text("HomeSlice"),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       body: new Padding(
         padding: EdgeInsets.fromLTRB(50, 30, 50, 30),
@@ -112,7 +112,7 @@ class _SignupState extends State<Signup> {
 
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).secondaryHeaderColor,
+                    primary: Theme.of(context).backgroundColor,
                     fixedSize: Size(100, 50),
                     textStyle: TextStyle(fontSize: 20)),
                 child: Text("Signup"),

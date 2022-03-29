@@ -183,9 +183,10 @@ class _ConversationState extends State<ConversationTile> {
         },
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: (tapFlag ? Colors.grey[500] : Colors.grey[900]),
-          ),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              color: Theme.of(context).backgroundColor
+              //color: (tapFlag ? Colors.grey[500] : Colors.grey[900]),
+              ),
           padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
           child: Row(
             // two different row widgets are used to ensure popup menu is aligned properly
@@ -328,9 +329,10 @@ class _MatchState extends State<MatchTile> {
         },
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: (tapFlag ? Colors.grey[500] : Colors.grey[900]),
-          ),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              color: Theme.of(context).backgroundColor
+              // color: (tapFlag ? Colors.grey[500] : Colors.grey[900]),
+              ),
           padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
           child: Row(
             // two different row widgets are used to ensure popup menu is aligned properly

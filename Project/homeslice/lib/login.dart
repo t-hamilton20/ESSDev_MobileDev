@@ -99,7 +99,7 @@ class _LoginState extends State<Login> {
                 ElevatedButton(
                   // login button
                   style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).secondaryHeaderColor,
+                      primary: Theme.of(context).backgroundColor,
                       fixedSize: Size(100, 50),
                       textStyle: TextStyle(fontSize: 20)),
                   child: Text("Login"),
@@ -151,7 +151,7 @@ class _LoginState extends State<Login> {
                 ElevatedButton(
                   // button to push signup page onto stack
                   style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).secondaryHeaderColor,
+                      primary: Theme.of(context).backgroundColor,
                       fixedSize: Size(100, 50),
                       textStyle: TextStyle(fontSize: 20)),
                   child: Text("Signup"),
