@@ -633,7 +633,6 @@ class _AccountDeetsState extends State<AccountDeets> {
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
                             title: const Text('Change Email'),
-                            content: Text(_newEmail),
                             actions: <Widget>[
                               TextField(
                                   decoration: InputDecoration(
