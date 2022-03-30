@@ -127,10 +127,22 @@ class _LoginState extends State<Login> {
                         isSignedIn = false;
                       }
                     }
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Wrapper()),
-                    );
+                    print("signed in: " + isSignedIn.toString());
+                    if (isSignedIn) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Wrapper()),
+                      );
+                    } else {
+                      print("not signed in");
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) => _buildPopupDialog(
+                              context, "Incorrect email or password."));
+                    }
+
+                    isSignedIn ? null : Text("Error");
+
                     setState(() {});
                   },
                 ),
@@ -179,7 +191,7 @@ Widget _buildPopupDialog(BuildContext context, String message) {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text("message"),
+        Text(message),
       ],
     ),
     actions: <Widget>[
