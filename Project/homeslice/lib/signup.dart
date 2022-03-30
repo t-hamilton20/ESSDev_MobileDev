@@ -112,7 +112,6 @@ class _SignupState extends State<Signup> {
 
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).secondaryHeaderColor,
                     fixedSize: Size(100, 50),
                     textStyle: TextStyle(fontSize: 20)),
                 child: Text("Signup"),
