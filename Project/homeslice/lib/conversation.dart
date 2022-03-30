@@ -230,8 +230,12 @@ class _MessageState extends State<Message> {
                     borderRadius: BorderRadius.circular(20),
                     color: (widget.type ==
                             "receiver" // if type is receiver colour is light grey
-                        ? Colors.grey[700]
-                        : Colors.grey[900]),
+                        ? (Theme.of(context).brightness == Brightness.light
+                            ? Colors.grey[400]
+                            : Colors.grey[700])
+                        : (Theme.of(context).brightness == Brightness.light
+                            ? Colors.grey[600]
+                            : Colors.grey[900])),
                   ),
                   padding: EdgeInsets.all(16),
                   // actual message text
