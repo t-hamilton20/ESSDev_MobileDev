@@ -551,12 +551,16 @@ class _SettingsState extends State<Settings> {
               ),
             ),
 
-            ElevatedButton(
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.pushReplacementNamed(context, '/login');
-                },
-                child: Text("Logout")),
+            Container(
+              alignment: Alignment.topCenter,
+              padding: EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.pushReplacementNamed(context, '/login');
+                  },
+                  child: Text("Logout")),
+            ),
 
             // Night Mode Toggle
             SwitchListTile(
