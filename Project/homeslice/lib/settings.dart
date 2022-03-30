@@ -503,6 +503,7 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   bool night = false;
+  bool hidden = false;
   @override
   Widget build(BuildContext context) {
     ThemeProvider themeProvider =
@@ -551,7 +552,7 @@ class _SettingsState extends State<Settings> {
 
             // Unlist Account Toggle
             SwitchListTile(
-                value: false,
+                value: hidden,
                 title: const Text("Unlist Account"),
                 onChanged: (value) {
                   setState(() {
@@ -636,7 +637,7 @@ class _AccountDeetsState extends State<AccountDeets> {
                             ),
                             TextButton(
                               onPressed: () {
-                                if (_password != '') {
+                                if (_password != '' && _newEmail != '') {
                                   AuthCredential creds =
                                       EmailAuthProvider.credential(
                                           email: _email, password: _password);
@@ -644,6 +645,7 @@ class _AccountDeetsState extends State<AccountDeets> {
                                       .reauthenticateWithCredential(creds)
                                       .then((_) {
                                     user.updateEmail(_newEmail);
+                                    updateUser(snapshot.data, email: _newEmail);
                                   });
                                   Navigator.pop(context, 'OK');
                                 }
@@ -704,9 +706,9 @@ class _AccountDeetsState extends State<AccountDeets> {
                                       .then((_) {
                                     if (_newPassword == _newPassTwo) {
                                       user.updatePassword(_newPassword);
+                                      Navigator.pop(context, 'OK');
                                     }
                                   });
-                                  Navigator.pop(context, 'OK');
                                 }
                               },
                               child: const Text('OK'),
@@ -747,8 +749,8 @@ class _AccountDeetsState extends State<AccountDeets> {
                                       .reauthenticateWithCredential(creds)
                                       .then((_) {
                                     user.delete();
+                                    Navigator.pop(context, 'OK');
                                   });
-                                  Navigator.pop(context, 'OK');
                                 }
                               },
                               child: const Text('OK'),
