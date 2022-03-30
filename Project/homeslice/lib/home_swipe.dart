@@ -571,7 +571,10 @@ class _CardStackState extends State<CardStack> {
                             : Colors.white)),
                 child: FittedBox(
                     child: user.value['preferences']['nearWest']
-                        ? CustomIcon(CustomIcons.west_campus)
+                        ? CustomIcon(
+                            CustomIcons.west_campus,
+                            color: Theme.of(context).iconTheme.color,
+                          )
                         : _crossedOutIcon(CustomIcon(CustomIcons.west_campus))),
               ),
               Container(
@@ -584,7 +587,10 @@ class _CardStackState extends State<CardStack> {
                             : Colors.white)),
                 child: FittedBox(
                     child: user.value['preferences']['northOfPrincess']
-                        ? CustomIcon(CustomIcons.north_of_princess)
+                        ? CustomIcon(
+                            CustomIcons.north_of_princess,
+                            color: Theme.of(context).iconTheme.color,
+                          )
                         : _crossedOutIcon(
                             CustomIcon(CustomIcons.north_of_princess))),
               ),
