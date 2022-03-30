@@ -117,7 +117,7 @@ class _ConversationState extends State<Conversation> {
                         cursorColor: Theme.of(context).hintColor,
                         decoration: InputDecoration(
                             hintText: "Write message...",
-                            hintStyle: TextStyle(color: Colors.grey[200]),
+                            hintStyle: TextStyle(color: Colors.grey[500]),
                             border: InputBorder.none),
                       ),
                     ),
