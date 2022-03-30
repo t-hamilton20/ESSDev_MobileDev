@@ -544,6 +544,13 @@ class _SettingsState extends State<Settings> {
               child: const Text('Edit Account Details'),
             ),
 
+            ElevatedButton(
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.pushReplacementNamed(context, '/login');
+                },
+                child: Text("Logout")),
+
             // Night Mode Toggle
             SwitchListTile(
                 value: night,
