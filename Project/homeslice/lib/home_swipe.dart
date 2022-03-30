@@ -575,7 +575,8 @@ class _CardStackState extends State<CardStack> {
                             CustomIcons.west_campus,
                             color: Theme.of(context).iconTheme.color,
                           )
-                        : _crossedOutIcon(CustomIcon(CustomIcons.west_campus))),
+                        : _crossedOutIcon(CustomIcon(CustomIcons.west_campus,
+                            color: Theme.of(context).iconTheme.color))),
               ),
               Container(
                 padding: EdgeInsets.all(8),
@@ -591,8 +592,9 @@ class _CardStackState extends State<CardStack> {
                             CustomIcons.north_of_princess,
                             color: Theme.of(context).iconTheme.color,
                           )
-                        : _crossedOutIcon(
-                            CustomIcon(CustomIcons.north_of_princess))),
+                        : _crossedOutIcon(CustomIcon(
+                            CustomIcons.north_of_princess,
+                            color: Theme.of(context).iconTheme.color))),
               ),
             ],
           )

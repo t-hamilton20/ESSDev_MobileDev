@@ -459,8 +459,12 @@ class _ProfileState extends State<Profile> {
                     border: Border.all(color: Colors.white)),
                 child: FittedBox(
                     child: user['preferences']['nearWest']
-                        ? CustomIcon(CustomIcons.west_campus)
-                        : _crossedOutIcon(CustomIcon(CustomIcons.west_campus))),
+                        ? CustomIcon(
+                            CustomIcons.west_campus,
+                            color: Theme.of(context).iconTheme.color,
+                          )
+                        : _crossedOutIcon(CustomIcon(CustomIcons.west_campus,
+                            color: Theme.of(context).iconTheme.color))),
               ),
               Container(
                 padding: EdgeInsets.all(8),
@@ -469,9 +473,11 @@ class _ProfileState extends State<Profile> {
                     border: Border.all(color: Colors.white)),
                 child: FittedBox(
                     child: user['preferences']['northOfPrincess']
-                        ? CustomIcon(CustomIcons.north_of_princess)
-                        : _crossedOutIcon(
-                            CustomIcon(CustomIcons.north_of_princess))),
+                        ? CustomIcon(CustomIcons.north_of_princess,
+                            color: Theme.of(context).iconTheme.color)
+                        : _crossedOutIcon(CustomIcon(
+                            CustomIcons.north_of_princess,
+                            color: Theme.of(context).iconTheme.color))),
               ),
             ],
           )
