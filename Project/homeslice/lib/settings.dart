@@ -645,6 +645,7 @@ class _AccountDeetsState extends State<AccountDeets> {
                                       .reauthenticateWithCredential(creds)
                                       .then((_) {
                                     user.updateEmail(_newEmail);
+                                    updateUser(snapshot.data, email: _newEmail);
                                   });
                                   Navigator.pop(context, 'OK');
                                 }
