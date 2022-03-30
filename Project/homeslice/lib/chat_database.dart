@@ -2,6 +2,7 @@
 
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 
 import 'chat.dart';
 import 'database.dart';
@@ -99,19 +100,32 @@ Future<List> getConversationsForUser(String uid) async {
         .orderBy("Milli")
         .get();
 
-    DocumentSnapshot lastMessage = messages.docs.last;
-    String lastMessageText = lastMessage["Text"];
-    if (lastMessageText.length > 50) {
-      lastMessageText = lastMessageText.substring(0, 50) + "...";
-    }
+    var lastMessageText;
+    if (messages.docs.isNotEmpty) {
+      DocumentSnapshot lastMessage = messages.docs.last;
+      String lastMessageText = lastMessage["Text"];
+      if (lastMessageText.length > 50) {
+        lastMessageText = lastMessageText.substring(0, 50) + "...";
+      }
+      conversationsFromDatabase.add(new ConversationTile(
+          id: otherUserID,
+          name: otherUser["full_name"],
+          messageText: lastMessageText,
+          imageUrl: otherUser["image"],
+          time: lastMessage["Timestamp"],
+          convoID: convoID));
+    } else {
+      DateTime date = new DateTime.now();
+      DateFormat df = DateFormat.yMd().add_jm();
 
-    conversationsFromDatabase.add(new ConversationTile(
-        id: otherUserID,
-        name: otherUser["full_name"],
-        messageText: lastMessageText,
-        imageUrl: otherUser["image"],
-        time: lastMessage["Timestamp"],
-        convoID: convoID));
+      conversationsFromDatabase.add(new ConversationTile(
+          id: otherUserID,
+          name: otherUser["full_name"],
+          messageText: "Send a message!",
+          imageUrl: otherUser["image"],
+          time: df.format(date),
+          convoID: convoID));
+    }
   }
 
   print("tiles being passed: " + conversationsFromDatabase.length.toString());

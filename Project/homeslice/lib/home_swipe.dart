@@ -230,8 +230,18 @@ class _CardStackState extends State<CardStack> {
                                 padding: EdgeInsets.all(2),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(4),
-                                    border: Border.all(color: Colors.white)),
-                                child: Icon(Icons.wc)),
+                                    border: Border.all(
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.light
+                                            ? Colors.black
+                                            : Colors.white)),
+                                child: Icon(
+                                  Icons.wc,
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Colors.black
+                                      : Colors.white,
+                                )),
                             SizedBox(width: 8)
                           ]
                         : []),
@@ -239,13 +249,30 @@ class _CardStackState extends State<CardStack> {
                       padding: EdgeInsets.fromLTRB(2, 2, 6, 2),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
-                          border: Border.all(color: Colors.white)),
+                          border: Border.all(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.black
+                                  : Colors.white)),
                       child: Row(
                         children: [
-                          Icon(Icons.home_outlined),
-                          Text(user.value['minHousemates'].toString() +
-                              "-" +
-                              user.value['maxHousemates'].toString())
+                          Icon(
+                            Icons.home_outlined,
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Colors.black
+                                    : Colors.white,
+                          ),
+                          Text(
+                            user.value['minHousemates'].toString() +
+                                "-" +
+                                user.value['maxHousemates'].toString(),
+                            style: TextStyle(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black
+                                    : Colors.white),
+                          )
                         ],
                       ),
                     ),
@@ -254,13 +281,30 @@ class _CardStackState extends State<CardStack> {
                       padding: EdgeInsets.fromLTRB(2, 2, 6, 2),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
-                          border: Border.all(color: Colors.white)),
+                          border: Border.all(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.black
+                                  : Colors.white)),
                       child: Row(
                         children: [
-                          Icon(Icons.attach_money),
-                          Text(user.value['minPrice'].toString() +
-                              "-" +
-                              user.value['maxPrice'].toString())
+                          Icon(
+                            Icons.attach_money,
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Colors.black
+                                    : Colors.white,
+                          ),
+                          Text(
+                            user.value['minPrice'].toString() +
+                                "-" +
+                                user.value['maxPrice'].toString(),
+                            style: TextStyle(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black
+                                    : Colors.white),
+                          )
                         ],
                       ),
                     ),
@@ -273,7 +317,12 @@ class _CardStackState extends State<CardStack> {
                     padding: const EdgeInsets.all(8),
                     child: SizedBox(
                       width: double.infinity,
-                      child: Icon(Icons.expand_less),
+                      child: Icon(
+                        Icons.expand_less,
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -319,7 +368,7 @@ class _CardStackState extends State<CardStack> {
 
   Widget buildInfoSheet(user) {
     return Container(
-      color: Colors.grey,
+      color: Theme.of(context).cardColor,
       padding: EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -367,7 +416,10 @@ class _CardStackState extends State<CardStack> {
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white)),
+                    border: Border.all(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white)),
                 child: Column(
                   children: [
                     Expanded(
@@ -386,7 +438,10 @@ class _CardStackState extends State<CardStack> {
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white)),
+                    border: Border.all(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white)),
                 child: Column(
                   children: [
                     Expanded(
@@ -409,7 +464,10 @@ class _CardStackState extends State<CardStack> {
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white)),
+                    border: Border.all(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white)),
                 child: Column(
                   children: [
                     Expanded(
@@ -428,7 +486,10 @@ class _CardStackState extends State<CardStack> {
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white)),
+                    border: Border.all(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white)),
                 child: Column(
                   children: [
                     Expanded(
@@ -445,7 +506,10 @@ class _CardStackState extends State<CardStack> {
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white)),
+                    border: Border.all(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white)),
                 child: Column(
                   children: [
                     Expanded(
@@ -462,7 +526,10 @@ class _CardStackState extends State<CardStack> {
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white)),
+                    border: Border.all(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white)),
                 child: FittedBox(
                     child: user.value['preferences']['pets']
                         ? Icon(Icons.pets)
@@ -472,7 +539,10 @@ class _CardStackState extends State<CardStack> {
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white)),
+                    border: Border.all(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white)),
                 child: FittedBox(
                     child: user.value['preferences']['hosting']
                         ? Icon(Icons.celebration)
@@ -482,7 +552,10 @@ class _CardStackState extends State<CardStack> {
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white)),
+                    border: Border.all(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white)),
                 child: FittedBox(
                     child: user.value['preferences']['sharingMeals']
                         ? Icon(Icons.local_dining)
@@ -492,7 +565,10 @@ class _CardStackState extends State<CardStack> {
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white)),
+                    border: Border.all(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white)),
                 child: FittedBox(
                     child: user.value['preferences']['nearWest']
                         ? CustomIcon(CustomIcons.west_campus)
@@ -502,7 +578,10 @@ class _CardStackState extends State<CardStack> {
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white)),
+                    border: Border.all(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black
+                            : Colors.white)),
                 child: FittedBox(
                     child: user.value['preferences']['northOfPrincess']
                         ? CustomIcon(CustomIcons.north_of_princess)

@@ -218,7 +218,7 @@ class _ConversationState extends State<ConversationTile> {
                           children: [
                             Builder(builder: (context) {
                               return SizedBox(
-                                width: MediaQuery.of(context).size.width / 6,
+                                width: MediaQuery.of(context).size.width / 7,
                                 child: Text(
                                   widget.messageText,
                                   overflow: TextOverflow.ellipsis,
@@ -245,21 +245,6 @@ class _ConversationState extends State<ConversationTile> {
               // popup menu
               PopupMenuButton(
                   itemBuilder: (context) => [
-                        PopupMenuItem(
-                          onTap: () {
-                            // delete from conversations
-                          },
-                          child: Row(
-                            children: <Widget>[
-                              Icon(Icons.delete),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text("Delete Conversation"),
-                            ],
-                          ),
-                        ),
-
                         // profile option
                         PopupMenuItem(
                           onTap: () {
