@@ -102,7 +102,7 @@ class _CardStackState extends State<CardStack> {
           ),
         ),
         ...buildCards(widget.users),
-        Center(child: Text("Swiper gone swiping!")),
+        Center(child: Text("You've swiped through everyone! Come back later!")),
       ].reversed.toList(),
     );
   }
