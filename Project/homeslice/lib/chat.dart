@@ -34,83 +34,76 @@ class _ConversationListState extends State<ConversationList> {
       // app body
       body: new Padding(
         padding: EdgeInsets.fromLTRB(50, 30, 50, 30),
-        child: new Center(
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              new SizedBox(
-                height: 20,
-              ),
-              new SizedBox(
-                height: 300,
-                child: FutureBuilder<List<dynamic>>(
-                    future: Future.wait([_conversations, _matches]),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<dynamic>> snapshot) {
-                      if (snapshot.hasError) print(snapshot.error);
-                      print("entering switch");
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.done:
-                          print("connection done");
-                          if (snapshot.data!.isNotEmpty) {
-                            print("data received, not empty");
-                            print(snapshot.data.toString());
-                            List conversations = snapshot.data![0];
-                            print("test: " + conversations.length.toString());
-                            Map matches = snapshot.data![1];
-                            matches.removeWhere((key, value) =>
-                                conversations.map((c) => c.id).contains(key));
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FutureBuilder<List<dynamic>>(
+                future: Future.wait([_conversations, _matches]),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<dynamic>> snapshot) {
+                  if (snapshot.hasError) print(snapshot.error);
+                  print("entering switch");
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.done:
+                      print("connection done");
+                      if (snapshot.data!.isNotEmpty) {
+                        print("data received, not empty");
+                        print(snapshot.data.toString());
+                        List conversations = snapshot.data![0];
+                        print("test: " + conversations.length.toString());
+                        Map matches = snapshot.data![1];
+                        matches.removeWhere((key, value) =>
+                            conversations.map((c) => c.id).contains(key));
 
-                            return ListView(
-                              children: [
-                                ExpansionTile(
-                                  initiallyExpanded: true,
-                                  title: Text("New Matches"),
-                                  children: matches.entries
-                                      .map((m) => SizedBox(
-                                            height: 100,
-                                            child: new Container(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  0, 0, 0, 8),
-                                              child: MatchTile(
-                                                name: m.value["full_name"],
-                                                imageUrl: m.value["image"],
-                                                id: m.key,
-                                              ),
-                                            ),
-                                          ))
-                                      .toList(),
-                                ),
-                                ExpansionTile(
-                                  initiallyExpanded: true,
-                                  title: Text("Conversations"),
-                                  children: conversations
-                                      .map((c) => SizedBox(
-                                            height: 100,
-                                            child: new Container(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  0, 0, 0, 8),
-                                              child: c,
-                                            ),
-                                          ))
-                                      .toList(),
-                                ),
-                              ],
-                            );
-                          } else {
-                            print("else");
-                            return Center(
-                              child: Text("No Active Conversations"),
-                            );
-                          }
-
-                        default:
-                          return Center(child: CircularProgressIndicator());
+                        return ListView(
+                          shrinkWrap: true,
+                          children: [
+                            ExpansionTile(
+                              initiallyExpanded: true,
+                              title: Text("New Matches"),
+                              children: matches.entries
+                                  .map((m) => SizedBox(
+                                        height: 100,
+                                        child: new Container(
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 0, 0, 8),
+                                          child: MatchTile(
+                                            name: m.value["full_name"],
+                                            imageUrl: m.value["image"],
+                                            id: m.key,
+                                          ),
+                                        ),
+                                      ))
+                                  .toList(),
+                            ),
+                            ExpansionTile(
+                              initiallyExpanded: true,
+                              title: Text("Conversations"),
+                              children: conversations
+                                  .map((c) => SizedBox(
+                                        height: 100,
+                                        child: new Container(
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 0, 0, 8),
+                                          child: c,
+                                        ),
+                                      ))
+                                  .toList(),
+                            ),
+                          ],
+                        );
+                      } else {
+                        print("else");
+                        return Center(
+                          child: Text("No Active Conversations"),
+                        );
                       }
-                    }),
-              ),
-            ],
-          ),
+
+                    default:
+                      return Center(child: CircularProgressIndicator());
+                  }
+                }),
+          ],
         ),
       ),
     );
@@ -139,8 +132,6 @@ class ConversationTile extends StatefulWidget {
 }
 
 class _ConversationState extends State<ConversationTile> {
-  bool tapFlag = false;
-
   @override
   Widget build(BuildContext context) {
     User? user = Provider.of<User?>(context);
@@ -178,13 +169,13 @@ class _ConversationState extends State<ConversationTile> {
               messages: messagesFromDatabase,
             );
           }));
-
-          tapFlag = true;
         },
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: (tapFlag ? Colors.grey[500] : Colors.grey[900]),
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.grey[500]
+                : Colors.grey[900],
           ),
           padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
           child: Row(
@@ -223,7 +214,11 @@ class _ConversationState extends State<ConversationTile> {
                                   widget.messageText,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                      fontSize: 13, color: Colors.grey[300]),
+                                      fontSize: 13,
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.light
+                                          ? Colors.grey[700]
+                                          : Colors.grey[300]),
                                 ),
                               );
                             }),
@@ -233,7 +228,11 @@ class _ConversationState extends State<ConversationTile> {
                                   ' ' +
                                   widget.time.split(' ')[2],
                               style: TextStyle(
-                                  fontSize: 13, color: Colors.grey[300]),
+                                  fontSize: 13,
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Colors.grey[700]
+                                      : Colors.grey[300]),
                             ),
                           ],
                         ),
@@ -297,8 +296,6 @@ class MatchTile extends StatefulWidget {
 }
 
 class _MatchState extends State<MatchTile> {
-  bool tapFlag = false;
-
   @override
   Widget build(BuildContext context) {
     User? user = Provider.of<User?>(context);
@@ -323,13 +320,13 @@ class _MatchState extends State<MatchTile> {
               messages: [],
             );
           }));
-
-          tapFlag = true;
         },
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: (tapFlag ? Colors.grey[500] : Colors.grey[900]),
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.grey[500]
+                : Colors.grey[900],
           ),
           padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
           child: Row(
@@ -363,7 +360,10 @@ class _MatchState extends State<MatchTile> {
                           "Tap to start talking!",
                           style: TextStyle(
                             fontSize: 13,
-                            color: Colors.grey[300],
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Colors.grey[700]
+                                    : Colors.grey[300],
                             fontStyle: FontStyle.italic,
                           ),
                         ),
