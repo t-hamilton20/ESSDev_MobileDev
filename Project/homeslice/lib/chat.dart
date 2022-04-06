@@ -11,6 +11,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:homeslice/view_profile.dart';
 import 'package:provider/provider.dart';
 import 'conversation.dart';
 import 'chat_database.dart';
@@ -248,6 +249,10 @@ class _ConversationState extends State<ConversationTile> {
                         PopupMenuItem(
                           onTap: () {
                             // show profile
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return ViewProfile(user: user);
+                            }));
                           },
                           child: Row(
                             children: <Widget>[
@@ -379,6 +384,10 @@ class _MatchState extends State<MatchTile> {
                         PopupMenuItem(
                           onTap: () {
                             // show profile
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return ViewProfile(user: user);
+                            }));
                           },
                           child: Row(
                             children: <Widget>[

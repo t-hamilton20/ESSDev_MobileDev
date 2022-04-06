@@ -10,6 +10,7 @@
 * Delete_Account
 */
 
+import 'package:homeslice/profile_card.dart';
 import 'package:homeslice/themes.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -63,7 +64,11 @@ class _ProfileState extends State<Profile> {
                   ),
                   backgroundColor: Theme.of(context).primaryColor,
                 ),
-                body: buildFrontCard(snapshot.data!.data(), gestures: false),
+                body: ProfileCard(
+                  user: MapEntry(snapshot.data!.id, snapshot.data!.data()),
+                  gestures: false,
+                  front: true,
+                ),
               );
 
             default:
