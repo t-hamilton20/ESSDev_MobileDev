@@ -12,6 +12,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:homeslice/wrapper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
@@ -204,7 +205,10 @@ class _SetupState extends State<Setup> {
                                     pets: _pets,
                                     northOfPrincess: _north,
                                     hosting: _host)
-                                .then((_) => Navigator.pop(context));
+                                .then((_) => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Wrapper())));
                           } else {
                             updateUser(user?.uid,
                                     name: _prefName,
@@ -228,7 +232,10 @@ class _SetupState extends State<Setup> {
                                     pets: _pets,
                                     northOfPrincess: _north,
                                     hosting: _host)
-                                .then((_) => Navigator.pop(context));
+                                .then((_) => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Wrapper())));
                           }
                         });
                       },
@@ -294,7 +301,10 @@ class _SetupState extends State<Setup> {
                                   pets: _pets,
                                   northOfPrincess: _north,
                                   hosting: _host)
-                              .then((_) => Navigator.pop(context));
+                              .then((_) => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Wrapper())));
                         }
                       });
                     },
