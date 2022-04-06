@@ -513,86 +513,108 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  bool night = false;
-  bool hidden = false;
+  bool _night = false;
+  bool _hidden = false;
+
+  void getHidden(user) {
+    _hidden = user['hidden'];
+  }
+
   @override
   Widget build(BuildContext context) {
     ThemeProvider themeProvider =
         Provider.of<ThemeProvider>(context, listen: false);
-    night = themeProvider.getThemeBool();
+    _night = themeProvider.getThemeBool();
 
     // User
     User? user = Provider.of<User?>(context);
+    Future<DocumentSnapshot> _doc = getUser(user!.uid);
+
     return Scaffold(
-        appBar: AppBar(
-          title: Text("HomeSlice"),
-        ),
-        body: Column(
-          children: [
-            //Edit Profile Info - goes to Setup
-            Container(
-              alignment: Alignment.topCenter,
-              padding: EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    Navigator.pushNamed(context, '/setup');
-                  });
-                },
-                child: const Text('Edit Profile Info'),
-              ),
-            ),
-            //Edit Account Details - goes to Account Deets
-            Container(
-              alignment: Alignment.topCenter,
-              padding: EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    Navigator.pushNamed(context, '/deets');
-                  });
-                },
-                child: const Text('Edit Account Details'),
-              ),
-            ),
+      body: FutureBuilder<DocumentSnapshot>(
+        future: _doc,
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              getHidden(snapshot.data);
+              return Scaffold(
+                  appBar: AppBar(
+                    title: Text("HomeSlice"),
+                  ),
+                  body: Column(
+                    children: [
+                      //Edit Profile Info - goes to Setup
+                      Container(
+                        alignment: Alignment.topCenter,
+                        padding: EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              Navigator.pushNamed(context, '/setup');
+                            });
+                          },
+                          child: const Text('Edit Profile Info'),
+                        ),
+                      ),
+                      //Edit Account Details - goes to Account Deets
+                      Container(
+                        alignment: Alignment.topCenter,
+                        padding: EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              Navigator.pushNamed(context, '/deets');
+                            });
+                          },
+                          child: const Text('Edit Account Details'),
+                        ),
+                      ),
 
-            Container(
-              alignment: Alignment.topCenter,
-              padding: EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                  onPressed: () async {
-                    await FirebaseAuth.instance.signOut();
-                    Navigator.pushReplacementNamed(context, '/login');
-                  },
-                  child: Text("Logout")),
-            ),
+                      Container(
+                        alignment: Alignment.topCenter,
+                        padding: EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                            onPressed: () async {
+                              await FirebaseAuth.instance.signOut();
+                              Navigator.pushReplacementNamed(context, '/login');
+                            },
+                            child: Text("Logout")),
+                      ),
 
-            // Night Mode Toggle
-            SwitchListTile(
-                value: night,
-                title: const Text("Night Mode"),
-                onChanged: (value) {
-                  ThemeProvider themeProvider =
-                      Provider.of<ThemeProvider>(context, listen: false);
-                  themeProvider.swapTheme();
-                  night = !themeProvider.getThemeBool();
-                  setState(() {});
-                }),
+                      // Night Mode Toggle
+                      SwitchListTile(
+                          value: _night,
+                          title: const Text("Night Mode"),
+                          onChanged: (value) {
+                            ThemeProvider themeProvider =
+                                Provider.of<ThemeProvider>(context,
+                                    listen: false);
+                            themeProvider.swapTheme();
+                            _night = !themeProvider.getThemeBool();
+                            setState(() {});
+                          }),
 
-            // Unlist Account Toggle
-            SwitchListTile(
-                value: hidden,
-                title: const Text("Unlist Account"),
-                onChanged: (value) {
-                  setState(() {
-                    updateUser(
-                      user?.uid,
-                      hidden: value,
-                    );
-                  });
-                }),
-          ],
-        ));
+                      // Unlist Account Toggle
+                      SwitchListTile(
+                          value: _hidden,
+                          title: const Text("Unlist Account"),
+                          onChanged: (value) {
+                            setState(() {
+                              _hidden = value;
+                              updateUser(
+                                user.uid,
+                                hidden: value,
+                              );
+                            });
+                          }),
+                    ],
+                  ));
+            default:
+              return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
+    );
   }
 }
 
