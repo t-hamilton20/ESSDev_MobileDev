@@ -131,11 +131,18 @@ class _SignupState extends State<Signup> {
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'weak-password') {
                         print('The password provided is too weak.');
-                        _buildPopupDialog(context, "Password is too weak.");
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                _buildPopupDialog(context,
+                                    "The provided password is too weak."));
                       } else if (e.code == 'email-already-in-use') {
                         print('The account already exists for that email.');
-                        _buildPopupDialog(context,
-                            "An account already exists for that email.");
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => _buildPopupDialog(
+                                context,
+                                "Error, an account already exists for that email."));
                       }
                     } catch (e) {
                       print(e);
@@ -158,7 +165,7 @@ Widget _buildPopupDialog(BuildContext context, String message) {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text("message"),
+        Text(message),
       ],
     ),
     actions: <Widget>[
