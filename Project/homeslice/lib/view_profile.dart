@@ -7,12 +7,13 @@ class ViewProfile extends StatefulWidget {
   const ViewProfile({Key? key, required this.user}) : super(key: key);
 
   @override
-  State<ViewProfile> createState() => _ViewProfileState();
+  _ViewProfileState createState() => _ViewProfileState();
 }
 
 class _ViewProfileState extends State<ViewProfile> {
   @override
   Widget build(BuildContext context) {
+    print("building view profile");
     return Scaffold(
       body: ProfileCard(
         user: widget.user,

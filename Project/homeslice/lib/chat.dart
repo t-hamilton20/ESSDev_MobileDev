@@ -383,11 +383,14 @@ class _MatchState extends State<MatchTile> {
                         // profile option
                         PopupMenuItem(
                           onTap: () {
+                            print("View profile trigger");
                             // show profile
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return ViewProfile(user: user);
-                            }));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ViewProfile(user: user)),
+                            );
                           },
                           child: Row(
                             children: <Widget>[
