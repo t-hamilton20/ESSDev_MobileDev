@@ -635,7 +635,7 @@ class _AccountDeetsState extends State<AccountDeets> {
                       child: Text("Email: " + _email),
                     ),
 
-                    // Change account button & popup
+                    // Change email button & popup
                     Container(
                       alignment: Alignment.topCenter,
                       padding: EdgeInsets.all(8.0),
@@ -678,8 +678,8 @@ class _AccountDeetsState extends State<AccountDeets> {
                                       user.updateEmail(_newEmail);
                                       updateUser(snapshot.data,
                                           email: _newEmail);
+                                      Navigator.pop(context, 'OK');
                                     });
-                                    Navigator.pop(context, 'OK');
                                   }
                                 },
                                 child: const Text('OK'),
